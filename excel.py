@@ -2,39 +2,58 @@ import numpy as np
 import os
 import pandas as pd
 import matplotlib as plt
-
-# SMARTPHONES = pd.read_excel('/home/gypsy/Smartphones.xlsx')
-# # print(SMARTPHONES)
-
-
-def base1():
-	"""База данных параметров нет возвращает словарь словарей Автор Поляков К. Л. """
-	fields = ["имя", "пол", "возраст", "зарплата", "дети", "департамент"]
-	surname = ["Иванов", "Сидоров", "Чернова", "Корюшка", "Берг", "Климов"]
-	Иванов = ["Павел Иванов", "муж", 42, 30000, 0, "маркетинг"]
-	Сидоров = ["Юрий Сидоров", "муж", 32, 35000, 3, "финансы"]
-	Чернова = ["Татьяна Чернова", "жен", 53, 40000, 10, "продажи"]
-	Корюшка = ["Ирина Корюшка", "жен", 23, 20000, 2, "маркетинг"]
-	Берг = ["Игорь Берг", "муж", 33, 25000, 6, "продажи"]
-	Климов = ["Андрей Климов", "муж", 60, 60000, 0, "финансы"]
-# Создаем список списков
-	w1 = [Иванов, Сидоров, Чернова, Корюшка, Берг, Климов]
-# Создаем списко словарей
-	w2 = [dict(zip(fields, x)) for x in w1]
-# Создаем словарь словарей
-	w3 = dict(zip(surname, w2))
-	return w3
+os.chdir("C:/Users/ivand/github/HSEProject")
+import interface.py as int
+SMARTPHONES = pd.read_excel('./Data/Smartphones.xlsx')
+#print(SMARTPHONES)
+Q = pd.DataFrame(SMARTPHONES).T
+print(Q)
 
 
-Q = pd.DataFrame(base1()).T
-# print(Q)
 
-print('Возможные варианты ввода: ', Q.columns)
-e = input("Введите атрибут: ")
-t = input("Введите атрибут: ")
-while e != 'стоп':
-	if e in Q.columns:
-		print(Q[e])
-	else:
-		print('Нет такого атрибута')
-	e = input("Введите атрибут: ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#print('Возможные варианты ввода: ', Q.columns)
+#e = input("Введите атрибут: ")
+#t = input("Введите атрибут: ")
+#while e != 'стоп':
+#	if e in Q.columns:
+#		print(Q[e])
+#	else:
+#		print('Нет такого атрибута')
+#	e = input("Введите атрибут: ")
