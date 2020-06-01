@@ -6,3 +6,4 @@ window.geometry('400x250')
 lbl = Label(window, text="Производитель")
 lbl.grid(column=0, row=0)
 window.mainloop()
+дай Бог заработает
