@@ -78,7 +78,7 @@ window.config(menu=menu)
 #table.pack(expand=tk.YES, fill=tk.BOTH)
 
 
-tree = tk.Treeview(window)
+tree = ttk.Treeview(window)
 rowLabels = df.index.tolist()
 tree["columns"]=(key)
 counter = len(df)
