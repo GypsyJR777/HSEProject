@@ -22,36 +22,34 @@ class Main(tk.Frame):
         btn_open_dialog.pack(side=tk.LEFT)
         self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'),  height=40, show='headings')
 
-        self.tree.column('cod', width=60, anchor=tk.CENTER)
-        self.tree.column('proizv', width=60, anchor=tk.CENTER)
-        self.tree.column('strana', width=60, anchor=tk.CENTER)
-        self.tree.column('codtov', width=60, anchor=tk.CENTER)
+        self.tree.column('code', width=60, anchor=tk.CENTER)
+        self.tree.column('firm', width=60, anchor=tk.CENTER)
+        self.tree.column('country', width=60, anchor=tk.CENTER)
+        self.tree.column('code_smart', width=60, anchor=tk.CENTER)
         self.tree.column('model', width=60, anchor=tk.CENTER)
-        self.tree.column('oc', width=60, anchor=tk.CENTER)
-        self.tree.column('vnutrpam', width=60, anchor=tk.CENTER)
+        self.tree.column('os', width=60, anchor=tk.CENTER)
+        self.tree.column('storage', width=60, anchor=tk.CENTER)
         self.tree.column('diagonal', width=60, anchor=tk.CENTER)
-        self.tree.column('proc', width=60, anchor=tk.CENTER)
-        self.tree.column('operpam', width=60, anchor=tk.CENTER)
-        self.tree.column('kolvo', width=60, anchor=tk.CENTER)
+        self.tree.column('CPU', width=60, anchor=tk.CENTER)
+        self.tree.column('RAM', width=60, anchor=tk.CENTER)
+        self.tree.column('number', width=60, anchor=tk.CENTER)
 
-        self.tree.heading('cod', text='код производителя')
-        self.tree.heading('proizv', text='производитель')
-        self.tree.heading('strana', text='страна')
-        self.tree.heading('codtov', text='код товара')
+        self.tree.heading('code', text='код производителя')
+        self.tree.heading('firm', text='производитель')
+        self.tree.heading('country', text='страна')
+        self.tree.heading('code_smart', text='код товара')
         self.tree.heading('model', text='модель')
-        self.tree.heading('oc', text='ОС')
-        self.tree.heading('vnutrpam', text='внутренняя память')
+        self.tree.heading('os', text='ОС')
+        self.tree.heading('storage', text='внутренняя память')
         self.tree.heading('diagonal', text='диагональ экрана')
-        self.tree.heading('proc', text='процессор')
-        self.tree.heading('operpam', text='оперативаная память')
-        self.tree.heading('kolvo', text='кол-во')
+        self.tree.heading('CPU', text='процессор')
+        self.tree.heading('RAM, text='оперативаная память')
+        self.tree.heading('number', text='кол-во')
 
         self.tree.pack()
 
 
-
-
-
+#'number' 'RAM' 'CPU' 'diagonal' 'storage' 'os' 'model' 'code_smart' 'country' 'firm' 'code'
 
 
 
