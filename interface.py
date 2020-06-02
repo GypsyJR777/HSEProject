@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import Menu
 
 
 class Main(tk.Frame):
@@ -106,6 +107,12 @@ class Child(tk.Toplevel):
         btn_add = ttk.Button(self, text='Добавить')
         btn_add.place(x=220, y=170)
         btn_add.bind('<Button-1>')
+
+        menu = Menu(self)
+        new_item = Menu(menu)
+        new_item.add_command(label='Новый')
+        menu.add_cascade(label='Файл', menu=new_item)
+        window.config(menu=menu)
 
         self.grab_set()
         self.focus_set()
