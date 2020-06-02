@@ -4,7 +4,7 @@ def base():
     2 = ["1", "Apple", "США", "2", "SE(2020)", "64", "4.7", 
          "Apple A13 Bionic", "2", "56"]
     
-    keys = ['code_firm', 'firm', 'memory', 'ram']
+    keys = ['number', 'RAM', 'CPU', 'diagonal', 'storage', 'os', 'model', 'code_smart', 'country', 'firm', 'code']
     values = [1, 2]
     
     return dict(zip([x[0] for x in values], [dict(zip(keys, x)) 
