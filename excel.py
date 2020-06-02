@@ -4,9 +4,8 @@ excel_data_df = pandas.read_excel('./Data/Smartphones.xlsx', sheet_name='Sheet1'
 
 # print whole sheet data
 print(excel_data_df)
-
-
 print(excel_data_df.columns.ravel())
+
 import tkinter as tk
 import tkinter.ttk as ttk
 
@@ -22,9 +21,9 @@ class Table(tk.Frame):
         for head in excel_data_df.columns.ravel():
             table.heading(head, text=head, anchor=tk.CENTER)
             table.column(head, anchor=tk.CENTER)
-        
-        for row in rows:
-            table.insert('', tk.END, values=tuple(row))
+        for head in excel_data_df.columns.ravel():
+            for row in excel_data_df[head].tolist():
+                table.insert('', tk.END, values=tuple(str(row)))
 
         scrolltable = tk.Scrollbar(self, command=table.yview)
         table.configure(yscrollcommand=scrolltable.set)
