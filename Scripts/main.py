@@ -2,7 +2,6 @@ import sys
 sys.path.append('../Library/')
 
 
-from library import import_lib, fetch_record
 
 import pickle
 
@@ -114,10 +113,10 @@ class Child(tk.Toplevel):
 
 
 if __name__ == "__main__":
-root = tk.Tk()
-app = Main(root)
-app.pack()
-root.title("Программа")
-root.geometry("900x540+300+200")
-root.resizable(False, False)
-root.mainloop()
+    root = tk.Tk()
+    app = Main(root)
+    app.pack()
+    root.title("Программа")
+    root.geometry("900x540+300+200")
+    root.resizable(False, False)
+    root.mainloop()
