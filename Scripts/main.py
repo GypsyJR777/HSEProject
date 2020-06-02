@@ -4,122 +4,71 @@ sys.path.append('../Library/')
 
 
 import pickle
+import pandas as pd
+from tkinter import Tk, Frame, Toplevel, Label, Entry, Button, Checkbutton, Scale, Canvas, Scrollbar, FLAT, GROOVE, N, S, E, W, IntVar, END, YES, BOTH, SOLID, LabelFrame
+from materials import road_to_data
 
-import tkinter as tk
-from tkinter import ttk
+global base
+'''
+class Table(tk.Frame):
+    def __init__(self, parent=None, headings=tuple(), rows=tuple()):
+        super().__init__(parent)
 
-class Main(tk.Frame):
-    def __init__(self, root):
-        super().__init__(root)
-        self.init_main()
+        table = ttk.Treeview(self, show="headings", selectmode="browse")
+        table["columns"]=headings
+        table["displaycolumns"]=headings
 
-    def init_main(self):
-        toolbar1 = tk.Frame(bg='blue', bd=3)
-        toolbar1.pack(side=tk.RIGHT, fill=tk.Y)
-        toolbar2 = tk.Frame(bg='blue', bd=3)
-        toolbar2.pack(side=tk.BOTTOM, fill=tk.X)
-        btn_open_dialog = tk.Button(toolbar1, text='Добавить', command=self.open_dialog, bg='YELLOW', bd=0, compound = tk.TOP)
-        btn_open_dialog.pack(side=tk.LEFT)
-        self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'),  height=40, show='headings')
+        for head in headings:
+            table.heading(head, text=head, anchor=tk.CENTER)
+            table.column(head, anchor=tk.CENTER)
 
-        self.tree.column('code', width=60, anchor=tk.CENTER)
-        self.tree.column('firm', width=60, anchor=tk.CENTER)
-        self.tree.column('country', width=60, anchor=tk.CENTER)
-        self.tree.column('code_smart', width=60, anchor=tk.CENTER)
-        self.tree.column('model', width=60, anchor=tk.CENTER)
-        self.tree.column('os', width=60, anchor=tk.CENTER)
-        self.tree.column('storage', width=60, anchor=tk.CENTER)
-        self.tree.column('diagonal', width=60, anchor=tk.CENTER)
-        self.tree.column('CPU', width=60, anchor=tk.CENTER)
-        self.tree.column('RAM', width=60, anchor=tk.CENTER)
-        self.tree.column('number', width=60, anchor=tk.CENTER)
+        for row in rows:
+            table.insert('', tk.END, values=tuple(row))
 
-        self.tree.heading('code', text='код производителя')
-        self.tree.heading('firm', text='производитель')
-        self.tree.heading('country', text='страна')
-        self.tree.heading('code_smart', text='код товара')
-        self.tree.heading('model', text='модель')
-        self.tree.heading('os', text='ОС')
-        self.tree.heading('storage', text='внутренняя память')
-        self.tree.heading('diagonal', text='диагональ экрана')
-        self.tree.heading('CPU', text='процессор')
-        self.tree.heading('RAM, text='оперативаная память')
-        self.tree.heading('number', text='кол-во')
-
-        self.tree.pack()
+        scrolltable = tk.Scrollbar(self, command=table.yview)
+        table.configure(yscrollcommand=scrolltable.set)
+        scrolltable.pack(side=tk.RIGHT, fill=tk.Y)
+        table.pack(expand=tk.YES, fill=tk.BOTH)
+'''
+def import_lib(import_filename):
+    import pickle
+    from tkinter.messagebox import showerror
+    try:
+        libfile = open(import_filename, 'rb')
+    except:
+        showerror(title='Ошибка!', message="Файл не найден!")
+    else:
+        lib = pickle.load(libfile)
+        libfile.close()
+    return lib
 
 
-#'number' 'RAM' 'CPU' 'diagonal' 'storage' 'os' 'model' 'code_smart' 'country' 'firm' 'code'
+def show_base():
+    for widget in frame.winfo_children():
+        widget.destroy()
+    frame.grid_forget()
+    n = 0
+    Label(frame, text="Haзвание").grid(row=n, column=0, pady=5)
+    Label(frame, text="Автор").grid(row=n, column=1, pady=5)
+    Label(frame, text="Раздел").grid(row=n, column=2, pady=5)
+    Label(frame, text="Страницы").grid(row=n, column=3, pady=5)
+    Label(frame, text="Цена").grid(row=n, column=4, pady=5)
+    Label(frame, text="Год издания").grid(row=n, column=5, pady=5)
 
 
 
-    def open_dialog(self):
-        Child()
 
 
 
-class Child(tk.Toplevel):
-    def __init__(self):
-        super().__init__(root)
-        self.init_child()
-
-    def init_child(self):
-        self.title('Дочернее окно')
-        self.geometry('720x480+400+300')
-        self.resizable(False, False)
-
-        label_description = ttk.Label(self, text='Операционная система')
-        label_description.place(x=560,y=40)
-
-        self.entry_cod = ttk.Entry(self)
-        self.entry_cod.place(x=10, y=100)
-
-        self.entry_proizv = ttk.Entry(self)
-        self.entry_proizv.place(x=60, y=100)
-
-        self.entry_strana = ttk.Entry(self)
-        self.entry_strana.place(x=110, y=100)
-
-        self.entry_codtov = ttk.Entry(self)
-        self.entry_codtov.place(x=160, y=100)
-
-        self.entry_model = ttk.Entry(self)
-        self.entry_model.place(x=260, y=100)
-
-        self.entry_vnutrpam = ttk.Entry(self)
-        self.entry_vnutrpam.place(x=310, y=100)
-
-        self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.place(x=360, y=100)
-
-        self.entry_proc = ttk.Entry(self)
-        self.entry_proc.place(x=410, y=100)
-
-        self.entry_operpam = ttk.Entry(self)
-        self.entry_operpam.place(x=460, y=100)
-
-        self.entry_kolvo = ttk.Entry(self)
-        self.entry_kolvo.place(x=510, y=100)
-
-        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'])
-        self.combobox.place(x=560, y=100)
-
-        btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=620, y=440)
-
-        btn_add = ttk.Button(self, text='Добавить')
-        btn_add.place(x=220, y=170)
-        btn_add.bind('<Button-1>')
-
-        self.grab_set()
-        self.focus_set()
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Main(root)
-    app.pack()
-    root.title("Программа")
-    root.geometry("900x540+300+200")
-    root.resizable(False, False)
-    root.mainloop()
+window = tk.Tk()
+window.title("База Данных")
+menu = tk.Menu()  # меню (toolbar)
+new_item = tk.Menu(menu, tearoff=0)
+new_item.add_command(label='Новый')  # новый элемент меню
+menu.add_cascade(label='Файл', menu=new_item)  # новый элемент внутри каскада меню
+window.config(menu=menu)
+#table = Table(window, headings=('Код производителя', 'Производитель', 'Страна','Код товара', 'Модель', 'Внутренняя память', 'Диагональ экрана', 'Процессор','Оперативная память', 'Кол-во смартфонов'),rows=((123, 456, 789), ('abc', 'def', 'ghk')))
+table.pack(expand=tk.YES, fill=tk.BOTH)
+base = import_lib(road_to_data)
+show_base()
+window.mainloop()
