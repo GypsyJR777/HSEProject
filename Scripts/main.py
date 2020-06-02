@@ -1,10 +1,10 @@
-import chlen.def foo():
-    doc = "The  property."
-    def fget(self):
-        return self._
-    def fset(self, value):
-        self._ = value
-    def fdel(self):
-        del self._
-    return locals()
- = property(**())
+import sys
+sys.path.append('../Library/')
+
+from tkinter import Tk, Frame, Toplevel, Label, Entry, Button, Checkbutton, Scale, Canvas, Scrollbar, FLAT, GROOVE, N, S, E, W, IntVar, END, YES, BOTH, SOLID, LabelFrame
+
+from tkinter.messagebox import showerror, showinfo
+
+from library import import_lib, fetch_record
+
+import pickle
