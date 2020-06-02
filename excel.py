@@ -1,10 +1,47 @@
-import pandas
+import pandas as pd
 
-excel_data_df = pandas.read_excel('./Data/Smartphones.xlsx', sheet_name='Sheet1')
+bd = pd.read_excel('./Data/Smartphones.xlsx', sheet_name='Sheet1')
 
 # print whole sheet data
-print(excel_data_df)
-print(excel_data_df.columns.ravel())
+#print(bd.keys())
+key = []
+for i in bd.keys():
+    key.append(i)
+#print(key)
+a = []
+for i in bd["Модель"]:
+    a.append(i)
+print(a)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -13,17 +50,16 @@ import tkinter.ttk as ttk
 class Table(tk.Frame):
     def __init__(self, parent=None, headings=tuple(), rows=tuple()):
         super().__init__(parent)
-
+        global value, key
         table = ttk.Treeview(self, show="headings", selectmode="browse")
         table["columns"]=headings
         table["displaycolumns"]=headings
-
-        for head in excel_data_df.columns.ravel():
+        int i = 0
+        for head in key:
             table.heading(head, text=head, anchor=tk.CENTER)
             table.column(head, anchor=tk.CENTER)
-        for head in excel_data_df.columns.ravel():
-            for row in excel_data_df[head].tolist():
-                table.insert('', tk.END, values=tuple(str(row)))
+            for row in bd[head]:
+                table.insert('', tk.END, values=tuple(row[i])
 
         scrolltable = tk.Scrollbar(self, command=table.yview)
         table.configure(yscrollcommand=scrolltable.set)
@@ -44,3 +80,4 @@ table = Table(window, headings=('Код производителя', 'Произ
 rows=((123, 456, 789), ('abc', 'def', 'ghk')))
 table.pack(expand=tk.YES, fill=tk.BOTH)
 window.mainloop()
+'''
