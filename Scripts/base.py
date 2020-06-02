@@ -3,7 +3,18 @@ def base():
          "Apple A13 Bionic", "6", "111"]
     2 = ["1", "Apple", "США", "2", "SE(2020)", "64", "4.7", 
          "Apple A13 Bionic", "2", "56"]
-    
+    3 = ['2', 'Samsung', 'Южная Корея', '3', 'Galaxy Z Flip', '256', '6.7', 
+         'Qualcomm Snapdragon 855 Plus', '8', '256']
+    4 = ['2', 'Samsung', 'Южная Корея', '4', 'Galaxy S20 ULTRA', '128', '6.9', 
+         'Samsung Exynos 990', '12', '15']
+    5 = ['3', 'Honor', 'Китай', '5', 'View 30 PRO', '256', '6.57', 
+         'HiSilicon Kirin 990 5G', '8', '25']
+    6 = ['4', 'Huawei', 'Китай', '6', 'P40PRO', '256', '6.58', 
+         'HiSilicon Kirin 990 5G', '8', '33']
+    7 = ['5', 'VIVO', 'Китай', '7', 'NEX3', '128', '6.89', 
+         'Qualcomm Snapdragon 855 Plus', '8', '3']
+    #['', '', '', '', '', '', '', '', '', '']
+
     keys = ['number', 'RAM', 'CPU', 'diagonal', 'storage', 'os', 'model', 'code_smart', 'country', 'firm', 'code']
     values = [1, 2]
     
@@ -17,3 +28,4 @@ if __name__ == '__main__':
     data = open(road_to_data, "wb")
     pickle.dump(base(), data)
     data.close()
+    
