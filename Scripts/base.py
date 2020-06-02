@@ -16,4 +16,4 @@ if __name__ == '__main__':
     from materials import road_to_data
     data = open(road_to_data, "wb")
     pickle.dump(base(), data)
-    data.close()   
+    data.close()
