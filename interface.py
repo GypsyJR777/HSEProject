@@ -41,3 +41,72 @@ self.tree.heading('operpam', text='оперативаная память')
 self.tree.heading('kolvo', text='кол-во')
 
 self.tree.pack()
+
+def open_dialog(self):
+Child()
+
+class Child(tk.Toplevel):
+def __init__(self):
+super().__init__(root)
+self.init_child()
+
+def init_child(self):
+self.title('Дочернее окно')
+self.geometry('720x480+400+300')
+self.resizable(False, False)
+
+label_description = ttk.Label(self, text='Операционная система')
+label_description.place(x=560,y=40)
+
+self.entry_cod = ttk.Entry(self)
+self.entry_cod.place(x=10, y=100)
+
+self.entry_proizv = ttk.Entry(self)
+self.entry_proizv.place(x=60, y=100)
+
+self.entry_strana = ttk.Entry(self)
+self.entry_strana.place(x=110, y=100)
+
+self.entry_codtov = ttk.Entry(self)
+self.entry_codtov.place(x=160, y=100)
+
+self.entry_model = ttk.Entry(self)
+self.entry_model.place(x=260, y=100)
+
+self.entry_vnutrpam = ttk.Entry(self)
+self.entry_vnutrpam.place(x=310, y=100)
+
+self.entry_diagonal = ttk.Entry(self)
+self.entry_diagonal.place(x=360, y=100)
+
+self.entry_proc = ttk.Entry(self)
+self.entry_proc.place(x=410, y=100)
+
+self.entry_operpam = ttk.Entry(self)
+self.entry_operpam.place(x=460, y=100)
+
+self.entry_kolvo = ttk.Entry(self)
+self.entry_kolvo.place(x=510, y=100)
+
+self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'])
+self.combobox.place(x=560, y=100)
+
+btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
+btn_cancel.place(x=620, y=440)
+
+btn_add = ttk.Button(self, text='Добавить')
+btn_add.place(x=220, y=170)
+btn_add.bind('<Button-1>')
+
+self.grab_set()
+self.focus_set()
+
+
+if __name__ == "__main__":
+root = tk.Tk()
+app = Main(root)
+app.pack()
+root.title("Программа")
+root.geometry("900x540+300+200")
+root.resizable(False, False)
+root.mainloop()
