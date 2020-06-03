@@ -33,20 +33,20 @@ window.config(menu=menu)
 
 
 # фрейм с кнопками управления
-frame_toolbar = tk.Frame(window, bg='red', bd=2)
+frame_toolbar = tk.Frame(window, bd=5)
 frame_toolbar.pack(side='top', fill=tk.X)
 
 # фрейм 1-ого элемента управления
-frame_box1 = tk.Frame(frame_toolbar, bg='purple', bd=2)
-frame_box1.pack(side=tk.LEFT)
+frame_box1 = tk.Frame(frame_toolbar, bd=5)
+frame_box1.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм 2-ого элемента управления
-frame_box2 = tk.Frame(frame_toolbar, bg='black', bd=2)
-frame_box2.pack()
+frame_box2 = tk.Frame(frame_toolbar, bd=5)
+frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм 3-ого элемента управления
-frame_box3 = tk.Frame(frame_toolbar, bg='blue', bd=2)
-frame_box3.pack(side=tk.RIGHT)
+frame_box3 = tk.Frame(frame_toolbar, bd=5)
+frame_box3.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм с табличкой
 frame_table = tk.Frame(window, bd=2)
@@ -62,15 +62,19 @@ table.pack(expand=tk.YES, fill=tk.BOTH)
 
 
 button1=tk.Button(frame_box1, text=u'Первая кнопка')
-button2=tk.Button(frame_box2, text=u'Вторая кнопка')
-button3=tk.Button(frame_box3, text=u'Третья кнопка')
-
-button1.pack()
-button2.pack()
-button3.pack()
-#button4.pack()
+button2=tk.Button(frame_box1, text=u'Вторая кнопка')
+button3=tk.Button(frame_box2, text=u'Первая кнопка')
+button4=tk.Button(frame_box2, text=u'Вторая кнопка')
+button5=tk.Button(frame_box3, text=u'Первая кнопка')
+button6=tk.Button(frame_box3, text=u'Вторая кнопка')
 
 
+button1.pack(side='left')
+button2.pack(side='left')
+button3.pack(side='left')
+button4.pack(side='left')
+button5.pack(side='left')
+button6.pack(side='left')
 
 
 window.mainloop()
