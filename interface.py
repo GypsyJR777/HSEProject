@@ -27,7 +27,7 @@ window.config(menu=main_menu)
 class Table(tk.Frame):
     def __init__(self, parent=None):
         super().__init__(parent)
-        xls = pd.read_excel('C:/users/ivand/github/HSEProject/Data/Smartphones.xlsx')
+        xls = pd.read_excel('./Data/Smartphones.xlsx')
         df = pd.DataFrame(xls)
         df_col = df.columns.values
         df_col = df.columns.values
