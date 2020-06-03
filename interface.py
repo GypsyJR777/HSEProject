@@ -1,7 +1,12 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+import pandas as pd
 
+xls = pd.read_excel('./Data/Smartphones.xlsx')
+df = pd.DataFrame(xls)
+df_col = df.columns.values
 
+'''
 class Table(tk.Frame):
     def __init__(self, parent=None, headings=tuple(), rows=tuple()):
         super().__init__(parent)
@@ -21,6 +26,7 @@ class Table(tk.Frame):
         table.configure(yscrollcommand=scrolltable.set)
         scrolltable.pack(side=tk.RIGHT, fill=tk.Y)
         table.pack(expand=tk.YES, fill=tk.BOTH)
+        '''
 
 
 window = tk.Tk()
@@ -53,12 +59,13 @@ frame_table = tk.Frame(window, bd=2)
 frame_table.pack(side='bottom')
 
 # таблица
+'''
 table = Table(frame_table, headings=('Код производителя', 'Производитель', 'Страна',
 'Код товара', 'Модель', 'Внутренняя память', 'Диагональ экрана', 'Процессор',
 'Оперативная память', 'Кол-во смартфонов'),
 rows=((123, 456, 789, 7, 9, 10, 13), ('abc', 'def', 'ghk')))
 table.pack(expand=tk.YES, fill=tk.BOTH)
-
+'''
 
 
 button1=tk.Button(frame_box1, text=u'Первая кнопка')
@@ -76,5 +83,18 @@ button4.pack(side='left')
 button5.pack(side='left')
 button6.pack(side='left')
 
+tree = ttk.Treeview(window)
+
+tree["columns"]=(df_col)
+counter = len(df)
+rowLabels = df.index.tolist()
+#generating for loop to create columns and give heading to them through df_col var.
+for x in range(10):
+    tree.column(x, width=100 )
+    tree.heading(x, text=df_col[x])
+#generating for loop to print values of dataframe in treeview column.
+for i in range(15):
+    tree.insert('', i, text=rowLabels[i], values=df.iloc[i,:].tolist())
+tree.pack(expand=tk.YES, fill=tk.BOTH)
 
 window.mainloop()
