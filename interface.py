@@ -25,27 +25,36 @@ class Table(tk.Frame):
 
 window = tk.Tk()
 window.title("База Данных")
-menu = tk.Menu()  # меню (toolbar)
-new_item = tk.Menu(menu, tearoff=0)
-new_item.add_command(label='Новый')  # новый элемент меню
-menu.add_cascade(label='Файл', menu=new_item)  # новый элемент внутри каскада меню
-window.config(menu=menu)
+
+# меню (toolbar)
+main_menu = tk.Menu()
+
+file_menu = tk.Menu(tearoff=0)
+file_menu.add_command(label="Новый")
+file_menu.add_command(label="Открыть")
+file_menu.add_separator()
+file_menu.add_command(label="Сохранить")
+file_menu.add_command(label="Сохранить как")
+
+main_menu.add_cascade(label="Файл", menu=file_menu)
+
+window.config(menu=main_menu)
 
 
 # фрейм с кнопками управления
-frame_toolbar = tk.Frame(window, bd=5)
-frame_toolbar.pack(side='top', fill=tk.X)
+frame_toolbox = tk.Frame(window, bd=5)
+frame_toolbox.pack(side='top', fill=tk.X)
 
 # фрейм 1-ого элемента управления
-frame_box1 = tk.Frame(frame_toolbar, bd=5)
+frame_box1 = tk.Frame(frame_toolbox, bd=5)
 frame_box1.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм 2-ого элемента управления
-frame_box2 = tk.Frame(frame_toolbar, bd=5)
+frame_box2 = tk.Frame(frame_toolbox, bd=5)
 frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм 3-ого элемента управления
-frame_box3 = tk.Frame(frame_toolbar, bd=5)
+frame_box3 = tk.Frame(frame_toolbox, bd=5)
 frame_box3.pack(side='left', fill=tk.Y, expand=1)
 
 # фрейм с табличкой
@@ -60,21 +69,33 @@ rows=((123, 456, 789, 7, 9, 10, 13), ('abc', 'def', 'ghk')))
 table.pack(expand=tk.YES, fill=tk.BOTH)
 
 
+# элементы 1-го блока
+button1_box1=tk.Button(frame_box1, text=u'добавить')
+button2_box1=tk.Button(frame_box1, text=u'Правка')
+button3_box1=tk.Button(frame_box1, text=u'Удалить')
+button4_box1=tk.Button(frame_box1, text=u'Экспорт')
 
-button1=tk.Button(frame_box1, text=u'Первая кнопка')
-button2=tk.Button(frame_box1, text=u'Вторая кнопка')
-button3=tk.Button(frame_box2, text=u'Первая кнопка')
-button4=tk.Button(frame_box2, text=u'Вторая кнопка')
-button5=tk.Button(frame_box3, text=u'Первая кнопка')
-button6=tk.Button(frame_box3, text=u'Вторая кнопка')
+# упаковка элементов 1-го блока
+button1_box1.pack(side='left')
+button2_box1.pack(side='left')
+button3_box1.pack(side='left')
+button4_box1.pack(side='left')
 
+# элементы 2-го блока
+button1_box2=tk.Button(frame_box2, text=u'Анализ')
+button2_box2=tk.Button(frame_box2, text=u'Экспорт')
 
-button1.pack(side='left')
-button2.pack(side='left')
-button3.pack(side='left')
-button4.pack(side='left')
-button5.pack(side='left')
-button6.pack(side='left')
+# упаковка элементов 1-го блока
+button1_box2.pack(side='left')
+button2_box2.pack(side='left')
+
+# элементы 3-го блока
+button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
+button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
+
+# упаковка элементов 1-го блока
+button1_box3.pack(side='left')
+button2_box3.pack(side='left')
 
 
 window.mainloop()
