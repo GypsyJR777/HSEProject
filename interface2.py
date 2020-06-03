@@ -1,22 +1,29 @@
-from tkinter import * #
-
-window = Tk()
-window.title("Добро пожаловать в приложение PythonRu")
-window.geometry('400x250')
-
-
-menu = Menu(window)
-new_item = Menu(menu, tearoff=0)
-new_item.add_command(label='Новый')
-menu.add_cascade(label='Файл', menu=new_item)
-window.config(menu=menu)
-
-
-window.mainloop()
-
-
 import tkinter as tk
-from tkinter import ttk
+import tkinter.ttk as ttk
+import pandas as pd
+
+window = tk.Tk()
+window.title("Добро пожаловать в приложение PythonRu")
+
+
+
+
+def Table(parent=None):
+        xls = pd.read_excel('./Data/Smartphones.xlsx')
+        df = pd.DataFrame(xls)
+        df_col = df.columns.values
+        tree = ttk.Treeview(root)
+        tree["columns"]=(df_col)
+        counter = len(df)
+        
+        #generating for loop to create columns and give heading to them through df_col var.
+        for x in range(9):
+            tree.column(x, width=50)
+            tree.heading(x, text=df_col[x])
+        #generating for loop to print values of dataframe in treeview column.
+        for i in range(counter):
+            tree.insert('', i, values=df.iloc[i,:].tolist())
+        tree.pack(expand=tk.YES, fill=tk.BOTH)
 
 
 class Main(tk.Frame):
@@ -25,13 +32,92 @@ class Main(tk.Frame):
         self.init_main()
 
     def init_main(self):
-        toolbar1 = tk.Frame(bg='blue', bd=3)
+        w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+        root.geometry("%dx%d+0+0" % (w, h))
+        frame_toolbox = tk.Frame(root, bd=5)
+        frame_toolbox.pack(side='top', fill=tk.X)
+
+        # 1-st frame with controls
+        frame_box1 = tk.Frame(frame_toolbox, bd=5)
+        frame_box1.pack(side='left', fill=tk.Y, expand=1)
+
+        # 2-nd frame with controls
+        frame_box2 = tk.Frame(frame_toolbox, bd=5)
+        frame_box2.pack(side='left', fill=tk.Y, expand=1)
+
+        # 3-rd frame with controls
+        frame_box3 = tk.Frame(frame_toolbox, bd=5)
+        frame_box3.pack(side='left', fill=tk.Y, expand=1)
+
+        # frame for the Table
+        frame_table = tk.Frame(root, bd=2)
+        frame_table.pack(side='bottom')
+
+
+        # elemests of 1-st box
+        frame_box1_top = tk.Frame(frame_box1, bd=5)
+        frame_box1_bottom = tk.Frame(frame_box1, bd=5)
+        button1_box1=tk.Button(frame_box1_top, text=u'Добавить', command=self.open_dialog)
+        button2_box1=tk.Button(frame_box1_top, text=u'Правка')
+        button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить')
+        button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт')
+
+
+        # pack elemests of 1-st box
+        frame_box1_top.pack(side='top')
+        frame_box1_bottom.pack(side='top')
+        button1_box1.pack(side='left')
+        button2_box1.pack(side='left')
+        button3_box1.pack(side='left')
+        button4_box1.pack(side='left')
+
+        # elemests of 2-nd box
+        button1_box2=tk.Button(frame_box2, text=u'Анализ')
+        button2_box2=tk.Button(frame_box2, text=u'Экспорт')
+
+        # pack elemests of 2-nd box
+        button1_box2.pack(side='left')
+        button2_box2.pack(side='left')
+
+        # elemests of 3-rd box
+        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
+        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
+
+        # pack elemests of 3-rd box
+        button1_box3.pack(side='left')
+        button2_box3.pack(side='left')
+
+
+        table = Table(root)
+
+
+        root.mainloop()
+
+
+        '''toolbar1 = tk.Frame(bg='blue', bd=3)
         toolbar1.pack(side=tk.RIGHT, fill=tk.Y)
         toolbar2 = tk.Frame(bg='blue', bd=3)
         toolbar2.pack(side=tk.BOTTOM, fill=tk.X)
+        xls = pd.read_excel('./Data/Smartphones.xlsx')
+        df = pd.DataFrame(xls)
+        df_col = df.columns.values
+        df_col = df.columns.values
+        tree = ttk.Treeview(root)
+        tree["columns"]=(df_col)
+        counter = len(df)
+        rowLabels = df.index.tolist()
+        df.reset_index(drop=True, inplace=True)
+        #generating for loop to create columns and give heading to them through df_col var.
+        for x in range(9):
+            tree.column(x)
+            tree.heading(x, text=df_col[x])
+        #generating for loop to print values of dataframe in treeview column.
+        for i in range(counter):
+            tree.insert('', i, text=rowLabels[i], values=df.iloc[i,:].tolist())
+        tree.pack(expand=tk.YES, fill=tk.BOTH)
         btn_open_dialog = tk.Button(toolbar1, text='Добавить', command=self.open_dialog, bg='YELLOW', bd=0, compound = tk.TOP)
-        btn_open_dialog.pack(side=tk.LEFT)
-        self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'), height=40, show='headings')
+        btn_open_dialog.pack(side=tk.LEFT)'''
+        '''self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'), height=40, show='headings')
 
         self.tree.column('cod', width=60, anchor=tk.CENTER)
         self.tree.column('proizv', width=60, anchor=tk.CENTER)
@@ -58,6 +144,10 @@ class Main(tk.Frame):
         self.tree.heading('kolvo', text='кол-во')
 
         self.tree.pack()
+        '''
+
+
+
     def open_dialog(self):
         Child()
 
@@ -120,11 +210,12 @@ class Child(tk.Toplevel):
         self.focus_set()
 
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
     root = tk.Tk()
     app = Main(root)
     app.pack()
     root.title("Программа")
-    root.geometry("900x540+300+200")
+    w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+    root.geometry("%dx%d+0+0" % (w, h))
     root.resizable(False, False)
     root.mainloop()
