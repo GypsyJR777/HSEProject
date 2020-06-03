@@ -77,12 +77,17 @@ table.pack(expand=tk.YES, fill=tk.BOTH)
 '''
 
 # элементы 1-го блока
-button1_box1=tk.Button(frame_box1, text=u'добавить')
-button2_box1=tk.Button(frame_box1, text=u'Правка')
-button3_box1=tk.Button(frame_box1, text=u'Удалить')
-button4_box1=tk.Button(frame_box1, text=u'Экспорт')
+frame_box1_top = tk.Frame(frame_box1, bd=5)
+frame_box1_bottom = tk.Frame(frame_box1, bd=5)
+button1_box1=tk.Button(frame_box1_top, text=u'добавить')
+button2_box1=tk.Button(frame_box1_top, text=u'Правка')
+button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить')
+button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт')
+
 
 # упаковка элементов 1-го блока
+frame_box1_top.pack(side='top')
+frame_box1_bottom.pack(side='top')
 button1_box1.pack(side='left')
 button2_box1.pack(side='left')
 button3_box1.pack(side='left')
