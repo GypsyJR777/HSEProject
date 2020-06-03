@@ -47,27 +47,27 @@ main_menu.add_cascade(label="Файл", menu=file_menu)
 window.config(menu=main_menu)
 
 
-# фрейм с кнопками управления
+# main frame for tools
 frame_toolbox = tk.Frame(window, bd=5)
 frame_toolbox.pack(side='top', fill=tk.X)
 
-# фрейм 1-ого элемента управления
+# 1-st frame with controls
 frame_box1 = tk.Frame(frame_toolbox, bd=5)
 frame_box1.pack(side='left', fill=tk.Y, expand=1)
 
-# фрейм 2-ого элемента управления
+# 2-nd frame with controls
 frame_box2 = tk.Frame(frame_toolbox, bd=5)
 frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
-# фрейм 3-ого элемента управления
+# 3-rd frame with controls
 frame_box3 = tk.Frame(frame_toolbox, bd=5)
 frame_box3.pack(side='left', fill=tk.Y, expand=1)
 
-# фрейм с табличкой
+# frame for the Table
 frame_table = tk.Frame(window, bd=2)
 frame_table.pack(side='bottom')
 
-# таблица
+# table (prev)
 '''
 table = Table(frame_table, headings=('Код производителя', 'Производитель', 'Страна',
 'Код товара', 'Модель', 'Внутренняя память', 'Диагональ экрана', 'Процессор',
@@ -76,7 +76,7 @@ rows=((123, 456, 789, 7, 9, 10, 13), ('abc', 'def', 'ghk')))
 table.pack(expand=tk.YES, fill=tk.BOTH)
 '''
 
-# элементы 1-го блока
+# elemests of 1-st box
 frame_box1_top = tk.Frame(frame_box1, bd=5)
 frame_box1_bottom = tk.Frame(frame_box1, bd=5)
 button1_box1=tk.Button(frame_box1_top, text=u'добавить')
@@ -85,7 +85,7 @@ button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить')
 button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт')
 
 
-# упаковка элементов 1-го блока
+# pack elemests of 1-st box
 frame_box1_top.pack(side='top')
 frame_box1_bottom.pack(side='top')
 button1_box1.pack(side='left')
@@ -93,22 +93,23 @@ button2_box1.pack(side='left')
 button3_box1.pack(side='left')
 button4_box1.pack(side='left')
 
-# элементы 2-го блока
+# elemests of 2-nd box
 button1_box2=tk.Button(frame_box2, text=u'Анализ')
 button2_box2=tk.Button(frame_box2, text=u'Экспорт')
 
-# упаковка элементов 1-го блока
+# pack elemests of 2-nd box
 button1_box2.pack(side='left')
 button2_box2.pack(side='left')
 
-# элементы 3-го блока
+# elemests of 3-rd box
 button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
 button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
 
-# упаковка элементов 1-го блока
+# pack elemests of 3-rd box
 button1_box3.pack(side='left')
 button2_box3.pack(side='left')
 
+# table
 tree = ttk.Treeview(window)
 
 tree["columns"]=(df_col)
