@@ -5,29 +5,23 @@ import pandas as pd
 
 
 
-
-
-
-
-
-
-
-def Table(parent=None):
-        xls = pd.read_excel('C:/Smartphones.xlsx')
+def Table(parent=None, xls=None):
         df = pd.DataFrame(xls)
         df_col = df.columns.values
+        global tree
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         counter = len(df)
         index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(9):
+        for x in range(10):
             tree.column(x, width=50)
             tree.heading(x, text=df_col[x])
         #generating for loop to print values of dataframe in treeview column.
         for i in range(counter):
             tree.insert('', i, values=df.iloc[i,:].tolist())
         tree.pack(expand=tk.YES, fill=tk.BOTH)
+
 
 
 class Main(tk.Frame):
@@ -84,83 +78,44 @@ class Main(tk.Frame):
         button2_box2.pack(side='left')
 
         # elemests of 3-rd box
-        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
+        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка', command=self.sorttest)
         button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
 
         # pack elemests of 3-rd box
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-
-        table = Table(root)
+        xls = pd.read_excel("C:/Users/marih/github/HSEProject/Data/Smartphones.xlsx")
+        table = Table(root, xls)
 
 
         root.mainloop()
 
 
-        '''toolbar1 = tk.Frame(bg='blue', bd=3)
-        toolbar1.pack(side=tk.RIGHT, fill=tk.Y)
-        toolbar2 = tk.Frame(bg='blue', bd=3)
-        toolbar2.pack(side=tk.BOTTOM, fill=tk.X)
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
-        df = pd.DataFrame(xls)
-        df_col = df.columns.values
-        df_col = df.columns.values
-        tree = ttk.Treeview(root)
-        tree["columns"]=(df_col)
-        counter = len(df)
-        rowLabels = df.index.tolist()
-        df.reset_index(drop=True, inplace=True)
-        #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(9):
-            tree.column(x)
-            tree.heading(x, text=df_col[x])
-        #generating for loop to print values of dataframe in treeview column.
-        for i in range(counter):
-            tree.insert('', i, text=rowLabels[i], values=df.iloc[i,:].tolist())
-        tree.pack(expand=tk.YES, fill=tk.BOTH)
-        btn_open_dialog = tk.Button(toolbar1, text='Добавить', command=self.open_dialog, bg='YELLOW', bd=0, compound = tk.TOP)
-        btn_open_dialog.pack(side=tk.LEFT)'''
-        '''self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'), height=40, show='headings')
-
-        self.tree.column('cod', width=60, anchor=tk.CENTER)
-        self.tree.column('proizv', width=60, anchor=tk.CENTER)
-        self.tree.column('strana', width=60, anchor=tk.CENTER)
-        self.tree.column('codtov', width=60, anchor=tk.CENTER)
-        self.tree.column('model', width=60, anchor=tk.CENTER)
-        self.tree.column('oc', width=60, anchor=tk.CENTER)
-        self.tree.column('vnutrpam', width=60, anchor=tk.CENTER)
-        self.tree.column('diagonal', width=60, anchor=tk.CENTER)
-        self.tree.column('proc', width=60, anchor=tk.CENTER)
-        self.tree.column('operpam', width=60, anchor=tk.CENTER)
-        self.tree.column('kolvo', width=60, anchor=tk.CENTER)
-
-        self.tree.heading('cod', text='код производителя')
-        self.tree.heading('proizv', text='производитель')
-        self.tree.heading('strana', text='страна')
-        self.tree.heading('codtov', text='код товара')
-        self.tree.heading('model', text='модель')
-        self.tree.heading('oc', text='ОС')
-        self.tree.heading('vnutrpam', text='внутренняя память')
-        self.tree.heading('diagonal', text='диагональ экрана')
-        self.tree.heading('proc', text='процессор')
-        self.tree.heading('operpam', text='оперативаная память')
-        self.tree.heading('kolvo', text='кол-во')
-
-        self.tree.pack()
-        '''
-
-
-
     def open_dialog(self):
         Child()
+
+    def sorttest(self):
+       # frame_table.delete
+        tree.destroy()
+        ramsize = 8
+        ds = df[df['RAM'] == ramsize]
+        table = Table(root, ds)
+
+
+
 
 
 
 class Child(tk.Toplevel):
+    #def add():
+
+
+
     def __init__(self):
         super().__init__(root)
         self.init_child()
+
 
     def init_child(self):
         self.title('Добавление')
