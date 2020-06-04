@@ -2,15 +2,14 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 
-window = tk.Tk()
-window.title("Добро пожаловать в приложение PythonRu")
-    
-
 
 
 def Table(parent=None, xls=None):
+        global counter, tree, df
+        
         df = pd.DataFrame(xls)
         df_col = df.columns.values
+        
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         counter = len(df)
@@ -23,6 +22,14 @@ def Table(parent=None, xls=None):
         for i in range(counter):
             tree.insert('', i, values=df.iloc[i,:].tolist())
         tree.pack(expand=tk.YES, fill=tk.BOTH)
+
+
+def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
+    global df, counter
+    df.loc[counter] = [counter+1, firm, country, model, os, storage, diagonal, cpu, int(ram), amount]
+    tree.destroy()
+    Table(root, df)
+
 
 
 class Main(tk.Frame):
@@ -79,14 +86,14 @@ class Main(tk.Frame):
         button2_box2.pack(side='left')
 
         # elemests of 3-rd box
-        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
+        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка', command=self.sorttest)
         button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
 
         # pack elemests of 3-rd box
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
+        xls = pd.read_excel("./Data/Smartphones.xlsx")
         table = Table(root, xls)
 
 
@@ -96,12 +103,17 @@ class Main(tk.Frame):
     def open_dialog(self):
         Child()
 
+    def sorttest(self):
+       # frame_table.delete
+        global df
+        ramsize = 8
+        df = df[df['RAM'] == ramsize]
+        tree.destroy()
+        table = Table(root, df)
 
 
-class Child(tk.Toplevel):
-    #def add():
-        
-    
+
+class Child(tk.Toplevel):   
     
     def __init__(self):
         super().__init__(root)
@@ -113,11 +125,24 @@ class Child(tk.Toplevel):
         self.geometry('260x260+400+300')
         self.resizable(False, False)
 
+#self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
+        def add():
+            global counter, df
+            if(entry_firm!='' and entry_country!='' and 
+               entry_model !='' and entry_storage !='' and 
+               entry_diagonal !='' and entry_cpu!='' and 
+               entry_ram !='' and entry_amount !='' and 
+               combobox!=''):
+                print(entry_firm)
+                Table_add(entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
+                
+
+
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
 
-        label_description = ttk.Label(self, text='Код товара')
-        label_description.grid(row=1, column =0)
+#        label_description = ttk.Label(self, text='Код товара')
+#        label_description.grid(row=1, column =0)
 
         label_description = ttk.Label(self, text='Производитель')
         label_description.grid(row=2, column =0)
@@ -143,40 +168,40 @@ class Child(tk.Toplevel):
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column =0)
 
-        self.entry_cod = ttk.Entry(self)
-        self.entry_cod.grid(row=1, column=1)
+#        self.entry_cod = ttk.Entry(self)
+#        self.entry_cod.grid(row=1, column=1)
 
-        self.entry_proizv = ttk.Entry(self)
-        self.entry_proizv.grid(row=2, column=1)
+        entry_firm = ttk.Entry(self)
+        entry_firm.grid(row=2, column=1)
 
-        self.entry_strana = ttk.Entry(self)
-        self.entry_strana.grid(row=3, column=1)
+        entry_country = ttk.Entry(self)
+        entry_country.grid(row=3, column=1)
 
-        self.entry_model = ttk.Entry(self)
-        self.entry_model.grid(row=4, column=1)
+        entry_model = ttk.Entry(self)
+        entry_model.grid(row=4, column=1)
 
-        self.entry_vnutrpam = ttk.Entry(self)
-        self.entry_vnutrpam.grid(row=5, column=1)
+        entry_storage = ttk.Entry(self)
+        entry_storage.grid(row=5, column=1)
 
-        self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.grid(row=6, column=1)
+        entry_diagonal = ttk.Entry(self)
+        entry_diagonal.grid(row=6, column=1)
 
-        self.entry_proc = ttk.Entry(self)
-        self.entry_proc.grid(row=7, column=1)
+        entry_cpu = ttk.Entry(self)
+        entry_cpu.grid(row=7, column=1)
 
-        self.entry_operpam = ttk.Entry(self)
-        self.entry_operpam.grid(row=8, column=1)
+        entry_ram = ttk.Entry(self)
+        entry_ram.grid(row=8, column=1)
 
-        self.entry_kolvo = ttk.Entry(self)
-        self.entry_kolvo.grid(row=9, column=1)
+        entry_amount = ttk.Entry(self)
+        entry_amount.grid(row=9, column=1)
 
-        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
-        self.combobox.grid(row=10, column=1)
+        combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        combobox.grid(row=10, column=1)
 
         btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
         btn_cancel.grid(row=13, column=0, columnspan=2)
-
-        btn_add = ttk.Button(self, text='Добавить')
+        
+        btn_add = ttk.Button(self, text='Добавить', command=add)
         btn_add.grid(row=12, column=0, columnspan=2)
         btn_add.bind('<Button-1>')
 
