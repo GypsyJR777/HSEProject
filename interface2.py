@@ -2,20 +2,24 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 
-window = tk.Tk()
-window.title("Добро пожаловать в приложение PythonRu")
+
+
+
+
+
+
 
 
 
 
 def Table(parent=None):
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
+        xls = pd.read_excel('C:/Smartphones.xlsx')
         df = pd.DataFrame(xls)
         df_col = df.columns.values
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         counter = len(df)
-        
+        index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
         for x in range(9):
             tree.column(x, width=50)
@@ -159,51 +163,75 @@ class Child(tk.Toplevel):
         self.init_child()
 
     def init_child(self):
-        self.title('Дочернее окно')
-        self.geometry('720x480+400+300')
+        self.title('Добавление')
+        self.geometry('260x260+400+300')
         self.resizable(False, False)
 
         label_description = ttk.Label(self, text='Операционная система')
-        label_description.place(x=560,y=40)
+        label_description.grid(row=10, column = 0)
+
+        label_description = ttk.Label(self, text='Код товара')
+        label_description.grid(row=1, column =0)
+
+        label_description = ttk.Label(self, text='Производитель')
+        label_description.grid(row=2, column =0)
+
+        label_description = ttk.Label(self, text='Страна')
+        label_description.grid(row=3, column =0)
+
+        label_description = ttk.Label(self, text='Модель')
+        label_description.grid(row=4, column =0)
+
+        label_description = ttk.Label(self, text='Память')
+        label_description.grid(row=5, column =0)
+
+        label_description = ttk.Label(self, text='Диагональ')
+        label_description.grid(row=6, column =0)
+
+        label_description = ttk.Label(self, text='Процессор')
+        label_description.grid(row=7, column =0)
+
+        label_description = ttk.Label(self, text='Оперативная память')
+        label_description.grid(row=8, column =0)
+
+        label_description = ttk.Label(self, text='Количество')
+        label_description.grid(row=9, column =0)
 
         self.entry_cod = ttk.Entry(self)
-        self.entry_cod.place(x=10, y=100)
+        self.entry_cod.grid(row=1, column=1)
 
         self.entry_proizv = ttk.Entry(self)
-        self.entry_proizv.place(x=60, y=100)
+        self.entry_proizv.grid(row=2, column=1)
 
         self.entry_strana = ttk.Entry(self)
-        self.entry_strana.place(x=110, y=100)
-
-        self.entry_codtov = ttk.Entry(self)
-        self.entry_codtov.place(x=160, y=100)
+        self.entry_strana.grid(row=3, column=1)
 
         self.entry_model = ttk.Entry(self)
-        self.entry_model.place(x=260, y=100)
+        self.entry_model.grid(row=4, column=1)
 
         self.entry_vnutrpam = ttk.Entry(self)
-        self.entry_vnutrpam.place(x=310, y=100)
+        self.entry_vnutrpam.grid(row=5, column=1)
 
         self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.place(x=360, y=100)
+        self.entry_diagonal.grid(row=6, column=1)
 
         self.entry_proc = ttk.Entry(self)
-        self.entry_proc.place(x=410, y=100)
+        self.entry_proc.grid(row=7, column=1)
 
         self.entry_operpam = ttk.Entry(self)
-        self.entry_operpam.place(x=460, y=100)
+        self.entry_operpam.grid(row=8, column=1)
 
         self.entry_kolvo = ttk.Entry(self)
-        self.entry_kolvo.place(x=510, y=100)
+        self.entry_kolvo.grid(row=9, column=1)
 
-        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'])
-        self.combobox.place(x=560, y=100)
+        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        self.combobox.grid(row=10, column=1)
 
-        btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=620, y=440)
+        btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
+        btn_cancel.grid(row=13, column=0, columnspan=2)
 
         btn_add = ttk.Button(self, text='Добавить')
-        btn_add.place(x=220, y=170)
+        btn_add.grid(row=12, column=0, columnspan=2)
         btn_add.bind('<Button-1>')
 
         self.grab_set()
@@ -218,4 +246,3 @@ if __name__ == "__main__":
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     root.geometry("%dx%d+0+0" % (w, h))
     root.resizable(False, False)
-    root.mainloop()
