@@ -4,11 +4,11 @@ import pandas as pd
 
 window = tk.Tk()
 window.title("Добро пожаловать в приложение PythonRu")
+    
 
 
 
-def Table(parent=None):
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
+def Table(parent=None, xls=None):
         df = pd.DataFrame(xls)
         df_col = df.columns.values
         tree = ttk.Treeview(root)
@@ -16,7 +16,7 @@ def Table(parent=None):
         counter = len(df)
         index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(9):
+        for x in range(10):
             tree.column(x, width=50)
             tree.heading(x, text=df_col[x])
         #generating for loop to print values of dataframe in treeview column.
@@ -86,8 +86,8 @@ class Main(tk.Frame):
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-
-        table = Table(root)
+        xls = pd.read_excel('./Data/Smartphones.xlsx')
+        table = Table(root, xls)
 
 
         root.mainloop()
@@ -99,9 +99,14 @@ class Main(tk.Frame):
 
 
 class Child(tk.Toplevel):
+    #def add():
+        
+    
+    
     def __init__(self):
         super().__init__(root)
         self.init_child()
+
 
     def init_child(self):
         self.title('Добавление')
