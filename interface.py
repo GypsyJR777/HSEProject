@@ -26,9 +26,9 @@ def Table(parent=None, xls=None):
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
     global df, counter
-    df.loc[counter] = [counter+1, firm, country, model, os, storage, diagonal, cpu, int(ram), amount]
+    mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), amount]
     tree.destroy()
-    Table(root, df)
+    Table(root, mdf)
 
 
 
@@ -38,6 +38,7 @@ class Main(tk.Frame):
         self.init_main()
 
     def init_main(self):
+        global mdf
         w, h = root.winfo_screenwidth(), root.winfo_screenheight()
         root.geometry("%dx%d+0+0" % (w, h))
         frame_toolbox = tk.Frame(root, bd=5)
@@ -87,14 +88,15 @@ class Main(tk.Frame):
 
         # elemests of 3-rd box
         button1_box3=tk.Button(frame_box3, text=u'Первая кнопка', command=self.sorttest)
-        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
+        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка', command=self.sorttest2)
 
         # pack elemests of 3-rd box
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
         xls = pd.read_excel("./Data/Smartphones.xlsx")
-        table = Table(root, xls)
+        mdf = pd.DataFrame(xls)
+        table = Table(root, mdf)
 
 
         root.mainloop()
@@ -107,8 +109,17 @@ class Main(tk.Frame):
        # frame_table.delete
         global df
         ramsize = 8
-        df = df[df['RAM'] == ramsize]
+        df = mdf[mdf['RAM'] == ramsize]
         tree.destroy()
+        table = Table(root, df)
+       
+        
+    def sorttest2(self):
+       # frame_table.delete
+        global df
+        tree.destroy()
+        stor = 256
+        df = mdf[mdf['Storage'] == stor]
         table = Table(root, df)
 
 
