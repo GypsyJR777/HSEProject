@@ -6,14 +6,6 @@ window = tk.Tk()
 window.title("Добро пожаловать в приложение PythonRu")
 
 
-menu = tk.Menu(window)
-new_item = tk.Menu(menu, tearoff=0)
-new_item.add_command(label='Новый')
-menu.add_cascade(label='Файл', menu=new_item)
-window.config(menu=menu)
-window.mainloop()
-
-
 
 def Table(parent=None):
         xls = pd.read_excel('./Data/Smartphones.xlsx')
@@ -112,51 +104,53 @@ class Child(tk.Toplevel):
         self.init_child()
 
     def init_child(self):
-        self.title('Дочернее окно')
-        self.geometry('720x480+400+300')
+        self.title('Добавление нового смартфона')
+        self.geometry('670x480+400+300')
         self.resizable(False, False)
 
-        label_description = ttk.Label(self, text='Операционная система')
-        label_description.place(x=560,y=40)
+        label_description_os = ttk.Label(self, text='Операционная система')
+        label_description_os.place(x=510,y=60)
 
-        self.entry_cod = ttk.Entry(self)
-        self.entry_cod.place(x=10, y=100)
+        label_description_ram = ttk.Label(self, text='RAM')
+        label_description_ram.place(x=410,y=60)
 
-        self.entry_proizv = ttk.Entry(self)
-        self.entry_proizv.place(x=60, y=100)
+        self.entry_firm = ttk.Entry(self)
+        self.entry_firm.place(x=10, y=100)
 
-        self.entry_strana = ttk.Entry(self)
-        self.entry_strana.place(x=110, y=100)
+        self.entry_country = ttk.Entry(self)
+        self.entry_country.place(x=60, y=100)
 
-        self.entry_codtov = ttk.Entry(self)
-        self.entry_codtov.place(x=160, y=100)
+        self.entry_code = ttk.Entry(self)
+        self.entry_code.place(x=110, y=100)
 
         self.entry_model = ttk.Entry(self)
-        self.entry_model.place(x=260, y=100)
+        self.entry_model.place(x=210, y=100)
 
-        self.entry_vnutrpam = ttk.Entry(self)
-        self.entry_vnutrpam.place(x=310, y=100)
+        self.entry_storage = ttk.Entry(self)
+        self.entry_storage.place(x=260, y=100)
 
         self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.place(x=360, y=100)
+        self.entry_diagonal.place(x=310, y=100)
 
-        self.entry_proc = ttk.Entry(self)
-        self.entry_proc.place(x=410, y=100)
+        self.entry_cpu = ttk.Entry(self)
+        self.entry_cpu.place(x=360, y=100)
 
-        self.entry_operpam = ttk.Entry(self)
-        self.entry_operpam.place(x=460, y=100)
+        self.combobox_ram = ttk.Combobox(self, values=[u'1',u'2', u'3', u'4', 
+                                                       u'6', u'8', u'12'])
+        self.combobox_ram.place(x=410, y=100)
 
-        self.entry_kolvo = ttk.Entry(self)
-        self.entry_kolvo.place(x=510, y=100)
+        self.entry_amount = ttk.Entry(self)
+        self.entry_amount.place(x=460, y=100)
 
-        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'])
-        self.combobox.place(x=560, y=100)
+        self.combobox_os = ttk.Combobox(self, values=[u'Android',u'IOS', 
+                                                      u'BlackBerry'])
+        self.combobox_os.place(x=510, y=100)
 
         btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=620, y=440)
+        btn_cancel.place(x=570, y=440)
 
         btn_add = ttk.Button(self, text='Добавить')
-        btn_add.place(x=220, y=170)
+        btn_add.place(x=170, y=170)
         btn_add.bind('<Button-1>')
 
         self.grab_set()
