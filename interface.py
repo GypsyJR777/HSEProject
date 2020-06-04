@@ -104,53 +104,75 @@ class Child(tk.Toplevel):
         self.init_child()
 
     def init_child(self):
-        self.title('Добавление нового смартфона')
-        self.geometry('670x480+400+300')
+        self.title('Добавление')
+        self.geometry('260x260+400+300')
         self.resizable(False, False)
 
-        label_description_os = ttk.Label(self, text='Операционная система')
-        label_description_os.place(x=510,y=60)
+        label_description = ttk.Label(self, text='Операционная система')
+        label_description.grid(row=10, column = 0)
 
-        label_description_ram = ttk.Label(self, text='RAM')
-        label_description_ram.place(x=410,y=60)
+        label_description = ttk.Label(self, text='Код товара')
+        label_description.grid(row=1, column =0)
 
-        self.entry_firm = ttk.Entry(self)
-        self.entry_firm.place(x=10, y=100)
+        label_description = ttk.Label(self, text='Производитель')
+        label_description.grid(row=2, column =0)
 
-        self.entry_country = ttk.Entry(self)
-        self.entry_country.place(x=60, y=100)
+        label_description = ttk.Label(self, text='Страна')
+        label_description.grid(row=3, column =0)
 
-        self.entry_code = ttk.Entry(self)
-        self.entry_code.place(x=110, y=100)
+        label_description = ttk.Label(self, text='Модель')
+        label_description.grid(row=4, column =0)
+
+        label_description = ttk.Label(self, text='Память')
+        label_description.grid(row=5, column =0)
+
+        label_description = ttk.Label(self, text='Диагональ')
+        label_description.grid(row=6, column =0)
+
+        label_description = ttk.Label(self, text='Процессор')
+        label_description.grid(row=7, column =0)
+
+        label_description = ttk.Label(self, text='Оперативная память')
+        label_description.grid(row=8, column =0)
+
+        label_description = ttk.Label(self, text='Количество')
+        label_description.grid(row=9, column =0)
+
+        self.entry_cod = ttk.Entry(self)
+        self.entry_cod.grid(row=1, column=1)
+
+        self.entry_proizv = ttk.Entry(self)
+        self.entry_proizv.grid(row=2, column=1)
+
+        self.entry_strana = ttk.Entry(self)
+        self.entry_strana.grid(row=3, column=1)
 
         self.entry_model = ttk.Entry(self)
-        self.entry_model.place(x=210, y=100)
+        self.entry_model.grid(row=4, column=1)
 
-        self.entry_storage = ttk.Entry(self)
-        self.entry_storage.place(x=260, y=100)
+        self.entry_vnutrpam = ttk.Entry(self)
+        self.entry_vnutrpam.grid(row=5, column=1)
 
         self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.place(x=310, y=100)
+        self.entry_diagonal.grid(row=6, column=1)
 
-        self.entry_cpu = ttk.Entry(self)
-        self.entry_cpu.place(x=360, y=100)
+        self.entry_proc = ttk.Entry(self)
+        self.entry_proc.grid(row=7, column=1)
 
-        self.combobox_ram = ttk.Combobox(self, values=[u'1',u'2', u'3', u'4', 
-                                                       u'6', u'8', u'12'])
-        self.combobox_ram.place(x=410, y=100)
+        self.entry_operpam = ttk.Entry(self)
+        self.entry_operpam.grid(row=8, column=1)
 
-        self.entry_amount = ttk.Entry(self)
-        self.entry_amount.place(x=460, y=100)
+        self.entry_kolvo = ttk.Entry(self)
+        self.entry_kolvo.grid(row=9, column=1)
 
-        self.combobox_os = ttk.Combobox(self, values=[u'Android',u'IOS', 
-                                                      u'BlackBerry'])
-        self.combobox_os.place(x=510, y=100)
+        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        self.combobox.grid(row=10, column=1)
 
-        btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=570, y=440)
+        btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
+        btn_cancel.grid(row=13, column=0, columnspan=2)
 
         btn_add = ttk.Button(self, text='Добавить')
-        btn_add.place(x=170, y=170)
+        btn_add.grid(row=12, column=0, columnspan=2)
         btn_add.bind('<Button-1>')
 
         self.grab_set()
