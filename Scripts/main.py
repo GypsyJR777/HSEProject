@@ -151,7 +151,7 @@ class Child(tk.Toplevel):
                     mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
                 else:
                     Table_add(entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
-                
+                    self.destroy()
 
 
         label_description = ttk.Label(self, text='Операционная система')
