@@ -13,22 +13,22 @@ def Table(parent=None, xls=None):
 
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
-        counter = len(df)
+        count = len(df)
         index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
         for x in range(10):
             tree.column(x, width=50)
             tree.heading(x, text=df_col[x])
         #generating for loop to print values of dataframe in treeview column.
-        for i in range(counter):
+        for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
         tree.pack(expand=tk.YES, fill=tk.BOTH)
 
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
     global df, counter
-
     mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
+    counter = mdf.loc[len(mdf)-1]["Product Code"]
     tree.destroy()
     Table(root, mdf)
 
