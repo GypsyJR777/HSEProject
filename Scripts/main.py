@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 from tkinter import messagebox as mb
-from materials import Child_add
+
 
 
 def Table(parent=None, xls=None):
@@ -298,60 +298,54 @@ class Child_filter(tk.Toplevel):
     #        self.entry_cod.grid(row=1, column=1)
 
         filtr_entry_firm = ttk.Entry(self)
-        filtr_entry_firm.grid(row=2, column=1)
+        filtr_entry_firm.insert(0, "Ахуеть как дорого")
+        filtr_entry_firm.grid(row=2, column=1, columnspan=2)
 
         filtr_entry_country = ttk.Entry(self)
-        filtr_entry_country.grid(row=3, column=1)
+        filtr_entry_country.grid(row=3, column=1, columnspan=2)
 
         filtr_entry_model = ttk.Entry(self)
-        filtr_entry_model.grid(row=4, column=1)
+        filtr_entry_model.grid(row=4, column=1, columnspan=2)
 
         filtr_entry_storage = ttk.Entry(self)
+        filtr_entry_storage.insert(0, 0)
         filtr_entry_storage.grid(row=5, column=1)
-
+        
         filtr_entry_diagonal = ttk.Entry(self)
+        filtr_entry_diagonal.insert(0, 0)
         filtr_entry_diagonal.grid(row=6, column=1)
 
         filtr_entry_cpu = ttk.Entry(self)
-        filtr_entry_cpu.grid(row=7, column=1)
+        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
 
         filtr_entry_ram = ttk.Entry(self)
+        filtr_entry_ram.insert(0, 0)
         filtr_entry_ram.grid(row=8, column=1)
 
         filtr_entry_amount = ttk.Entry(self)
+        filtr_entry_amount.insert(0, 0)
         filtr_entry_amount.grid(row=9, column=1)
 
 
 
-
-        filtr_entry_firm_2 = ttk.Entry(self)
-        filtr_entry_firm_2.grid(row=2, column=2)
-
-        filtr_entry_country_2 = ttk.Entry(self)
-        filtr_entry_country_2.grid(row=3, column=2)
-
-        filtr_entry_model_2 = ttk.Entry(self)
-        filtr_entry_model_2.grid(row=4, column=2)
-
         filtr_entry_storage_2 = ttk.Entry(self)
+        filtr_entry_storage_2.insert(0, 2048)
         filtr_entry_storage_2.grid(row=5, column=2)
 
         filtr_entry_diagonal_2 = ttk.Entry(self)
+        filtr_entry_diagonal_2.insert(0, 20)
         filtr_entry_diagonal_2.grid(row=6, column=2)
 
-        filtr_entry_cpu_2 = ttk.Entry(self)
-        filtr_entry_cpu_2.grid(row=7, column=2)
-
         filtr_entry_ram_2 = ttk.Entry(self)
+        filtr_entry_ram_2.insert(0, 256)
         filtr_entry_ram_2.grid(row=8, column=2)
 
-        filtr_entry_amount_2 = ttk.Entry(self)
+        filtr_entry_amount_2 = ttk.Entry(self, textvariable=1000000)
+        filtr_entry_amount_2.insert(0, 1000000)
         filtr_entry_amount_2.grid(row=9, column=2)
 
-
-
         filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
-        filtr_combobox.grid(row=10, column=2)
+        filtr_combobox.grid(row=10, column=1, columnspan=2)
 
         filtr_btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
