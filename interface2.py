@@ -105,7 +105,7 @@ class Main(tk.Frame):
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-        xls = pd.read_excel("C:/Smartphones.xlsx")
+        xls = pd.read_excel("./Data/Smartphones.xlsx")
         mdf = pd.DataFrame(xls)
         table = Table(root, mdf)
 
@@ -244,12 +244,16 @@ class Child2(tk.Toplevel):
 
 #self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
         def filtr():
-            global df
-            if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
-                Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
-            if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
-                Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
-
+            global df, mdf
+            if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
+               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='')):
+                if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
+                    Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
+                if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
+                    Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
+            else:
+                tree.destroy()
+                Table(root, mdf)
         def filtr_save():
             global df
             global mdf
