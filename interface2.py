@@ -13,14 +13,14 @@ def Table(parent=None, xls=None):
 
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
-        count = len(df)
+        counter = len(df)
         index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
         for x in range(10):
             tree.column(x, width=50)
             tree.heading(x, text=df_col[x])
         #generating for loop to print values of dataframe in treeview column.
-        for i in range(count):
+        for i in range(counter):
             tree.insert('', i, values=df.iloc[i,:].tolist())
         tree.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -29,7 +29,6 @@ def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
     global df, counter
 
     mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
-    counter = mdf.loc[len(mdf)-1]["Product Code"]
     tree.destroy()
     Table(root, mdf)
 
@@ -115,10 +114,10 @@ class Main(tk.Frame):
 
 
     def open_dialog(self):
-        Child()
+        Child_add()
 
     def sort(self):
-        Child2()
+        Child_filter()
 
     def sorttest2(self):
        # frame_table.delete
@@ -130,8 +129,8 @@ class Main(tk.Frame):
 
 
 
-
-class Child(tk.Toplevel):
+# добавление
+class Child_add(tk.Toplevel):
 
     def __init__(self):
         super().__init__(root)
@@ -230,8 +229,8 @@ class Child(tk.Toplevel):
         self.focus_set()
 
 
-
-class Child2(tk.Toplevel):
+# фильтр
+class Child_filter(tk.Toplevel):
 
     def __init__(self):
         super().__init__(root)
