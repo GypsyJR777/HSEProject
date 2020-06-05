@@ -31,7 +31,6 @@ def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
     Table(root, mdf)
 
 
-
 class Main(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
