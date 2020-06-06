@@ -1,36 +1,55 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
-
-window = tk.Tk()
-window.title("Добро пожаловать в приложение PythonRu")
-
-
-menu = tk.Menu(window)
-new_item = tk.Menu(menu, tearoff=0)
-new_item.add_command(label='Новый')
-menu.add_cascade(label='Файл', menu=new_item)
-window.config(menu=menu)
-window.mainloop()
+from tkinter import messagebox as mb
+import matplotlib as plt
+import matplotlib.pyplot as plt
 
 
 
-def Table(parent=None):
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
+def Table(parent=None, xls=None):
+        global counter, tree, df
+
         df = pd.DataFrame(xls)
         df_col = df.columns.values
+
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
-        counter = len(df)
-        index_col=False
+        count = len(df)
         #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(9):
+        for x in range(10):
             tree.column(x, width=50)
             tree.heading(x, text=df_col[x])
         #generating for loop to print values of dataframe in treeview column.
-        for i in range(counter):
+        for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
         tree.pack(expand=tk.YES, fill=tk.BOTH)
+
+
+def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
+    global df, counter
+    mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
+    counter = mdf.loc[len(mdf)-1]["Product Code"]
+    tree.destroy()
+    Table(root, mdf)
+
+
+def Sorttest_int(sort_parametr, sort_min, sort_max):
+    global df
+    global mdf
+    dtemp =mdf[mdf[sort_parametr] >= sort_min]
+    df=dtemp[dtemp[sort_parametr] <= sort_max]
+    tree.destroy()
+    Table(root, df)
+    
+    
+def Sorttest_str(sort_parametr, sort_value):
+    global df
+    global mdf
+    dtemp =mdf[mdf[sort_parametr] == sort_value]
+    df=dtemp
+    tree.destroy()
+    Table(root, df)
 
 
 class Main(tk.Frame):
@@ -39,6 +58,7 @@ class Main(tk.Frame):
         self.init_main()
 
     def init_main(self):
+        global mdf
         w, h = root.winfo_screenwidth(), root.winfo_screenheight()
         root.geometry("%dx%d+0+0" % (w, h))
         frame_toolbox = tk.Frame(root, bd=5)
@@ -67,7 +87,7 @@ class Main(tk.Frame):
         button1_box1=tk.Button(frame_box1_top, text=u'Добавить', command=self.open_dialog)
         button2_box1=tk.Button(frame_box1_top, text=u'Правка')
         button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить')
-        button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт')
+        button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт', command=self.saved)
 
 
         # pack elemests of 1-st box
@@ -79,7 +99,7 @@ class Main(tk.Frame):
         button4_box1.pack(side='left')
 
         # elemests of 2-nd box
-        button1_box2=tk.Button(frame_box2, text=u'Анализ')
+        button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis)
         button2_box2=tk.Button(frame_box2, text=u'Экспорт')
 
         # pack elemests of 2-nd box
@@ -87,135 +107,335 @@ class Main(tk.Frame):
         button2_box2.pack(side='left')
 
         # elemests of 3-rd box
-        button1_box3=tk.Button(frame_box3, text=u'Первая кнопка')
-        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
+        button1_box3=tk.Button(frame_box3, text=u'Фильтр', command=self.sort)
+        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка', command=self.sorttest2)
 
         # pack elemests of 3-rd box
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-
-        table = Table(root)
+        xls = pd.read_excel("./Data/Smartphones.xlsx")
+        mdf = pd.DataFrame(xls)
+        Table(root, mdf)
 
 
         root.mainloop()
 
 
-        '''toolbar1 = tk.Frame(bg='blue', bd=3)
-        toolbar1.pack(side=tk.RIGHT, fill=tk.Y)
-        toolbar2 = tk.Frame(bg='blue', bd=3)
-        toolbar2.pack(side=tk.BOTTOM, fill=tk.X)
-        xls = pd.read_excel('./Data/Smartphones.xlsx')
-        df = pd.DataFrame(xls)
-        df_col = df.columns.values
-        df_col = df.columns.values
-        tree = ttk.Treeview(root)
-        tree["columns"]=(df_col)
-        counter = len(df)
-        rowLabels = df.index.tolist()
-        df.reset_index(drop=True, inplace=True)
-        #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(9):
-            tree.column(x)
-            tree.heading(x, text=df_col[x])
-        #generating for loop to print values of dataframe in treeview column.
-        for i in range(counter):
-            tree.insert('', i, text=rowLabels[i], values=df.iloc[i,:].tolist())
-        tree.pack(expand=tk.YES, fill=tk.BOTH)
-        btn_open_dialog = tk.Button(toolbar1, text='Добавить', command=self.open_dialog, bg='YELLOW', bd=0, compound = tk.TOP)
-        btn_open_dialog.pack(side=tk.LEFT)'''
-        '''self.tree = ttk.Treeview(self, columns = ('cod', 'proizv', 'strana', 'codtov', 'model', 'oc', 'vnutrpam', 'diagonal', 'proc', 'operpam', 'kolvo'), height=40, show='headings')
-
-        self.tree.column('cod', width=60, anchor=tk.CENTER)
-        self.tree.column('proizv', width=60, anchor=tk.CENTER)
-        self.tree.column('strana', width=60, anchor=tk.CENTER)
-        self.tree.column('codtov', width=60, anchor=tk.CENTER)
-        self.tree.column('model', width=60, anchor=tk.CENTER)
-        self.tree.column('oc', width=60, anchor=tk.CENTER)
-        self.tree.column('vnutrpam', width=60, anchor=tk.CENTER)
-        self.tree.column('diagonal', width=60, anchor=tk.CENTER)
-        self.tree.column('proc', width=60, anchor=tk.CENTER)
-        self.tree.column('operpam', width=60, anchor=tk.CENTER)
-        self.tree.column('kolvo', width=60, anchor=tk.CENTER)
-
-        self.tree.heading('cod', text='код производителя')
-        self.tree.heading('proizv', text='производитель')
-        self.tree.heading('strana', text='страна')
-        self.tree.heading('codtov', text='код товара')
-        self.tree.heading('model', text='модель')
-        self.tree.heading('oc', text='ОС')
-        self.tree.heading('vnutrpam', text='внутренняя память')
-        self.tree.heading('diagonal', text='диагональ экрана')
-        self.tree.heading('proc', text='процессор')
-        self.tree.heading('operpam', text='оперативаная память')
-        self.tree.heading('kolvo', text='кол-во')
-
-        self.tree.pack()
-        '''
-
-
-
     def open_dialog(self):
-        Child()
+        Child_add()
+
+    def sort(self):
+        Child_filter()
+
+    def sorttest2(self):
+       # frame_table.delete
+        global df
+        tree.destroy()
+        stor = 256
+        df = mdf[mdf['Storage'] == stor]
+        Table(root, df)
 
 
+    def analysis(self):
+        Kowalski_analis()
 
-class Child(tk.Toplevel):
+
+    def saved(self):
+        global mdf
+        writer = pd.ExcelWriter('./Output/Result.xlsx')
+        mdf.to_excel(writer, 'smartphones')
+        writer.save()
+        print('DataFrame is written successfully to Excel Sheet.')
+
+
+class Kowalski_analis(tk.Toplevel):
+
     def __init__(self):
         super().__init__(root)
         self.init_child()
 
+
     def init_child(self):
-        self.title('Дочернее окно')
-        self.geometry('720x480+400+300')
+        global mdf
+        self.title('Анализ от Ковальского')
+        self.geometry('400x400+400+300')
+        self.resizable(False, False)
+        
+        
+        def analis():
+            fig, ax = plt.subplots()
+            ax.bar(list(mdf[first.get()]), list(mdf[second.get()]))
+            ax.set_facecolor('seashell')
+            fig.set_facecolor('floralwhite')
+            fig.set_figwidth(12)    #  ширина Figure
+            fig.set_figheight(6)
+            plt.show()
+            
+            
+        
+        label_analis = ttk.Label(self, text='Выберете анализ: ')
+        label_analis.grid(row=0, column=0)
+        
+        first = ttk.Entry(self)
+        first.grid(row=1, column=1)
+
+        second = ttk.Entry(self)
+        second.grid(row=1, column=2)
+        
+        
+        base = ttk.Button(self, text='Столбчатая Диаграмма', command=analis)
+        base.grid(row=1, column=0)
+
+        
+        
+# добавление
+class Child_add(tk.Toplevel):
+
+    def __init__(self):
+        super().__init__(root)
+        self.init_child()
+
+
+    def init_child(self):
+        self.title('Добавление')
+        self.geometry('260x260+400+300')
         self.resizable(False, False)
 
+#self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
+        def add():
+            global counter, df
+            if(entry_firm.get()!='' and entry_country.get()!='' and
+               entry_model.get() !='' and entry_storage.get() !='' and
+               entry_diagonal.get() !='' and entry_cpu.get()!='' and
+               entry_ram.get() !='' and entry_amount.get() !='' and
+               combobox.get()!=''):
+                print(entry_firm)
+                if entry_ram.get().isdigit() == False:
+                    mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
+                else:
+                    Table_add(entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
+                    self.destroy()
+
+
         label_description = ttk.Label(self, text='Операционная система')
-        label_description.place(x=560,y=40)
+        label_description.grid(row=10, column = 0)
 
-        self.entry_cod = ttk.Entry(self)
-        self.entry_cod.place(x=10, y=100)
+#        label_description = ttk.Label(self, text='Код товара')
+#        label_description.grid(row=1, column =0)
 
-        self.entry_proizv = ttk.Entry(self)
-        self.entry_proizv.place(x=60, y=100)
+        label_description = ttk.Label(self, text='Производитель')
+        label_description.grid(row=2, column =0)
 
-        self.entry_strana = ttk.Entry(self)
-        self.entry_strana.place(x=110, y=100)
+        label_description = ttk.Label(self, text='Страна')
+        label_description.grid(row=3, column =0)
 
-        self.entry_codtov = ttk.Entry(self)
-        self.entry_codtov.place(x=160, y=100)
+        label_description = ttk.Label(self, text='Модель')
+        label_description.grid(row=4, column =0)
 
-        self.entry_model = ttk.Entry(self)
-        self.entry_model.place(x=260, y=100)
+        label_description = ttk.Label(self, text='Память')
+        label_description.grid(row=5, column =0)
 
-        self.entry_vnutrpam = ttk.Entry(self)
-        self.entry_vnutrpam.place(x=310, y=100)
+        label_description = ttk.Label(self, text='Диагональ')
+        label_description.grid(row=6, column =0)
 
-        self.entry_diagonal = ttk.Entry(self)
-        self.entry_diagonal.place(x=360, y=100)
+        label_description = ttk.Label(self, text='Процессор')
+        label_description.grid(row=7, column =0)
 
-        self.entry_proc = ttk.Entry(self)
-        self.entry_proc.place(x=410, y=100)
+        label_description = ttk.Label(self, text='Оперативная память')
+        label_description.grid(row=8, column =0)
 
-        self.entry_operpam = ttk.Entry(self)
-        self.entry_operpam.place(x=460, y=100)
+        label_description = ttk.Label(self, text='Количество')
+        label_description.grid(row=9, column =0)
 
-        self.entry_kolvo = ttk.Entry(self)
-        self.entry_kolvo.place(x=510, y=100)
+#        self.entry_cod = ttk.Entry(self)
+#        self.entry_cod.grid(row=1, column=1)
 
-        self.combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'])
-        self.combobox.place(x=560, y=100)
+        entry_firm = ttk.Entry(self)
+        entry_firm.grid(row=2, column=1)
 
-        btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=620, y=440)
+        entry_country = ttk.Entry(self)
+        entry_country.grid(row=3, column=1)
 
-        btn_add = ttk.Button(self, text='Добавить')
-        btn_add.place(x=220, y=170)
+        entry_model = ttk.Entry(self)
+        entry_model.grid(row=4, column=1)
+
+        entry_storage = ttk.Entry(self)
+        entry_storage.grid(row=5, column=1)
+
+        entry_diagonal = ttk.Entry(self)
+        entry_diagonal.grid(row=6, column=1)
+
+        entry_cpu = ttk.Entry(self)
+        entry_cpu.grid(row=7, column=1)
+
+        entry_ram = ttk.Entry(self)
+        entry_ram.grid(row=8, column=1)
+
+        entry_amount = ttk.Entry(self)
+        entry_amount.grid(row=9, column=1)
+
+        combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        combobox.grid(row=10, column=1)
+
+        btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
+        btn_cancel.grid(row=13, column=0, columnspan=2)
+
+        btn_add = ttk.Button(self, text='Добавить', command=add)
+        btn_add.grid(row=12, column=0, columnspan=2)
         btn_add.bind('<Button-1>')
 
         self.grab_set()
         self.focus_set()
 
+
+# фильтр
+class Child_filter(tk.Toplevel):
+
+    def __init__(self):
+        super().__init__(root)
+        self.init_child2()
+
+
+    def init_child2(self):
+        self.title('Фильтр')
+        self.geometry('400x290+1000+500')
+        self.resizable(False, False)
+
+#self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
+        def filtr():
+            global df, mdf
+            if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
+               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='') or
+               (filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !='') or
+               (filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !='') or
+               (filtr_entry_firm.get() !='') or (filtr_entry_country.get() !='') or
+               (filtr_entry_model.get() !='') or (filtr_entry_cpu.get() !='')):
+                if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
+                    Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
+                if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
+                    Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
+                if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
+                    Sorttest_int('Diagonal', int(filtr_entry_diagonal.get()), int(filtr_entry_diagonal_2.get()))
+                if(filtr_entry_country.get() !=''):
+                    Sorttest_str('Country', filtr_entry_country.get())
+                if(filtr_entry_firm.get() !=''):
+                    Sorttest_str('Manufacturer', filtr_entry_firm.get())
+                if(filtr_entry_model.get() !=''):
+                    Sorttest_str('Model', filtr_entry_model.get())
+                if(filtr_combobox.get() !=''):
+                    Sorttest_str('OS', filtr_combobox.get())
+                if(filtr_entry_cpu.get() !=''):
+                    Sorttest_str('CPU', filtr_entry_cpu.get())
+                if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
+                    Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
+            else:
+                tree.destroy()
+                Table(root, mdf)
+        
+        
+        def filtr_save():
+            global df
+            global mdf
+            mdf=df
+            tree.destroy()
+            Table(root, mdf)
+            
+            
+        
+
+
+        label_description = ttk.Label(self, text='Операционная система')
+        label_description.grid(row=10, column = 0)
+
+
+        label_description = ttk.Label(self, text='Производитель')
+        label_description.grid(row=2, column =0)
+
+        label_description = ttk.Label(self, text='Страна')
+        label_description.grid(row=3, column =0)
+
+        label_description = ttk.Label(self, text='Модель')
+        label_description.grid(row=4, column =0)
+
+        label_description = ttk.Label(self, text='Память')
+        label_description.grid(row=5, column =0)
+
+        label_description = ttk.Label(self, text='Диагональ')
+        label_description.grid(row=6, column =0)
+
+        label_description = ttk.Label(self, text='Процессор')
+        label_description.grid(row=7, column =0)
+
+        label_description = ttk.Label(self, text='Оперативная память')
+        label_description.grid(row=8, column =0)
+
+        label_description = ttk.Label(self, text='Количество')
+        label_description.grid(row=9, column =0)
+
+
+        filtr_entry_firm = ttk.Entry(self)
+        filtr_entry_firm.grid(row=2, column=1, columnspan=2)
+
+        filtr_entry_country = ttk.Entry(self)
+        filtr_entry_country.grid(row=3, column=1, columnspan=2)
+
+        filtr_entry_model = ttk.Entry(self)
+        filtr_entry_model.grid(row=4, column=1, columnspan=2)
+
+        filtr_entry_storage = ttk.Entry(self)
+        filtr_entry_storage.insert(0, 0)
+        filtr_entry_storage.grid(row=5, column=1)
+        
+        filtr_entry_diagonal = ttk.Entry(self)
+        filtr_entry_diagonal.insert(0, 0)
+        filtr_entry_diagonal.grid(row=6, column=1)
+
+        filtr_entry_cpu = ttk.Entry(self)
+        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
+
+        filtr_entry_ram = ttk.Entry(self)
+        filtr_entry_ram.insert(0, 0)
+        filtr_entry_ram.grid(row=8, column=1)
+
+        filtr_entry_amount = ttk.Entry(self)
+        filtr_entry_amount.insert(0, 0)
+        filtr_entry_amount.grid(row=9, column=1)
+
+
+
+        filtr_entry_storage_2 = ttk.Entry(self)
+        filtr_entry_storage_2.insert(0, 2048)
+        filtr_entry_storage_2.grid(row=5, column=2)
+
+        filtr_entry_diagonal_2 = ttk.Entry(self)
+        filtr_entry_diagonal_2.insert(0, 20)
+        filtr_entry_diagonal_2.grid(row=6, column=2)
+
+        filtr_entry_ram_2 = ttk.Entry(self)
+        filtr_entry_ram_2.insert(0, 256)
+        filtr_entry_ram_2.grid(row=8, column=2)
+
+        filtr_entry_amount_2 = ttk.Entry(self, textvariable=1000000)
+        filtr_entry_amount_2.insert(0, 1000000)
+        filtr_entry_amount_2.grid(row=9, column=2)
+
+        filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        filtr_combobox.grid(row=10, column=1, columnspan=2)
+
+        filtr_btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
+        filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
+
+        filtr_btn_filtr = ttk.Button(self, text='Применить', command=filtr)
+        filtr_btn_filtr.grid(row=13, column=0, columnspan=3)
+        filtr_btn_filtr.bind('<Button-1>')
+
+        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения', command=filtr_save)
+        filtr_btn_filtr_save.grid(row=14, column=0,  columnspan=3)
+        filtr_btn_filtr_save.bind('<Button-1>')
+
+        self.grab_set()
+        self.focus_set()
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -225,4 +445,3 @@ if __name__ == "__main__":
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     root.geometry("%dx%d+0+0" % (w, h))
     root.resizable(False, False)
-    root.mainloop()
