@@ -6,13 +6,19 @@ import matplotlib as plt
 import matplotlib.pyplot as plt
 
 
+def mask(df, key, value):
+    return df[df[key] == value]
+
+
+pd.DataFrame.mask = mask
+
 
 def Table(parent=None, xls=None):
         global counter, tree, df
-
+        
         df = pd.DataFrame(xls)
         df_col = df.columns.values
-
+        
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         count = len(df)
@@ -27,17 +33,17 @@ def Table(parent=None, xls=None):
 
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
-    global df, counter
-    mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
+    global df, counter, count
     counter = mdf.loc[len(mdf)-1]["Product Code"]
+    mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
+    
     tree.destroy()
     Table(root, mdf)
 
 
 def Sorttest_int(sort_parametr, sort_min, sort_max):
-    global df
-    global mdf
-    dtemp =mdf[mdf[sort_parametr] >= sort_min]
+    global df, mdf
+    dtemp =df[df[sort_parametr] >= sort_min]
     df=dtemp[dtemp[sort_parametr] <= sort_max]
     tree.destroy()
     Table(root, df)
@@ -305,33 +311,53 @@ class Child_filter(tk.Toplevel):
 #self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
         def filtr():
             global df, mdf
-            if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
-               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='') or
-               (filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !='') or
-               (filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !='') or
-               (filtr_entry_firm.get() !='') or (filtr_entry_country.get() !='') or
-               (filtr_entry_model.get() !='') or (filtr_entry_cpu.get() !='')):
-                if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
-                    Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
-                if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
-                    Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
-                if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
-                    Sorttest_int('Diagonal', int(filtr_entry_diagonal.get()), int(filtr_entry_diagonal_2.get()))
-                if(filtr_entry_country.get() !=''):
-                    Sorttest_str('Country', filtr_entry_country.get())
-                if(filtr_entry_firm.get() !=''):
-                    Sorttest_str('Manufacturer', filtr_entry_firm.get())
-                if(filtr_entry_model.get() !=''):
-                    Sorttest_str('Model', filtr_entry_model.get())
-                if(filtr_combobox.get() !=''):
-                    Sorttest_str('OS', filtr_combobox.get())
-                if(filtr_entry_cpu.get() !=''):
-                    Sorttest_str('CPU', filtr_entry_cpu.get())
-                if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
-                    Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
-            else:
-                tree.destroy()
-                Table(root, mdf)
+            df = mdf
+#            if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
+#               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='') or
+#               (filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !='') or
+#               (filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !='') or
+#               (filtr_entry_firm.get() !='') or (filtr_entry_country.get() !='') or
+#               (filtr_entry_model.get() !='') or (filtr_entry_cpu.get() !='')):
+            if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
+                Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
+                print("RAM")
+            if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
+                Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
+                print("storage")
+            if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
+                Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()), float(filtr_entry_diagonal_2.get()))
+                print("Diagonal")
+            if(filtr_entry_country.get() !=''):
+                print("Country")
+                df = df.mask('Country', filtr_entry_country.get())
+                #Sorttest_str('Country', filtr_entry_country.get())
+            if(filtr_entry_firm.get() !=''):
+                print("Firm")
+                df = df.mask('Manufacturer', filtr_entry_firm.get())
+                #Sorttest_str('Manufacturer', filtr_entry_firm.get())
+            if(filtr_entry_model.get() !=''):
+                print("Model")
+                df = df.mask('Model', filtr_entry_model.get())
+                #Sorttest_str('Model', filtr_entry_model.get())
+            if(filtr_combobox.get() !=''):
+                print("OS")
+                df = df.mask('OS', filtr_combobox.get())
+                #Sorttest_str('OS', filtr_combobox.get())
+            if(filtr_entry_cpu.get() !=''):
+                print("CPU")
+                df = df.mask('CPU', filtr_entry_cpu.get())
+                #Sorttest_str('CPU', filtr_entry_cpu.get())
+            if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
+                print("Amount")
+                Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
+            #df = mdf.mask('Storage', 256).mask('Manufacturer', 'Apple')
+            
+            print(df)
+            tree.destroy()
+            Table(root, df)
+#            else:
+#                tree.destroy()
+#                Table(root, mdf)
         
         
         def filtr_save():
