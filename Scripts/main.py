@@ -14,7 +14,6 @@ def Table(parent=None, xls=None):
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         count = len(df)
-        index_col=False
         #generating for loop to create columns and give heading to them through df_col var.
         for x in range(10):
             tree.column(x, width=50)
@@ -38,9 +37,17 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
     global mdf
     dtemp =mdf[mdf[sort_parametr] >= sort_min]
     df=dtemp[dtemp[sort_parametr] <= sort_max]
-
     tree.destroy()
-    table = Table(root, df)
+    Table(root, df)
+    
+    
+def Sorttest_str(sort_parametr, sort_value):
+    global df
+    global mdf
+    dtemp =mdf[mdf[sort_parametr] == sort_value]
+    df=dtemp
+    tree.destroy()
+    Table(root, df)
 
 
 class Main(tk.Frame):
@@ -246,11 +253,29 @@ class Child_filter(tk.Toplevel):
         def filtr():
             global df, mdf
             if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
-               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='')):
+               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='') or
+               (filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !='') or
+               (filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !='') or
+               (filtr_entry_firm.get() !='') or (filtr_entry_country.get() !='') or
+               (filtr_entry_model.get() !='') or (filtr_entry_cpu.get() !='')):
                 if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
                     Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
                 if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
                     Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
+                if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
+                    Sorttest_int('Diagonal', int(filtr_entry_diagonal.get()), int(filtr_entry_diagonal_2.get()))
+                if(filtr_entry_country.get() !=''):
+                    Sorttest_str('Country', filtr_entry_country.get())
+                if(filtr_entry_firm.get() !=''):
+                    Sorttest_str('Manufacturer', filtr_entry_firm.get())
+                if(filtr_entry_model.get() !=''):
+                    Sorttest_str('Model', filtr_entry_model.get())
+                if(filtr_combobox.get() !=''):
+                    Sorttest_str('OS', filtr_combobox.get())
+                if(filtr_entry_cpu.get() !=''):
+                    Sorttest_str('CPU', filtr_entry_cpu.get())
+                if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
+                    Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
             else:
                 tree.destroy()
                 Table(root, mdf)
@@ -262,13 +287,14 @@ class Child_filter(tk.Toplevel):
             mdf=df
             tree.destroy()
             Table(root, mdf)
+            
+            
+        
 
 
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
 
-    #        label_description = ttk.Label(self, text='Код товара')
-    #        label_description.grid(row=1, column =0)
 
         label_description = ttk.Label(self, text='Производитель')
         label_description.grid(row=2, column =0)
@@ -294,11 +320,8 @@ class Child_filter(tk.Toplevel):
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column =0)
 
-    #        self.entry_cod = ttk.Entry(self)
-    #        self.entry_cod.grid(row=1, column=1)
 
         filtr_entry_firm = ttk.Entry(self)
-        filtr_entry_firm.insert(0, "Ахуеть как дорого")
         filtr_entry_firm.grid(row=2, column=1, columnspan=2)
 
         filtr_entry_country = ttk.Entry(self)
