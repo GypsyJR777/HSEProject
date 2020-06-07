@@ -214,10 +214,14 @@ class Kowalski_analis(tk.Toplevel):
             fig.set_figheight(6)
             plt.show()
 
+        #Тут можно добавить еще один индекс в квадратные скобки, поля entry оставил на всякий, эта херня считает среднее значение
+        #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
         def analis_svod():
             data_pt = pd.pivot_table(mdf,index=[stolb_1.get()], values=stolb_2.get() )
             print(data_pt)
 
+
+        #Отображается в консоли после закрытия проги
         def analis_rasseivanie():
             plot_df = mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
             print(plot_df)
@@ -234,6 +238,7 @@ class Kowalski_analis(tk.Toplevel):
         second_stolb = ttk.Entry(self)
         second_stolb.grid(row=1, column=2)
 
+#Поля сводной таблицы
         stolb_1 = ttk.Entry(self)
         stolb_1.grid(row=3, column=1)
 
@@ -243,7 +248,7 @@ class Kowalski_analis(tk.Toplevel):
         stolb_3 = ttk.Entry(self)
         stolb_3.grid(row=3, column=3)
 
-
+#Поля диаграммы рассеивания
         stolb_1_rass = ttk.Entry(self)
         stolb_1_rass.grid(row=2, column=1)
 
