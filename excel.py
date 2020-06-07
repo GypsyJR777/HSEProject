@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
+import numpy as np
 from tkinter import messagebox as mb
 import matplotlib as plt
 import matplotlib.pyplot as plt
@@ -33,10 +34,9 @@ def Table(parent=None, xls=None):
 
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
-    global df, counter, count
+    global mdf, counter, count
     counter = mdf.loc[len(mdf)-1]["Product Code"]
-    mdf.loc[counter] = [counter+1, firm, country, model, os, int(storage), diagonal, cpu, int(ram), int(amount)]
-    
+    mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
     tree.destroy()
     Table(root, mdf)
 
@@ -45,17 +45,17 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
     global df, mdf
     dtemp =df[df[sort_parametr] >= sort_min]
     df=dtemp[dtemp[sort_parametr] <= sort_max]
-    tree.destroy()
-    Table(root, df)
+#    tree.destroy()
+#    Table(root, df)
     
     
-def Sorttest_str(sort_parametr, sort_value):
-    global df
-    global mdf
-    dtemp =mdf[mdf[sort_parametr] == sort_value]
-    df=dtemp
-    tree.destroy()
-    Table(root, df)
+#def Sorttest_str(sort_parametr, sort_value):
+#    global df
+#    global mdf
+#    dtemp =mdf[mdf[sort_parametr] == sort_value]
+#    df=dtemp
+#    tree.destroy()
+#    Table(root, df)
 
 
 class Main(tk.Frame):
@@ -92,7 +92,7 @@ class Main(tk.Frame):
         frame_box1_bottom = tk.Frame(frame_box1, bd=5)
         button1_box1=tk.Button(frame_box1_top, text=u'Добавить', command=self.open_dialog)
         button2_box1=tk.Button(frame_box1_top, text=u'Правка')
-        button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить')
+        button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить', command=self.delete)
         button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт', command=self.saved)
 
 
@@ -106,11 +106,10 @@ class Main(tk.Frame):
 
         # elemests of 2-nd box
         button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis)
-        button2_box2=tk.Button(frame_box2, text=u'Экспорт')
 
         # pack elemests of 2-nd box
         button1_box2.pack(side='left')
-        button2_box2.pack(side='left')
+
 
         # elemests of 3-rd box
         button1_box3=tk.Button(frame_box3, text=u'Фильтр', command=self.sort)
@@ -142,6 +141,9 @@ class Main(tk.Frame):
         df = mdf[mdf['Storage'] == stor]
         Table(root, df)
 
+    def delete(self):
+        Delete()
+
 
     def analysis(self):
         Kowalski_analis()
@@ -153,6 +155,47 @@ class Main(tk.Frame):
         mdf.to_excel(writer, 'smartphones')
         writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
+
+
+
+class Delete(tk.Toplevel):
+
+    def __init__(self):
+        super().__init__(root)
+        self.init_child()
+
+
+    def init_child(self):
+        self.title('Удаление смартфона')
+        self.geometry('400x400+400+300')
+        self.resizable(False, False)
+        
+        
+        def delete_code():
+            global mdf
+            if(choice.get() == ''):
+                mb.showerror("Ошибка", "Введите код продукта")
+            else:
+                mdf = mdf.drop(np.where(mdf['Product Code'] == int(choice.get()))[0])
+                tree.destroy()
+                Table(root, mdf)
+                self.destroy()
+                
+                
+        
+        label_choice = ttk.Label(self, text='Введите код товара, который хотите удалить')
+        label_choice.grid(row=0, column=0, columnspan=2)
+        
+        choice = ttk.Entry(self)
+        choice.grid(row=1, column=0, columnspan=2)
+        
+        cancel_but = ttk.Button(self, text='Отмена', command=self.destroy)
+        cancel_but.grid(row=2, column=1)
+    
+        del_but = ttk.Button(self, text='Удалить', command=delete_code)
+        del_but.grid(row=2, column=0)
+        del_but.bind('<Button-1>')
+
 
 
 class Kowalski_analis(tk.Toplevel):
@@ -216,12 +259,17 @@ class Child_add(tk.Toplevel):
                entry_diagonal.get() !='' and entry_cpu.get()!='' and
                entry_ram.get() !='' and entry_amount.get() !='' and
                combobox.get()!=''):
-                print(entry_firm)
-                if entry_ram.get().isdigit() == False:
+                if (entry_ram.get().isdigit() == False and
+                    entry_storage.get().isdigit() == False and 
+                    entry_diagonal.get().isdigit() == False and
+                    entry_amount.get().isdigit() == False):
                     mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
                 else:
                     Table_add(entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
                     self.destroy()
+            else:
+                mb.showerror("Ошибка", "Введите данные во все поля")
+                
 
 
         label_description = ttk.Label(self, text='Операционная система')
@@ -312,54 +360,29 @@ class Child_filter(tk.Toplevel):
         def filtr():
             global df, mdf
             df = mdf
-#            if((filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !='') or
-#               (filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !='') or
-#               (filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !='') or
-#               (filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !='') or
-#               (filtr_entry_firm.get() !='') or (filtr_entry_country.get() !='') or
-#               (filtr_entry_model.get() !='') or (filtr_entry_cpu.get() !='')):
             if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
                 Sorttest_int('RAM', int(filtr_entry_ram.get()), int(filtr_entry_ram_2.get()))
-                print("RAM")
             if(filtr_entry_storage.get() !='' and filtr_entry_storage_2.get() !=''):
                 Sorttest_int('Storage', int(filtr_entry_storage.get()), int(filtr_entry_storage_2.get()))
-                print("storage")
             if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
                 Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()), float(filtr_entry_diagonal_2.get()))
-                print("Diagonal")
             if(filtr_entry_country.get() !=''):
-                print("Country")
                 df = df.mask('Country', filtr_entry_country.get())
-                #Sorttest_str('Country', filtr_entry_country.get())
             if(filtr_entry_firm.get() !=''):
-                print("Firm")
                 df = df.mask('Manufacturer', filtr_entry_firm.get())
-                #Sorttest_str('Manufacturer', filtr_entry_firm.get())
             if(filtr_entry_model.get() !=''):
-                print("Model")
                 df = df.mask('Model', filtr_entry_model.get())
-                #Sorttest_str('Model', filtr_entry_model.get())
             if(filtr_combobox.get() !=''):
-                print("OS")
                 df = df.mask('OS', filtr_combobox.get())
-                #Sorttest_str('OS', filtr_combobox.get())
             if(filtr_entry_cpu.get() !=''):
-                print("CPU")
                 df = df.mask('CPU', filtr_entry_cpu.get())
-                #Sorttest_str('CPU', filtr_entry_cpu.get())
             if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
-                print("Amount")
                 Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
-            #df = mdf.mask('Storage', 256).mask('Manufacturer', 'Apple')
-            
             print(df)
             tree.destroy()
             Table(root, df)
-#            else:
-#                tree.destroy()
-#                Table(root, mdf)
-        
-        
+
+
         def filtr_save():
             global df
             global mdf
@@ -368,8 +391,14 @@ class Child_filter(tk.Toplevel):
             Table(root, mdf)
             
             
+        def filtr_cancel():
+            global df
+            global mdf
+            df=mdf
+            tree.destroy()
+            Table(root, df)
+            self.destroy()
         
-
 
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
@@ -449,7 +478,7 @@ class Child_filter(tk.Toplevel):
         filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
         filtr_combobox.grid(row=10, column=1, columnspan=2)
 
-        filtr_btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
+        filtr_btn_cancel = ttk.Button(self, text='Отмена', command=filtr_cancel)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
 
         filtr_btn_filtr = ttk.Button(self, text='Применить', command=filtr)
