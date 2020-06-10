@@ -24,9 +24,8 @@ def analysis():
         pass
 
 
-def Table(parent=None, xls=None):
+def Table(xls=None):
         global counter, tree, df
-
         df = pd.DataFrame(xls)
         count = len(df)
         headings = ["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"]
@@ -60,8 +59,8 @@ def saved():
         mdf.to_excel(writer, 'smartphones')
         writer.save()
 
-
-def Main():
+class Main(tk.Frame):
+    def __init__(self):
         global mdf
         root = tk.Tk()
         root["bg"]="#B0C7E4"

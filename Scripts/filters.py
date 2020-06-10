@@ -5,9 +5,9 @@ from app import Table
 
 
 class Child_filter:
-    def __init__(self):
+    def __init__(self, mdf):
         global df
-        mdf = app.mdf
+    
         filt = tk.Toplevel()
         filt.title('Фильтр')
         filt.geometry('400x290+1000+500')
@@ -128,7 +128,7 @@ class Child_filter:
         filtr_combobox = ttk.Combobox(filt, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
         filtr_combobox.grid(row=10, column=1, columnspan=2)
 
-        filtr_btn_cancel = ttk.Button(filt, text='Отмена', command=filtr_cancel)
+        filtr_btn_cancel = ttk.Button(filt, text='Отмена', command=self.filtr_cancel)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
 
         filtr_btn_filtr = ttk.Button(filt, text='Применить', command=filtr)
