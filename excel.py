@@ -7,13 +7,6 @@ import matplotlib as plt
 import matplotlib.pyplot as plt
 
 
-def mask(df, key, value):
-    return df[df[key] == value]
-
-
-pd.DataFrame.mask = mask
-
-
 def Table(parent=None, xls=None):
         global counter, tree, df
 
@@ -84,7 +77,7 @@ class Main(tk.Frame):
 
         # elemests of toolbox
         button1_box1=tk.Button(frame_box2, text=u'Добавить', command=self.open_dialog, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
-        button2_box1=tk.Button(frame_box2, text=u'Правка', bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button2_box1=tk.Button(frame_box2, text=u'Правка', command=self.change, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button3_box1=tk.Button(frame_box2, text=u'Удалить', command=self.delete, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button4_box1=tk.Button(frame_box2, text=u'Экспорт', command=self.saved, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
@@ -154,11 +147,12 @@ class Change(tk.Toplevel):
         label_description.grid(row=0, column = 0)
         entry_code = ttk.Entry(self)
         entry_code.grid(row=0, column=1, columnspan=2)
+        ok_btn = ttk.Button(self, text='OK')
+        ok_btn.grid(row=15, column=0, columnspan=3)
         
         
-        
-        label_description = ttk.Label(self, text='Операционная система')
-        label_description.grid(row=10, column = 0)
+#        label_description = ttk.Label(self, text='Операционная система')
+#        label_description.grid(row=10, column = 0)
 
 #
 #        label_description = ttk.Label(self, text='Производитель')
@@ -515,15 +509,15 @@ class Child_filter(tk.Toplevel):
             if(filtr_entry_diagonal.get() !='' and filtr_entry_diagonal_2.get() !=''):
                 Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()), float(filtr_entry_diagonal_2.get()))
             if(filtr_entry_country.get() !=''):
-                df = df.mask('Country', filtr_entry_country.get())
+                df = df[df['Country'] == filtr_entry_country.get()]
             if(filtr_entry_firm.get() !=''):
-                df = df.mask('Manufacturer', filtr_entry_firm.get())
+                df = df[df['Manufacturer'] == filtr_entry_firm.get()]
             if(filtr_entry_model.get() !=''):
-                df = df.mask('Model', filtr_entry_model.get())
+                df = df[df['Model'] == filtr_entry_model.get()]
             if(filtr_combobox.get() !=''):
-                df = df.mask('OS', filtr_combobox.get())
+                df = df[df['OS'] == filtr_combobox.get()]
             if(filtr_entry_cpu.get() !=''):
-                df = df.mask('CPU', filtr_entry_cpu.get())
+                df = df[df['CPU'] == filtr_entry_cpu.get()]
             if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
                 Sorttest_int('Amount', int(filtr_entry_amount.get()), int(filtr_entry_amount_2.get()))
             print(df)
