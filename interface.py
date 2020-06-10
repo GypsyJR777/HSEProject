@@ -18,23 +18,28 @@ def Table(parent=None, xls=None):
         global counter, tree, df
 
         df = pd.DataFrame(xls)
-        df_col = df.columns.values
-
-        tree = ttk.Treeview(root)
-        tree["columns"]=(df_col)
         count = len(df)
-        #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(10):
-            tree.column(x, width=50)
-            tree.heading(x, text=df_col[x])
-        #generating for loop to print values of dataframe in treeview column.
+        headings = ["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"]
+        tree = ttk.Treeview(root, show="headings", selectmode="browse")
+        tree["columns"]=headings
+        tree["displaycolumns"]=headings
+  
+        for head in headings:
+            tree.heading(head, text=head, anchor=tk.CENTER)
+            tree.column(head, anchor=tk.CENTER, width=50)
+  
         for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
-        
-        scrollbar = tk.Scrollbar(root, orient="vertical", command=tree.yview)
+  
+        scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
         tree.configure(yscrollcommand=scrollbar.set)
 
         scrollbar.pack(side="right", fill="y")
+        
+        scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
+        tree.configure(xscrollcommand=scrollbarx.set)
+
+        scrollbarx.pack(side="bottom", fill="x")
         tree.pack(expand=tk.YES, fill=tk.BOTH)
 
 
@@ -84,8 +89,7 @@ class Main(tk.Frame):
         frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
         # frame for the Table
-        frame_table = tk.Frame(root, bd=2, bg="#B0C7E4")
-        frame_table.pack(side='bottom', ipadx=20, ipady=20)
+
         photo = tk.PhotoImage(file = r"./img.png")
         photo = photo.subsample(25, 25)
 
@@ -96,7 +100,7 @@ class Main(tk.Frame):
         button4_box1=tk.Button(frame_box2, text=u'Экспорт', command=self.saved, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box3=tk.Button(frame_box2, text=u'Фильтр', command=self.sort, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
-        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
+       # button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
 
 
         # pack elemests of toolbox
@@ -106,7 +110,7 @@ class Main(tk.Frame):
         button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
-        button2_box3.pack(side='right')
+        #button2_box3.pack(side='right')
 
         try:
             xls = pd.read_pickle("./Data/smartphones.pkl")
