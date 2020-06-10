@@ -30,6 +30,11 @@ def Table(parent=None, xls=None):
         #generating for loop to print values of dataframe in treeview column.
         for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
+        
+        scrollbar = tk.Scrollbar(root, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side="right", fill="y")
         tree.pack(expand=tk.YES, fill=tk.BOTH)
 
 
@@ -68,59 +73,40 @@ class Main(tk.Frame):
 
     def init_main(self):
         global mdf
-        w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+        w, h = root.winfo_screenwidth()-100, root.winfo_screenheight()-100
         root.geometry("%dx%d+0+0" % (w, h))
-        frame_toolbox = tk.Frame(root, bd=5)
+        frame_toolbox = tk.Frame(root, bd=5, bg="#B0C7E4")
         frame_toolbox.pack(side='top', fill=tk.X)
 
-        # 1-st frame with controls
-        frame_box1 = tk.Frame(frame_toolbox, bd=5)
-        frame_box1.pack(side='left', fill=tk.Y, expand=1)
 
-        # 2-nd frame with controls
-        frame_box2 = tk.Frame(frame_toolbox, bd=5)
+        #frame with controls
+        frame_box2 = tk.Frame(frame_toolbox, bd=5, bg="#B0C7E4")
         frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
-        # 3-rd frame with controls
-        frame_box3 = tk.Frame(frame_toolbox, bd=5)
-        frame_box3.pack(side='left', fill=tk.Y, expand=1)
-
         # frame for the Table
-        frame_table = tk.Frame(root, bd=2)
-        frame_table.pack(side='bottom')
+        frame_table = tk.Frame(root, bd=2, bg="#B0C7E4")
+        frame_table.pack(side='bottom', ipadx=20, ipady=20)
+        photo = tk.PhotoImage(file = r"./img.png")
+        photo = photo.subsample(25, 25)
+
+        # elemests of toolbox
+        button1_box1=tk.Button(frame_box2, text=u'Добавить', command=self.open_dialog, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button2_box1=tk.Button(frame_box2, text=u'Правка', bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button3_box1=tk.Button(frame_box2, text=u'Удалить', command=self.delete, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button4_box1=tk.Button(frame_box2, text=u'Экспорт', command=self.saved, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button1_box3=tk.Button(frame_box2, text=u'Фильтр', command=self.sort, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
 
 
-        # elemests of 1-st box
-        frame_box1_top = tk.Frame(frame_box1, bd=5)
-        frame_box1_bottom = tk.Frame(frame_box1, bd=5)
-        button1_box1=tk.Button(frame_box1_top, text=u'Добавить', command=self.open_dialog)
-        button2_box1=tk.Button(frame_box1_top, text=u'Правка', command=self.change)
-        button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить', command=self.delete)
-        button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт', command=self.saved)
-
-
-        # pack elemests of 1-st box
-        frame_box1_top.pack(side='top')
-        frame_box1_bottom.pack(side='top')
-        button1_box1.pack(side='left')
-        button2_box1.pack(side='left')
-        button3_box1.pack(side='left')
-        button4_box1.pack(side='left')
-
-        # elemests of 2-nd box
-        button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis)
-
-        # pack elemests of 2-nd box
-        button1_box2.pack(side='left')
-
-
-        # elemests of 3-rd box
-        button1_box3=tk.Button(frame_box3, text=u'Фильтр', command=self.sort)
-        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
-
-        # pack elemests of 3-rd box
-        button1_box3.pack(side='left')
-        button2_box3.pack(side='left')
+        # pack elemests of toolbox
+        button1_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button2_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button3_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button2_box3.pack(side='right')
 
         try:
             xls = pd.read_pickle("./Data/smartphones.pkl")
@@ -129,7 +115,7 @@ class Main(tk.Frame):
         mdf = pd.DataFrame(xls)
         Table(root, mdf)
 
-
+        
         root.mainloop()
 
 
@@ -169,85 +155,92 @@ class Change(tk.Toplevel):
 
 
     def init_child(self):
+        global mdf
         self.title('Изменение данных о смартфоне')
-        self.geometry('400x400+400+300')
+        self.geometry('300x100+400+300')
         self.resizable(False, False)
+        label_description = ttk.Label(self, text='Код товара для изменения')
+        label_description.grid(row=0, column = 0)
+        entry_code = ttk.Entry(self)
+        entry_code.grid(row=0, column=1, columnspan=2)
         
         
         
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
 
-
-        label_description = ttk.Label(self, text='Производитель')
-        label_description.grid(row=2, column =0)
-
-        label_description = ttk.Label(self, text='Страна')
-        label_description.grid(row=3, column =0)
-
-        label_description = ttk.Label(self, text='Модель')
-        label_description.grid(row=4, column =0)
-
-        label_description = ttk.Label(self, text='Память')
-        label_description.grid(row=5, column =0)
-
-        label_description = ttk.Label(self, text='Диагональ')
-        label_description.grid(row=6, column =0)
-
-        label_description = ttk.Label(self, text='Процессор')
-        label_description.grid(row=7, column =0)
-
-        label_description = ttk.Label(self, text='Оперативная память')
-        label_description.grid(row=8, column =0)
-
-        label_description = ttk.Label(self, text='Количество')
-        label_description.grid(row=9, column =0)
-
-
-        filtr_entry_firm = ttk.Entry(self)
-        filtr_entry_firm.grid(row=2, column=1, columnspan=2)
-
-        filtr_entry_country = ttk.Entry(self)
-        filtr_entry_country.grid(row=3, column=1, columnspan=2)
-
-        filtr_entry_model = ttk.Entry(self)
-        filtr_entry_model.grid(row=4, column=1, columnspan=2)
-
-        filtr_entry_storage = ttk.Entry(self)
-        filtr_entry_storage.insert(0, 0)
-        filtr_entry_storage.grid(row=5, column=1)
-
-        filtr_entry_diagonal = ttk.Entry(self)
-        filtr_entry_diagonal.insert(0, 0)
-        filtr_entry_diagonal.grid(row=6, column=1)
-
-        filtr_entry_cpu = ttk.Entry(self)
-        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
-
-        filtr_entry_ram = ttk.Entry(self)
-        filtr_entry_ram.insert(0, 0)
-        filtr_entry_ram.grid(row=8, column=1)
-
-        filtr_entry_amount = ttk.Entry(self)
-        filtr_entry_amount.insert(0, 0)
-        filtr_entry_amount.grid(row=9, column=1)
-
-        filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
-        filtr_combobox.grid(row=10, column=1, columnspan=2)
-
-        filtr_btn_cancel = ttk.Button(self, text='Отмена')
-        filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
-
-        filtr_btn_filtr = ttk.Button(self, text='Применить')
-        filtr_btn_filtr.grid(row=13, column=0, columnspan=3)
-        filtr_btn_filtr.bind('<Button-1>')
-
-        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения')
-        filtr_btn_filtr_save.grid(row=14, column=0,  columnspan=3)
-        filtr_btn_filtr_save.bind('<Button-1>')
-
-        self.grab_set()
-        self.focus_set()
+#
+#        label_description = ttk.Label(self, text='Производитель')
+#        label_description.grid(row=2, column =0)
+#
+#        label_description = ttk.Label(self, text='Страна')
+#        label_description.grid(row=3, column =0)
+#
+#        label_description = ttk.Label(self, text='Модель')
+#        label_description.grid(row=4, column =0)
+#
+#        label_description = ttk.Label(self, text='Память')
+#        label_description.grid(row=5, column =0)
+#
+#        label_description = ttk.Label(self, text='Диагональ')
+#        label_description.grid(row=6, column =0)
+#
+#        label_description = ttk.Label(self, text='Процессор')
+#        label_description.grid(row=7, column =0)
+#
+#        label_description = ttk.Label(self, text='Оперативная память')
+#        label_description.grid(row=8, column =0)
+#
+#        label_description = ttk.Label(self, text='Количество')
+#        label_description.grid(row=9, column =0)
+#
+#
+#        change_entry_firm = ttk.Entry(self)
+#        string = mdf.loc[entry_code.get()]["Manufacturer"]
+#        change_entry_firm.insert(0, string)
+#        change_entry_firm.grid(row=2, column=1, columnspan=2)
+#
+#        filtr_entry_country = ttk.Entry(self)
+#        filtr_entry_country.grid(row=3, column=1, columnspan=2)
+#
+#        filtr_entry_model = ttk.Entry(self)
+#        filtr_entry_model.grid(row=4, column=1, columnspan=2)
+#
+#        filtr_entry_storage = ttk.Entry(self)
+#        filtr_entry_storage.insert(0, )
+#        filtr_entry_storage.grid(row=5, column=1)
+#
+#        filtr_entry_diagonal = ttk.Entry(self)
+#        filtr_entry_diagonal.insert(0, 0)
+#        filtr_entry_diagonal.grid(row=6, column=1)
+#
+#        filtr_entry_cpu = ttk.Entry(self)
+#        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
+#
+#        filtr_entry_ram = ttk.Entry(self)
+#        filtr_entry_ram.insert(0, 0)
+#        filtr_entry_ram.grid(row=8, column=1)
+#
+#        filtr_entry_amount = ttk.Entry(self)
+#        filtr_entry_amount.insert(0, 0)
+#        filtr_entry_amount.grid(row=9, column=1)
+#
+#        filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+#        filtr_combobox.grid(row=10, column=1, columnspan=2)
+#
+#        filtr_btn_cancel = ttk.Button(self, text='Отмена')
+#        filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
+#
+#        filtr_btn_filtr = ttk.Button(self, text='Применить')
+#        filtr_btn_filtr.grid(row=13, column=0, columnspan=3)
+#        filtr_btn_filtr.bind('<Button-1>')
+#
+#        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения')
+#        filtr_btn_filtr_save.grid(row=14, column=0,  columnspan=3)
+#        filtr_btn_filtr_save.bind('<Button-1>')
+#
+#        self.grab_set()
+#        self.focus_set()
 
 
 
