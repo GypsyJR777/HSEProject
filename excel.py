@@ -18,28 +18,33 @@ def Table(parent=None, xls=None):
         global counter, tree, df
 
         df = pd.DataFrame(xls)
-        df_col = df.columns.values
-
-        tree = ttk.Treeview(root)
-        tree["columns"]=(df_col)
         count = len(df)
-        #generating for loop to create columns and give heading to them through df_col var.
-        for x in range(10):
-            tree.column(x, width=50)
-            tree.heading(x, text=df_col[x])
-        #generating for loop to print values of dataframe in treeview column.
+        headings = ["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"]
+        tree = ttk.Treeview(root, show="headings", selectmode="browse")
+        tree["columns"]=headings
+        tree["displaycolumns"]=headings
+  
+        for head in headings:
+            tree.heading(head, text=head, anchor=tk.CENTER)
+            tree.column(head, anchor=tk.CENTER, width=50)
+  
         for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
-        
-        scrollbar = tk.Scrollbar(root, orient="vertical", command=tree.yview)
+  
+        scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
         tree.configure(yscrollcommand=scrollbar.set)
 
         scrollbar.pack(side="right", fill="y")
-        tree.pack(expand=tk.YES, fill=tk.BOTH)
+        
+        scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
+        tree.configure(xscrollcommand=scrollbarx.set)
+
+        scrollbarx.pack(side="bottom", fill="x")
+        tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
 
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
-    global mdf, counter, count
+    global mdf, count
     try:
         counter = mdf.loc[len(mdf)-1]["Product Code"]
     except(KeyError):
@@ -53,17 +58,6 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
     global df, mdf
     dtemp =df[df[sort_parametr] >= sort_min]
     df=dtemp[dtemp[sort_parametr] <= sort_max]
-#    tree.destroy()
-#    Table(root, df)
-
-
-#def Sorttest_str(sort_parametr, sort_value):
-#    global df
-#    global mdf
-#    dtemp =mdf[mdf[sort_parametr] == sort_value]
-#    df=dtemp
-#    tree.destroy()
-#    Table(root, df)
 
 
 class Main(tk.Frame):
@@ -84,8 +78,7 @@ class Main(tk.Frame):
         frame_box2.pack(side='left', fill=tk.Y, expand=1)
 
         # frame for the Table
-        frame_table = tk.Frame(root, bd=2, bg="#B0C7E4")
-        frame_table.pack(side='bottom', ipadx=20, ipady=20)
+
         photo = tk.PhotoImage(file = r"./img.png")
         photo = photo.subsample(25, 25)
 
@@ -97,7 +90,6 @@ class Main(tk.Frame):
         button1_box2=tk.Button(frame_box2, text=u'Анализ', command=self.analysis, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box3=tk.Button(frame_box2, text=u'Фильтр', command=self.sort, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
-
 
         # pack elemests of toolbox
         button1_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
@@ -114,7 +106,6 @@ class Main(tk.Frame):
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         Table(root, mdf)
-
         
         root.mainloop()
 
@@ -297,6 +288,7 @@ class Kowalski_analis(tk.Toplevel):
         self.title('Анализ от Ковальского')
         self.geometry('600x400+400+300')
         self.resizable(False, False)
+        self.focus_force()
 
 
         def analis_stolb():
@@ -311,8 +303,13 @@ class Kowalski_analis(tk.Toplevel):
         #Тут можно добавить еще один индекс в квадратные скобки, поля entry оставил на всякий, эта херня считает среднее значение
         #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
         def analis_svod():
-            data_pt = pd.pivot_table(mdf,index=[stolb_1.get()], values=stolb_2.get() )
+            data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get() )
             print(data_pt)
+            writer_svod = pd.ExcelWriter('C:/Result_svod_table.xlsx')
+            data_pt.to_excel(writer_svod, 'smartphones1')
+            writer_svod.save()
+            print('DataFrame is written successfully to Excel Sheet.')
+            
 
 
 
@@ -322,6 +319,17 @@ class Kowalski_analis(tk.Toplevel):
             plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(), s= 50*plot_df['amount']*2, c='amount', cmap='inferno')
 
 
+
+        def analis_baz():
+            bazstat = mdf.describe()
+            print(bazstat)
+            bazstat.show()
+            
+            
+        def analis_wix():
+            wix=plt.boxplot(x=stolb_1_wix.get(), y=stolb_2_wix.get(), data=mdf, notch=False)
+            wix.show()
+         
 
         label_analis = ttk.Label(self, text='Выберете анализ: ')
         label_analis.grid(row=0, column=0)
@@ -361,6 +369,19 @@ class Kowalski_analis(tk.Toplevel):
 
         base_svod = ttk.Button(self, text='Диаграмма рассеивания', command=analis_rasseivanie)
         base_svod.grid(row=2, column=0)
+        
+#Поля базовой статистики
+        baz_stat = ttk.Button(self, text='Базовая статистка', command=analis_baz, width = 90)
+        baz_stat.grid(row=4, column=0, columnspan=4)
+        
+#Поля диаграммы Бокса-Вискера        
+        wix_stat = ttk.Button(self, text='Бокса-Вискера', command=analis_wix)
+        wix_stat.grid(row=5, column=0)
+        stolb_1_wix = ttk.Entry(self)
+        stolb_1_wix.grid(row=5, column=1)
+        stolb_2_wix = ttk.Entry(self)
+        stolb_2_wix.grid(row=5, column=2)
+
 
 
 
@@ -619,8 +640,11 @@ class Child_filter(tk.Toplevel):
         self.grab_set()
         self.focus_set()
 
+
 if __name__ == "__main__":
     root = tk.Tk()
+    root["bg"]="#B0C7E4"
+    root.state("zoomed")
     app = Main(root)
     app.pack()
     root.title("Программа")
