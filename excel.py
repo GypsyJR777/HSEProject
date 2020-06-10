@@ -16,10 +16,10 @@ pd.DataFrame.mask = mask
 
 def Table(parent=None, xls=None):
         global counter, tree, df
-        
+
         df = pd.DataFrame(xls)
         df_col = df.columns.values
-        
+
         tree = ttk.Treeview(root)
         tree["columns"]=(df_col)
         count = len(df)
@@ -47,8 +47,8 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
     df=dtemp[dtemp[sort_parametr] <= sort_max]
 #    tree.destroy()
 #    Table(root, df)
-    
-    
+
+
 #def Sorttest_str(sort_parametr, sort_value):
 #    global df
 #    global mdf
@@ -113,13 +113,16 @@ class Main(tk.Frame):
 
         # elemests of 3-rd box
         button1_box3=tk.Button(frame_box3, text=u'Фильтр', command=self.sort)
-        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка', command=self.sorttest2)
+        button2_box3=tk.Button(frame_box3, text=u'Вторая кнопка')
 
         # pack elemests of 3-rd box
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-        xls = pd.read_excel("./Data/Smartphones.xlsx")
+        try:
+            xls = pd.read_pickle("./Data/smartphones.pkl")
+        except (FileNotFoundError, EOFError):
+            xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         Table(root, mdf)
 
@@ -133,13 +136,6 @@ class Main(tk.Frame):
     def sort(self):
         Child_filter()
 
-    def sorttest2(self):
-       # frame_table.delete
-        global df
-        tree.destroy()
-        stor = 256
-        df = mdf[mdf['Storage'] == stor]
-        Table(root, df)
 
     def delete(self):
         Delete()
@@ -151,6 +147,7 @@ class Main(tk.Frame):
 
     def saved(self):
         global mdf
+        mdf.to_pickle("./Data/smartphones.pkl")
         writer = pd.ExcelWriter('./Output/Result.xlsx')
         mdf.to_excel(writer, 'smartphones')
         writer.save()
@@ -169,8 +166,8 @@ class Delete(tk.Toplevel):
         self.title('Удаление смартфона')
         self.geometry('400x400+400+300')
         self.resizable(False, False)
-        
-        
+
+
         def delete_code():
             global mdf
             if(choice.get() == ''):
@@ -180,18 +177,18 @@ class Delete(tk.Toplevel):
                 tree.destroy()
                 Table(root, mdf)
                 self.destroy()
-                
-                
-        
+
+
+
         label_choice = ttk.Label(self, text='Введите код товара, который хотите удалить')
         label_choice.grid(row=0, column=0, columnspan=2)
-        
+
         choice = ttk.Entry(self)
         choice.grid(row=1, column=0, columnspan=2)
-        
+
         cancel_but = ttk.Button(self, text='Отмена', command=self.destroy)
         cancel_but.grid(row=2, column=1)
-    
+
         del_but = ttk.Button(self, text='Удалить', command=delete_code)
         del_but.grid(row=2, column=0)
         del_but.bind('<Button-1>')
@@ -208,36 +205,76 @@ class Kowalski_analis(tk.Toplevel):
     def init_child(self):
         global mdf
         self.title('Анализ от Ковальского')
-        self.geometry('400x400+400+300')
+        self.geometry('600x400+400+300')
         self.resizable(False, False)
-        
-        
-        def analis():
+
+
+        def analis_stolb():
             fig, ax = plt.subplots()
-            ax.bar(list(mdf[first.get()]), list(mdf[second.get()]))
+            ax.bar(list(mdf[first_stolb.get()]), list(mdf[second_stolb.get()]))
             ax.set_facecolor('seashell')
             fig.set_facecolor('floralwhite')
             fig.set_figwidth(12)    #  ширина Figure
             fig.set_figheight(6)
             plt.show()
-            
-            
-        
+
+        #Тут можно добавить еще один индекс в квадратные скобки, поля entry оставил на всякий, эта херня считает среднее значение
+        #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
+        def analis_svod():
+            data_pt = pd.pivot_table(mdf,index=[stolb_1.get()], values=stolb_2.get() )
+            print(data_pt)
+
+
+
+        def analis_rasseivanie():
+            plot_df = mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
+            print(plot_df)
+            plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(), s= 50*plot_df['amount']*2, c='amount', cmap='inferno')
+
+
+
         label_analis = ttk.Label(self, text='Выберете анализ: ')
         label_analis.grid(row=0, column=0)
-        
-        first = ttk.Entry(self)
-        first.grid(row=1, column=1)
 
-        second = ttk.Entry(self)
-        second.grid(row=1, column=2)
-        
-        
-        base = ttk.Button(self, text='Столбчатая Диаграмма', command=analis)
-        base.grid(row=1, column=0)
+        first_stolb = ttk.Entry(self)
+        first_stolb.grid(row=1, column=1)
 
-        
-        
+        second_stolb = ttk.Entry(self)
+        second_stolb.grid(row=1, column=2)
+
+#Поля сводной таблицы
+        stolb_1 = ttk.Entry(self)
+        stolb_1.grid(row=3, column=1)
+
+        stolb_2 = ttk.Entry(self)
+        stolb_2.grid(row=3, column=2)
+
+        stolb_3 = ttk.Entry(self)
+        stolb_3.grid(row=3, column=3)
+
+#Поля диаграммы рассеивания
+        stolb_1_rass = ttk.Entry(self)
+        stolb_1_rass.grid(row=2, column=1)
+
+        stolb_2_rass = ttk.Entry(self)
+        stolb_2_rass.grid(row=2, column=2)
+
+        stolb_3_rass = ttk.Entry(self)
+        stolb_3_rass.grid(row=2, column=3)
+
+
+        base_stolb = ttk.Button(self, text='Столбчатая Диаграмма', command=analis_stolb)
+        base_stolb.grid(row=1, column=0)
+
+        base_svod = ttk.Button(self, text='Сводная таблица', command=analis_svod)
+        base_svod.grid(row=3, column=0)
+
+        base_svod = ttk.Button(self, text='Диаграмма рассеивания', command=analis_rasseivanie)
+        base_svod.grid(row=2, column=0)
+
+
+
+
 # добавление
 class Child_add(tk.Toplevel):
 
@@ -260,7 +297,7 @@ class Child_add(tk.Toplevel):
                entry_ram.get() !='' and entry_amount.get() !='' and
                combobox.get()!=''):
                 if (entry_ram.get().isdigit() == False and
-                    entry_storage.get().isdigit() == False and 
+                    entry_storage.get().isdigit() == False and
                     entry_diagonal.get().isdigit() == False and
                     entry_amount.get().isdigit() == False):
                     mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
@@ -269,7 +306,7 @@ class Child_add(tk.Toplevel):
                     self.destroy()
             else:
                 mb.showerror("Ошибка", "Введите данные во все поля")
-                
+
 
 
         label_description = ttk.Label(self, text='Операционная система')
@@ -389,8 +426,8 @@ class Child_filter(tk.Toplevel):
             mdf=df
             tree.destroy()
             Table(root, mdf)
-            
-            
+
+
         def filtr_cancel():
             global df
             global mdf
@@ -398,7 +435,7 @@ class Child_filter(tk.Toplevel):
             tree.destroy()
             Table(root, df)
             self.destroy()
-        
+
 
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
@@ -441,7 +478,7 @@ class Child_filter(tk.Toplevel):
         filtr_entry_storage = ttk.Entry(self)
         filtr_entry_storage.insert(0, 0)
         filtr_entry_storage.grid(row=5, column=1)
-        
+
         filtr_entry_diagonal = ttk.Entry(self)
         filtr_entry_diagonal.insert(0, 0)
         filtr_entry_diagonal.grid(row=6, column=1)

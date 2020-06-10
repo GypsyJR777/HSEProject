@@ -119,7 +119,10 @@ class Main(tk.Frame):
         button1_box3.pack(side='left')
         button2_box3.pack(side='left')
 
-        xls = pd.read_excel("C:/Smartphones.xlsx")
+        try:
+            xls = pd.read_pickle("./Data/smartphones.pkl")
+        except (FileNotFoundError, EOFError):
+            xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         Table(root, mdf)
 
@@ -144,7 +147,8 @@ class Main(tk.Frame):
 
     def saved(self):
         global mdf
-        writer = pd.ExcelWriter('C:/poutput/Result.xlsx')
+        mdf.to_pickle("./Data/smartphones.pkl")
+        writer = pd.ExcelWriter('./Output/Result.xlsx')
         mdf.to_excel(writer, 'smartphones')
         writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
