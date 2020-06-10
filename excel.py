@@ -35,7 +35,10 @@ def Table(parent=None, xls=None):
 
 def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
     global mdf, counter, count
-    counter = mdf.loc[len(mdf)-1]["Product Code"]
+    try:
+        counter = mdf.loc[len(mdf)-1]["Product Code"]
+    except(KeyError):
+        counter=0
     mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
     tree.destroy()
     Table(root, mdf)
@@ -91,7 +94,7 @@ class Main(tk.Frame):
         frame_box1_top = tk.Frame(frame_box1, bd=5)
         frame_box1_bottom = tk.Frame(frame_box1, bd=5)
         button1_box1=tk.Button(frame_box1_top, text=u'Добавить', command=self.open_dialog)
-        button2_box1=tk.Button(frame_box1_top, text=u'Правка')
+        button2_box1=tk.Button(frame_box1_top, text=u'Правка', command=self.change)
         button3_box1=tk.Button(frame_box1_bottom, text=u'Удалить', command=self.delete)
         button4_box1=tk.Button(frame_box1_bottom, text=u'Экспорт', command=self.saved)
 
@@ -137,6 +140,10 @@ class Main(tk.Frame):
         Child_filter()
 
 
+    def change(self):
+        Change()
+
+
     def delete(self):
         Delete()
 
@@ -152,6 +159,20 @@ class Main(tk.Frame):
         mdf.to_excel(writer, 'smartphones')
         writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
+
+
+class Change(tk.Toplevel):
+
+    def __init__(self):
+        super().__init__(root)
+        self.init_child()
+
+
+    def init_child(self):
+        self.title('Изменение данных о смартфоне')
+        self.geometry('400x400+400+300')
+        self.resizable(False, False)
+
 
 
 
