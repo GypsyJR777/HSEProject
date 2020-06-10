@@ -172,6 +172,82 @@ class Change(tk.Toplevel):
         self.title('Изменение данных о смартфоне')
         self.geometry('400x400+400+300')
         self.resizable(False, False)
+        
+        
+        
+        label_description = ttk.Label(self, text='Операционная система')
+        label_description.grid(row=10, column = 0)
+
+
+        label_description = ttk.Label(self, text='Производитель')
+        label_description.grid(row=2, column =0)
+
+        label_description = ttk.Label(self, text='Страна')
+        label_description.grid(row=3, column =0)
+
+        label_description = ttk.Label(self, text='Модель')
+        label_description.grid(row=4, column =0)
+
+        label_description = ttk.Label(self, text='Память')
+        label_description.grid(row=5, column =0)
+
+        label_description = ttk.Label(self, text='Диагональ')
+        label_description.grid(row=6, column =0)
+
+        label_description = ttk.Label(self, text='Процессор')
+        label_description.grid(row=7, column =0)
+
+        label_description = ttk.Label(self, text='Оперативная память')
+        label_description.grid(row=8, column =0)
+
+        label_description = ttk.Label(self, text='Количество')
+        label_description.grid(row=9, column =0)
+
+
+        filtr_entry_firm = ttk.Entry(self)
+        filtr_entry_firm.grid(row=2, column=1, columnspan=2)
+
+        filtr_entry_country = ttk.Entry(self)
+        filtr_entry_country.grid(row=3, column=1, columnspan=2)
+
+        filtr_entry_model = ttk.Entry(self)
+        filtr_entry_model.grid(row=4, column=1, columnspan=2)
+
+        filtr_entry_storage = ttk.Entry(self)
+        filtr_entry_storage.insert(0, 0)
+        filtr_entry_storage.grid(row=5, column=1)
+
+        filtr_entry_diagonal = ttk.Entry(self)
+        filtr_entry_diagonal.insert(0, 0)
+        filtr_entry_diagonal.grid(row=6, column=1)
+
+        filtr_entry_cpu = ttk.Entry(self)
+        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
+
+        filtr_entry_ram = ttk.Entry(self)
+        filtr_entry_ram.insert(0, 0)
+        filtr_entry_ram.grid(row=8, column=1)
+
+        filtr_entry_amount = ttk.Entry(self)
+        filtr_entry_amount.insert(0, 0)
+        filtr_entry_amount.grid(row=9, column=1)
+
+        filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'], width=17)
+        filtr_combobox.grid(row=10, column=1, columnspan=2)
+
+        filtr_btn_cancel = ttk.Button(self, text='Отмена')
+        filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
+
+        filtr_btn_filtr = ttk.Button(self, text='Применить')
+        filtr_btn_filtr.grid(row=13, column=0, columnspan=3)
+        filtr_btn_filtr.bind('<Button-1>')
+
+        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения')
+        filtr_btn_filtr_save.grid(row=14, column=0,  columnspan=3)
+        filtr_btn_filtr_save.bind('<Button-1>')
+
+        self.grab_set()
+        self.focus_set()
 
 
 
