@@ -1,9 +1,8 @@
 import tkinter as tk
-import tkinter.ttk as ttk
 import pandas as pd
 from bd import Table
 from filtres import Child_filter
-
+from add import Child_add
 
 
 class Main(tk.Frame):
@@ -14,13 +13,13 @@ class Main(tk.Frame):
     
     
     def init_main(self):   
-        global mdf, her
+        global mdf, tree
         frame_toolbox = tk.Frame(bd=5, bg="#B0C7E4")
         frame_toolbox.pack(side='top', fill=tk.X)
         
         frame_table = tk.Frame(bd=5, bg="#B0C7E4")
         
-        her = frame_table
+        tree = frame_table
         
         #frame with controls
         frame_box2 = tk.Frame(frame_toolbox, bd=5, bg="#B0C7E4")
@@ -62,7 +61,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        pass
+        global mdf, tree
+        Child_add(mdf, tree)
 
     def sort(self):
         '''
@@ -71,8 +71,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, her
-        Child_filter(mdf, her)
+        global mdf, tree
+        Child_filter(mdf, tree)
 
 
     def change(self):
