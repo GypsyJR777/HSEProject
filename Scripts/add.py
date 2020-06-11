@@ -3,32 +3,26 @@ import tkinter.ttk as ttk
 import pandas as pd
 from bd import Table
 
-def Table_add(parent, firm, country, model, storage, diagonal, cpu, ram, amount, os):
-    global mdf, count
-    try:
-        counter = mdf.loc[len(mdf)-1]["Product Code"]
-    except(KeyError):
-        counter=0
-    mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
-    tree.destroy()
-    Table(parent, mdf)
-
 
 class Child_add(tk.Toplevel):
+    def __init__(self, mdf_, parent_):
+        super().__init__(parent_)
+#        self.init_child()
 
-    def __init__(self, mdf, parent):
-        super().__init__(parent)
-        self.init_child()
 
+#    def init_child(self, mdf, parent):
+        global df, parent, mdf
+        mdf = mdf_
+        df = mdf
+        parent = parent_
 
-    def init_child(self, mdf, parent):
         self.title('Добавление')
         self.geometry('260x260+400+300')
         self.resizable(False, False)
 
 #self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
         def add():
-            global counter, df
+            global counter, df, parent
             if(entry_firm.get()!='' and entry_country.get()!='' and
                entry_model.get() !='' and entry_storage.get() !='' and
                entry_diagonal.get() !='' and entry_cpu.get()!='' and
@@ -40,11 +34,22 @@ class Child_add(tk.Toplevel):
                     entry_amount.get().isdigit() == False):
                     mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
                 else:
-                    Table_add(parent, entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
+                    Table_add(entry_firm.get(), entry_country.get(), entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
                     self.destroy()
             else:
                 mb.showerror("Ошибка", "Введите данные во все поля")
 
+
+        def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
+            global mdf, count, parent
+            try:
+                counter = mdf.loc[len(mdf)-1]["Product Code"]
+            except(KeyError):
+                counter=0
+            mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
+            for widget in parent.winfo_children():
+                widget.destroy()
+            Table(parent, mdf)
 
 
         label_description = ttk.Label(self, text='Операционная система')
