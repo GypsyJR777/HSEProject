@@ -14,7 +14,7 @@ def Table(parent=None, xls=None):
         Возращает: -
         Автор:
         '''
-        global tree
+        global tree, mdf
 
         df = pd.DataFrame(xls)
         count = len(df)
@@ -40,6 +40,7 @@ def Table(parent=None, xls=None):
         tree.configure(xscrollcommand=scrollbarx.set)
 
         scrollbarx.pack(side="bottom", fill="x")
+        mdf = mdf.reset_index(drop=True)
         tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
 
 
@@ -52,9 +53,9 @@ def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
         ram - объём оперативной памяти, amount - количество (штук),
         os - операционная система
     Возвращает: -
-    Автор:
+    Автор: -
     '''
-    global mdf, count
+    global mdf
     try:
         counter = mdf.loc[len(mdf)-1]["Product Code"]
     except(KeyError):
@@ -72,7 +73,7 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
         sort_min - минимальное значение,
         sort_max - максимальное значение
     Возвращает: -
-    Автор:
+    Автор: Будин А.М.
     '''
     global df, mdf
     dtemp = df[df[sort_parametr] >= sort_min]
@@ -81,12 +82,6 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
 
 class Main(tk.Frame):
     def __init__(self, root):
-        '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
-        '''
         super().__init__(root)
         self.init_main()
 
@@ -160,7 +155,7 @@ class Main(tk.Frame):
         Функция вызывает класс Child_add для создания окна добавления нового элемента таблицы
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: -
         '''
         Child_add()
 
@@ -169,7 +164,7 @@ class Main(tk.Frame):
         Функция вызывает класс Child_filter для сортировки таблицы
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: -
         '''
         Child_filter()
 
@@ -179,7 +174,7 @@ class Main(tk.Frame):
         Функция вызывает класс Change для редактирования элемента таблицы
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: -
         '''
         Change()
 
@@ -189,7 +184,7 @@ class Main(tk.Frame):
         Функция вызывает класс Delete для удаления элемента таблицы
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: -
         '''
         Delete()
 
@@ -199,7 +194,7 @@ class Main(tk.Frame):
         Функция вызвывает класс Kowalski_analis для различных методов анализа
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: -
         '''
         Kowalski_analis()
 
@@ -209,7 +204,7 @@ class Main(tk.Frame):
         Функция сохраняет таблицу в формате Excel
         Получает: -
         Возвращает: -
-        Автор: Матвеев В.Е.
+        Автор: Будин А.М.
         '''
         global mdf
         mdf.to_pickle("../Data/smartphones.pkl")
@@ -222,12 +217,6 @@ class Main(tk.Frame):
 class Change(tk.Toplevel):
 
     def __init__(self):
-        '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
-        '''
         super().__init__(root)
         self.init_child()
 
@@ -237,7 +226,7 @@ class Change(tk.Toplevel):
         Функция вызывает окно изменения выбранного кортежа
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: Демидов И.Д
         '''
         global mdf
         self.title('Изменение данных о смартфоне')
@@ -246,6 +235,12 @@ class Change(tk.Toplevel):
         
         
         def ok():
+            '''
+            Функция обновляет окно и заполняет данными поля ввода
+            Получает: mdf-структура DataFrame
+            Возвращает: -
+            Автор: Демидов И.Д
+            '''
             string = np.array(mdf[mdf['Product Code'] == int(entry_code.get())])
             if(len(string)>0):
                 self.geometry('300x300+400+300')
@@ -303,6 +298,12 @@ class Change(tk.Toplevel):
 
         
         def change_df():
+            '''
+            Функция изменяет данные выбранного кортежа
+            Получает: -
+            Возвращает: mdf-структура DataFrame
+            Автор: Демидов И.Д
+            '''
             global mdf
             mdf.loc[int(entry_code.get())-1] = [entry_code.get(), 
                     change_entry_firm.get(), 
@@ -340,12 +341,6 @@ class Change(tk.Toplevel):
 class Delete(tk.Toplevel):
 
     def __init__(self):
-        '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
-        '''
         super().__init__(root)
         self.init_child()
 
@@ -355,7 +350,7 @@ class Delete(tk.Toplevel):
         Функция вызывает окно удаления кортежа
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: Демидов И.Д
         '''
         self.title('Удаление смартфона')
         self.geometry('400x400+400+300')
@@ -363,6 +358,12 @@ class Delete(tk.Toplevel):
 
 
         def delete_code():
+            '''
+            Функция удаляет выбранный кортеж
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д
+            '''
             global mdf
             if(choice.get() == ''):
                 mb.showerror("Ошибка", "Введите код продукта")
@@ -392,22 +393,16 @@ class Delete(tk.Toplevel):
 class Kowalski_analis(tk.Toplevel):
 
     def __init__(self):
-        '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
-        '''
         super().__init__(root)
         self.init_child()
 
 
     def init_child(self):
         '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
+        Функция вызывает окно выбора диаграммы
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
         '''
         global mdf
         self.title('Анализ от Ковальского')
@@ -418,10 +413,10 @@ class Kowalski_analis(tk.Toplevel):
 
         def analis_stolb():
             '''
-            Функция
-            Получает:
-            Возвращает:
-            Автор:
+            Функция создает столбчатую диаграмму
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
             '''
             fig, ax = plt.subplots()
             ax.bar(list(mdf[first_stolb.get()]), list(mdf[second_stolb.get()]))
@@ -435,10 +430,10 @@ class Kowalski_analis(tk.Toplevel):
         #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
         def analis_svod():
             '''
-            Функция
-            Получает:
-            Возвращает:
-            Автор:
+            Функция создает сводчатую таблицу
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
             '''
             data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get() )
             print(data_pt)
@@ -452,10 +447,10 @@ class Kowalski_analis(tk.Toplevel):
 
         def analis_rasseivanie():
             '''
-            Функция
-            Получает:
-            Возвращает:
-            Автор:
+            Функция создает диаграмму рассеивания
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
             '''
             plt.figure(figsize=(13,10))
             sns.boxplot(x='OS', y='Storage', data=df, notch=False)
@@ -471,10 +466,10 @@ class Kowalski_analis(tk.Toplevel):
 
         def analis_baz():
             '''
-            Функция
-            Получает:
-            Возвращает:
-            Автор:
+            Функция создает базовый анализ
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
             '''
             bazstat = mdf.describe()
             print(bazstat)
@@ -483,10 +478,10 @@ class Kowalski_analis(tk.Toplevel):
 
         def analis_wix():
             '''
-            Функция
-            Получает:
-            Возвращает:
-            Автор:
+            Функция создает диаграмму Бокса-Вискера
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
             '''
             n = pd.unique(df[stolb_1_wix.get()]).tolist()
             b=[]
@@ -550,17 +545,10 @@ class Kowalski_analis(tk.Toplevel):
 
 
 
-
 # добавление
 class Child_add(tk.Toplevel):
 
     def __init__(self):
-        '''
-        Функция
-        Получает:
-        Возвращает:
-        Автор:
-        '''
         super().__init__(root)
         self.init_child()
 
@@ -570,7 +558,7 @@ class Child_add(tk.Toplevel):
         Функция вызывает окно добавления нового кортежа в таблицу
         Получает: -
         Возвращает: -
-        Автор:
+        Автор: Будин А.М.
         '''
         self.title('Добавление')
         self.geometry('260x260+400+300')
@@ -582,7 +570,7 @@ class Child_add(tk.Toplevel):
             Функция добавляет новый кортеж в таблицу
             Получает: -
             Возвращает: -
-            Автор:
+            Автор: Будин А.М.
             '''
             global counter, df
             if(entry_firm.get()!='' and entry_country.get()!='' and
@@ -685,12 +673,24 @@ class Child_filter(tk.Toplevel):
 
 
     def init_child2(self):
+        '''
+        Функция вызывает окно с параметрами для фильтрации
+        Получает: -
+        Возвращает: -
+        Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+        '''
         self.title('Фильтр')
         self.geometry('400x290+1000+500')
         self.resizable(False, False)
 
 #self.entry_firm, self.entry_country, self.entry_model, self.entry_storage, self.entry_diagonal, self.entry_cpu, self.entry_ram, self.entry_amount, self.combobox
         def filtr():
+            '''
+            Функция производит фильтрацию таблицы по заданным значениям
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е, Будин А.М.
+            '''
             global df
             df = mdf
             if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
@@ -723,13 +723,25 @@ class Child_filter(tk.Toplevel):
 
 
         def filtr_save():
-            global df
+            '''
+            Функция сохраняет изменения произведенные с помощью применения фильтра
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
+            '''
+            global df, mdf
             mdf=df
             tree.destroy()
             Table(root, mdf)
 
 
         def filtr_cancel():
+            '''
+            Функция отменяет изменения произведенные с помощью применения фильтра
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
+            '''
             global df
             df=mdf
             tree.destroy()
