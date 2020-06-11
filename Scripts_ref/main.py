@@ -503,7 +503,6 @@ class Kowalski_analis(tk.Toplevel):
 
 
 
-
 # добавление
 class Child_add(tk.Toplevel):
     def __init__(self):
