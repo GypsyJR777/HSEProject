@@ -3,24 +3,27 @@ import pandas as pd
 from bd import Table
 from filtres import Child_filter
 from add import Child_add
+from change import Change
+from delete import Delete
+from graphs import Kowalski_analis
 
 
 class Main(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
-        
+
         self.init_main()
-    
-    
-    def init_main(self):   
+
+
+    def init_main(self):
         global mdf, tree
         frame_toolbox = tk.Frame(bd=5, bg="#B0C7E4")
         frame_toolbox.pack(side='top', fill=tk.X)
-        
+
         frame_table = tk.Frame(bd=5, bg="#B0C7E4")
-        
+
         tree = frame_table
-        
+
         #frame with controls
         frame_box2 = tk.Frame(frame_toolbox, bd=5, bg="#B0C7E4")
         frame_box2.pack(side='left', fill=tk.Y, expand=1)
@@ -52,8 +55,8 @@ class Main(tk.Frame):
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         Table(frame_table, mdf)
-    
-    
+
+
     def open_dialog(self):
         '''
         Функция вызывает класс Child_add для создания окна добавления нового элемента таблицы
@@ -82,7 +85,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        pass
+        global mdf, tree
+        Change(mdf, tree)
 
 
     def delete(self):
@@ -92,7 +96,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        pass
+        global mdf, tree
+        Delete(mdf, tree)
 
 
     def analysis(self):
@@ -102,7 +107,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        pass
+        global mdf, tree
+        Kowalski_analis(mdf, tree)
 
 
     def saved(self):
@@ -118,8 +124,8 @@ class Main(tk.Frame):
         mdf.to_excel(writer, 'smartphones')
         writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
-        
-        
+
+
 #root = tk.Tk()
 #root["bg"] = "#B0C7E4"
 #root.state("zoomed")

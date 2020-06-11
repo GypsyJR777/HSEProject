@@ -7,13 +7,12 @@ import matplotlib.pyplot as plt
 
 class Kowalski_analis(tk.Toplevel):
 
-    def __init__(self):
-        super().__init__(root)
-        self.init_child()
+    def __init__(self, mdf, parent):
+        super().__init__(parent)
+        #self.init_child()
 
 
-    def init_child(self):
-        global mdf
+    #def init_child(self):
         self.title('Анализ от Ковальского')
         self.geometry('600x400+400+300')
         self.resizable(False, False)
@@ -34,7 +33,7 @@ class Kowalski_analis(tk.Toplevel):
         def analis_svod():
             data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get() )
             print(data_pt)
-            writer_svod = pd.ExcelWriter('C:/Result_svod_table.xlsx')
+            writer_svod = pd.ExcelWriter('../Output/Result_svod_table.xlsx')
             data_pt.to_excel(writer_svod, 'smartphones1')
             writer_svod.save()
             print('DataFrame is written successfully to Excel Sheet.')
