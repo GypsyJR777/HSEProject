@@ -4,8 +4,6 @@ import pandas as pd
 
 
 def Table(parent=None, xls=None):
-        global counter, tree, df
-
         df = pd.DataFrame(xls)
         count = len(df)
         headings = ["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"]
@@ -30,3 +28,4 @@ def Table(parent=None, xls=None):
 
         scrollbarx.pack(side="bottom", fill="x")
         tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+        parent.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
