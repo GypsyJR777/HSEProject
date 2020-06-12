@@ -39,7 +39,7 @@ class Main(tk.Frame):
         button4_box1 = tk.Button(frame_box2, text=u'Экспорт', command=self.saved, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box2 = tk.Button(frame_box2, text=u'Анализ', command=self.analysis, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
         button1_box3 = tk.Button(frame_box2, text=u'Фильтр', command=self.sort, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
-        #button2_box3 = tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
+        button2_box3 = tk.Button(frame_toolbox, bg="#B0C7E4", image=photo, compound=tk.LEFT, relief="flat")
 
         # pack elemests of toolbox
         button1_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
@@ -48,7 +48,7 @@ class Main(tk.Frame):
         button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
-        #button2_box3.pack(side='right')
+        button2_box3.pack(side='right')
 
         try:
             xls = pd.read_pickle("../Data/smartphones.pkl")

@@ -1,11 +1,10 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
-import numpy as np
 import matplotlib as plt
 import matplotlib.pyplot as plt
-import app as m
 from tkinter import filedialog
+import app as m
 
 class Kowalski_analis(tk.Toplevel):
     def __init__(self, parent_):
@@ -54,7 +53,6 @@ class Kowalski_analis(tk.Toplevel):
             data_pt.to_excel(export_file)
 
 
-
         def analis_rasseivanie():
             '''
             Функция создает диаграмму рассеивания
@@ -62,16 +60,11 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            plt.figure(figsize=(13,10))
-            plt.boxplot(x='OS', y='Storage', data=m.mdf, notch=False)
-            def add_n_obs(df,group_col,y):
-                medians_dict = {grp[0]:grp[1][y].median() for grp in df.groupby(group_col)}
-                xticklabels = [x.get_text() for x in plt.gca().get_xticklabels()]
-                n_obs = df.groupby(group_col)[y].size().values
-                for (x, xticklabel), n_ob in zip(enumerate(xticklabels), n_obs):
-                    plt.text(x, medians_dict[xticklabel]*1.01, "#obs : "+str(n_ob), horizontalalignment='center', fontdict={'size':14}, color='white')
-            add_n_obs(m.mdf,group_col='OS',y='Storage')
+            plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
+            print(plot_df)
+            plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(), s= 100*plot_df['amount'], c='amount', cmap='inferno')
             plt.show()
+
 
         def analis_baz():
             '''
@@ -99,6 +92,7 @@ class Kowalski_analis(tk.Toplevel):
                 b.append(m.mdf[stolb_2_wix.get()][m.mdf[stolb_1_wix.get()] == item])
             plt.boxplot(b)
             plt.show()
+
 
         def analis_gis():
             gis = m.mdf.groupby(stolb_1_gis.get()).size().reset_index(name=stolb_2_gis.get())
@@ -169,3 +163,4 @@ class Kowalski_analis(tk.Toplevel):
         stolb_1_gis.grid(row=6, column=1)
         stolb_2_gis = ttk.Entry(self)
         stolb_2_gis.grid(row=6, column=2)
+        
