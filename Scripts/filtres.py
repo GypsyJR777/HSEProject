@@ -16,8 +16,8 @@ class Child_filter(tk.Toplevel):
         global df, parent
         df = m.mdf
         parent = parent_
-        self.title('Фильтр')
-        self.geometry('400x400+400+300')
+        self.title('Фильтры')
+        self.geometry('400x300+400+300')
         self.resizable(False, False)
         
         def Sorttest_int(sort_parametr, sort_min, sort_max):
@@ -109,7 +109,7 @@ class Child_filter(tk.Toplevel):
 
 
         label_description = ttk.Label(self, text='Операционная система')
-        label_description.grid(row=1, column=0)
+        label_description.grid(row=10, column=0)
         label_description = ttk.Label(self, text='Производитель')
         label_description.grid(row=2, column=0)
         label_description = ttk.Label(self, text='Страна')
