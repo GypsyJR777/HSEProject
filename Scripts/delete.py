@@ -3,31 +3,30 @@ import tkinter.ttk as ttk
 import pandas as pd
 import numpy as np
 from bd import Table
-
+import app as m
 
 
 class Delete(tk.Toplevel):
-    def __init__(self, mdf_, parent_):
+    def __init__(self, parent_):
         super().__init__(parent_)
     #    self.init_child()
 
 
     #def init_child(self):
-        global parent, mdf
-        mdf = mdf_
+        global parent
         parent = parent_
         self.title('Удаление смартфона')
         self.geometry('400x400+400+300')
         self.resizable(False, False)
         def delete_code():
-            global parent, mdf
+            global parent
             if(choice.get() == ''):
                 mb.showerror("Ошибка", "Введите код продукта")
             else:
-                mdf = mdf.drop(np.where(mdf['Product Code'] == int(choice.get()))[0])
+                m.mdf = m.mdf.drop(np.where(m.mdf['Product Code'] == int(choice.get()))[0])
                 for widget in parent.winfo_children():
                     widget.destroy()
-                Table(parent, mdf)
+                Table(parent, m.mdf)
                 self.destroy()
 
         label_choice = ttk.Label(self, text='Введите код товара, который хотите удалить')

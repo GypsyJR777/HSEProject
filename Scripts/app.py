@@ -1,11 +1,12 @@
 import tkinter as tk
 import pandas as pd
-from bd import Table
+import bd
 from filtres import Child_filter
 from add import Child_add
 from change import Change
 from delete import Delete
 from graphs import Kowalski_analis
+from tkinter import filedialog
 
 
 class Main(tk.Frame):
@@ -54,7 +55,7 @@ class Main(tk.Frame):
         except (FileNotFoundError, EOFError):
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
-        Table(frame_table, mdf)
+        bd.Table(frame_table, mdf)
 
 
     def open_dialog(self):
@@ -64,8 +65,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, tree
-        Child_add(mdf, tree)
+        global tree
+        Child_add(tree)
 
     def sort(self):
         '''
@@ -74,8 +75,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, tree
-        Child_filter(mdf, tree)
+        global tree
+        Child_filter(tree)
 
 
     def change(self):
@@ -85,8 +86,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, tree
-        Change(mdf, tree)
+        global tree
+        Change(tree)
 
 
     def delete(self):
@@ -96,8 +97,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, tree
-        Delete(mdf, tree)
+        global tree
+        Delete(tree)
 
 
     def analysis(self):
@@ -107,8 +108,8 @@ class Main(tk.Frame):
         Возвращает: -
         Автор:
         '''
-        global mdf, tree
-        Kowalski_analis(mdf, tree)
+        global tree
+        Kowalski_analis(tree)
 
 
     def saved(self):
@@ -116,21 +117,14 @@ class Main(tk.Frame):
         Функция сохраняет таблицу в формате Excel
         Получает: -
         Возвращает: -
-        Автор: Матвеев В.Е.
+        Автор: Будин А.М.
         '''
         global mdf
-        #mdf.to_pickle("../Data/smartphones.pkl")
-        writer = pd.ExcelWriter('../Output/Result.xlsx')
-        mdf.to_excel(writer, 'smartphones')
-        writer.save()
+        mdf.to_pickle("../Data/smartphones.pkl")
+        #writer = pd.ExcelWriter('../Output/Result.xlsx')
+        export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+        mdf.to_excel(export_file, index = True, header=True)
+        #mdf.to_excel(writer, 'smartphones')
+        #writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
 
-
-#root = tk.Tk()
-#root["bg"] = "#B0C7E4"
-#root.state("zoomed")
-#root.title("Программа")
-#w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-#root.geometry("%dx%d+0+0" % (w, h))
-#root.resizable(False, False)
-#Main(root)

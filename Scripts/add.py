@@ -2,18 +2,18 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 from bd import Table
+import app as m
 
 
 class Child_add(tk.Toplevel):
-    def __init__(self, mdf_, parent_):
+    def __init__(self, parent_):
         super().__init__(parent_)
 #        self.init_child()
 
 
 #    def init_child(self, mdf, parent):
-        global df, parent, mdf
-        mdf = mdf_
-        df = mdf
+        global df, parent
+        df = m.mdf
         parent = parent_
 
         self.title('Добавление')
@@ -41,22 +41,19 @@ class Child_add(tk.Toplevel):
 
 
         def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
-            global mdf, count, parent
+            global count, parent
             try:
-                counter = mdf.loc[len(mdf)-1]["Product Code"]
+                counter = m.mdf.loc[len(m.mdf)-1]["Product Code"]
             except(KeyError):
                 counter=0
-            mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
+            m.mdf.loc[len(m.mdf)] = [int(counter)+1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
             for widget in parent.winfo_children():
                 widget.destroy()
-            Table(parent, mdf)
+            Table(parent, m.mdf)
 
 
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
-
-#        label_description = ttk.Label(self, text='Код товара')
-#        label_description.grid(row=1, column =0)
 
         label_description = ttk.Label(self, text='Производитель')
         label_description.grid(row=2, column =0)
@@ -81,9 +78,6 @@ class Child_add(tk.Toplevel):
 
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column =0)
-
-#        self.entry_cod = ttk.Entry(self)
-#        self.entry_cod.grid(row=1, column=1)
 
         entry_firm = ttk.Entry(self)
         entry_firm.grid(row=2, column=1)
