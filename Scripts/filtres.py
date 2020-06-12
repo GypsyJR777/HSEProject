@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from bd import Table
+import bd
+import app as m
 
 
 def Sorttest_int(sort_parametr, sort_min, sort_max):
@@ -10,37 +11,26 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
 
 
 class Child_filter(tk.Toplevel):
-    def __init__(self, mdf_, parent_):
+    def __init__(self, parent_):
         super().__init__()
-#        self.init_child()
-
-
-#    def init_child(self, mdf, parent):
-        global df, parent, mdf
-        mdf = mdf_
-        df = mdf
+        global df, parent
+        df = m.mdf
         parent = parent_
 
         self.title('Добавление')
         self.geometry('400x400+400+300')
         self.resizable(False, False)
-        def filtr_save():
-            global mdf, df, parent
-            mdf=df
-            for widget in parent.winfo_children():
-                widget.destroy()
-            Table(parent, mdf)
-            self.destroy()
+        
             
             
         def filtr_cancel():
-            global mdd, df, parent
-            df=mdf
+            global df, parent
+            df=m.mdf
             for widget in parent_.winfo_children():
                 widget.destroy()
-            Table(parent, df)
+            bd.Table(parent, df)
             self.destroy()
-            print(mdf)
+            print(m.mdf)
         
         
         def filtr():
@@ -66,8 +56,18 @@ class Child_filter(tk.Toplevel):
             print(df)
             for widget in parent.winfo_children():
                 widget.destroy()
-            Table(parent, df)
-
+            bd.Table(parent, df)
+            
+            
+        def filtr_save():
+            global mdf, df, parent
+            print(df)
+            m.mdf = df
+            for widget in parent.winfo_children():
+                widget.destroy()
+            bd.Table(parent, m.mdf)
+            print(m.mdf)
+            self.destroy()
 
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=1, column =0)
@@ -157,4 +157,3 @@ class Child_filter(tk.Toplevel):
 
         self.grab_set()
         self.focus_set()
-        self.mainloop()

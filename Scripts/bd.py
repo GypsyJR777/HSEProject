@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
+import app as m
 
 
 def Table(parent=None, xls=None):
@@ -28,4 +29,5 @@ def Table(parent=None, xls=None):
 
         scrollbarx.pack(side="bottom", fill="x")
         tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+        m.mdf = m.mdf.reset_index(drop=True)
         parent.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)

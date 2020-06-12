@@ -4,15 +4,18 @@ import pandas as pd
 import numpy as np
 import matplotlib as plt
 import matplotlib.pyplot as plt
+import app as m
+from tkinter import filedialog
 
 class Kowalski_analis(tk.Toplevel):
-
-    def __init__(self, mdf, parent):
-        super().__init__(parent)
-        #self.init_child()
+    def __init__(self, parent_):
+        super().__init__(parent_)
+    #    self.init_child()
 
 
     #def init_child(self):
+        global parent
+        parent = parent_
         self.title('Анализ от Ковальского')
         self.geometry('600x400+400+300')
         self.resizable(False, False)
@@ -20,8 +23,14 @@ class Kowalski_analis(tk.Toplevel):
 
 
         def analis_stolb():
+            '''
+            Функция создает столбчатую диаграмму
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
+            '''
             fig, ax = plt.subplots()
-            ax.bar(list(mdf[first_stolb.get()]), list(mdf[second_stolb.get()]))
+            ax.bar(list(m.mdf[first_stolb.get()]), list(m.mdf[second_stolb.get()]))
             ax.set_facecolor('seashell')
             fig.set_facecolor('floralwhite')
             fig.set_figwidth(12)    #  ширина Figure
@@ -30,33 +39,76 @@ class Kowalski_analis(tk.Toplevel):
 
         #Тут можно добавить еще один индекс в квадратные скобки, поля entry оставил на всякий, эта херня считает среднее значение
         #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
-        def analis_svod():
-            data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get() )
-            print(data_pt)
-            writer_svod = pd.ExcelWriter('../Output/Result_svod_table.xlsx')
-            data_pt.to_excel(writer_svod, 'smartphones1')
-            writer_svod.save()
-            print('DataFrame is written successfully to Excel Sheet.')
 
+        def analis_svod():
+            '''
+            Функция создает сводчатую таблицу
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
+            '''
+            data_pt = pd.pivot_table(m.mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get())
+            data_pt.columns = [t[0] if t[0] else t[1] for t in data_pt.columns]
+            print(data_pt)
+            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+            data_pt.to_excel(export_file)
 
 
 
         def analis_rasseivanie():
-            plot_df = mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
-            print(plot_df)
-            plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(), s= 50*plot_df['amount']*2, c='amount', cmap='inferno')
-
-
+            '''
+            Функция создает диаграмму рассеивания
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
+            '''
+            plt.figure(figsize=(13,10))
+            plt.boxplot(x='OS', y='Storage', data=m.mdf, notch=False)
+            def add_n_obs(df,group_col,y):
+                medians_dict = {grp[0]:grp[1][y].median() for grp in df.groupby(group_col)}
+                xticklabels = [x.get_text() for x in plt.gca().get_xticklabels()]
+                n_obs = df.groupby(group_col)[y].size().values
+                for (x, xticklabel), n_ob in zip(enumerate(xticklabels), n_obs):
+                    plt.text(x, medians_dict[xticklabel]*1.01, "#obs : "+str(n_ob), horizontalalignment='center', fontdict={'size':14}, color='white')
+            add_n_obs(m.mdf,group_col='OS',y='Storage')
+            plt.show()
 
         def analis_baz():
-            bazstat = mdf.describe()
+            '''
+            Функция создает базовый анализ
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
+            '''
+            bazstat = m.mdf.describe()
             print(bazstat)
-            bazstat.show()
+            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+            bazstat.to_excel(export_file, index = True, header=True)
 
 
         def analis_wix():
-            wix=plt.boxplot(x=stolb_1_wix.get(), y=stolb_2_wix.get(), data=mdf, notch=False)
-            wix.show()
+            '''
+            Функция создает диаграмму Бокса-Вискера
+            Получает: -
+            Возвращает: -
+            Автор: Матвеев В.Е.
+            '''
+            n = pd.unique(m.mdf[stolb_1_wix.get()]).tolist()
+            b=[]
+            for item in n:
+                b.append(m.mdf[stolb_2_wix.get()][m.mdf[stolb_1_wix.get()] == item])
+            plt.boxplot(b)
+            plt.show()
+
+        def analis_gis():
+            gis = m.mdf.groupby(stolb_1_gis.get()).size().reset_index(name=stolb_2_gis.get())
+            plt.figure(figsize=(16,10), dpi= 80)
+            plt.bar(gis[stolb_1_gis.get()], gis[stolb_2_gis.get()], width=.5)
+            for i, val in enumerate(gis[stolb_2_gis.get()].values):
+                plt.text(i, val, float(val), horizontalalignment='center', verticalalignment='bottom', fontdict={'fontweight':500, 'size':12})
+            plt.gca().set_xticklabels(gis[stolb_1_gis.get()], rotation=60, horizontalalignment= 'right')
+            plt.ylim(0, 45)
+            plt.show()
 
 
         label_analis = ttk.Label(self, text='Выберете анализ: ')
@@ -109,3 +161,11 @@ class Kowalski_analis(tk.Toplevel):
         stolb_1_wix.grid(row=5, column=1)
         stolb_2_wix = ttk.Entry(self)
         stolb_2_wix.grid(row=5, column=2)
+
+#Поля гистограммы
+        gis_stat = ttk.Button(self, text='Гистограмма', command=analis_gis)
+        gis_stat.grid(row=6, column=0)
+        stolb_1_gis = ttk.Entry(self)
+        stolb_1_gis.grid(row=6, column=1)
+        stolb_2_gis = ttk.Entry(self)
+        stolb_2_gis.grid(row=6, column=2)

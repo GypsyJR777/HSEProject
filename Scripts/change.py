@@ -1,19 +1,18 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import pandas as pd
 import numpy as np
 from bd import Table
+import app as m
 
 class Change(tk.Toplevel):
 
-    def __init__(self, mdf_, parent_):
+    def __init__(self, parent_):
         super().__init__(parent_)
         #self.init_child()
 
     #def init_child(self):
-        global df, parent, mdf
-        mdf = mdf_
-        df = mdf
+        global df, parent
+        df = m.mdf
         parent = parent_
         self.title('Изменение данных о смартфоне')
         self.geometry('300x100+400+300')
@@ -25,8 +24,8 @@ class Change(tk.Toplevel):
             Возвращает: -
             Автор: Демидов И.Д
             '''
-            global parent, mdf
-            string = np.array(mdf[mdf['Product Code'] == int(entry_code.get())])
+            global parent
+            string = np.array(m.mdf[m.mdf['Product Code'] == int(entry_code.get())])
             if(len(string)>0):
                 self.geometry('300x300+400+300')
                 ok_btn.grid_remove()
@@ -57,7 +56,7 @@ class Change(tk.Toplevel):
                 label_description = ttk.Label(self, text='Количество')
                 label_description.grid(row=9, column =0)
 
-                string = np.array(mdf[mdf['Product Code'] == int(entry_code.get())])
+                string = np.array(m.mdf[m.mdf['Product Code'] == int(entry_code.get())])
                 change_entry_firm.insert(0, string[0][1])
                 change_entry_firm.grid(row=2, column=1, columnspan=2)
                 change_entry_country.insert(0, string[0][2])
@@ -89,16 +88,16 @@ class Change(tk.Toplevel):
             Возвращает: mdf-структура DataFrame
             Автор: Демидов И.Д
             '''
-            global parent, mdf
-            mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
+            global parent
+            m.mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
                     change_entry_firm.get(),
                    change_entry_country.get(), change_entry_model.get(),
-                   change_combobox.get(), change_entry_storage.get(),
-                   change_entry_diagonal.get(), change_entry_cpu.get(),
-                   change_entry_ram.get(), change_entry_amount.get()]
+                   change_combobox.get(), int(change_entry_storage.get()),
+                   float(change_entry_diagonal.get()), change_entry_cpu.get(),
+                   int(change_entry_ram.get()), int(change_entry_amount.get())]
             for widget in parent.winfo_children():
                 widget.destroy()
-            Table(parent, mdf)
+            Table(parent, m.mdf)
 
 
         label_description = ttk.Label(self, text='Код товара для изменения')
