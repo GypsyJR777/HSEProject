@@ -1,6 +1,7 @@
 import tkinter as tk
 import pandas as pd
 import bd
+from tkinter import messagebox as mb
 from filtres import Child_filter
 from add import Child_add
 from change import Change
@@ -62,6 +63,7 @@ class Main(tk.Frame):
         try:
             xls = pd.read_pickle("../Data/smartphones.pkl")
         except (FileNotFoundError, EOFError):
+            mb.showerror("Ошибка", "Файл smartphones.pkl не удалось открыть")
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer",
             "Country", "Model", "OS", "Storage", "Diagonal",
             "CPU", "RAM", "Amount"])

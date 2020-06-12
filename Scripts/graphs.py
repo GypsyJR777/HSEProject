@@ -63,13 +63,13 @@ class Kowalski_analis(tk.Toplevel):
             Автор: Матвеев В.Е.
             '''
             if stolb_3_rass.get():
-                plot_df = mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get(),
+                plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get(),
                 stolb_3_rass.get()]).size().reset_index(name='amount')
                 plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(),
                 s=plot_df[stolb_3_rass.get()], c=stolb_3_rass.get(),
                 cmap='inferno')
             else:
-                plot_df = mdf.groupby([stolb_1_rass.get(),
+                plot_df = m.mdf.groupby([stolb_1_rass.get(),
                 stolb_2_rass.get()]).size().reset_index(name='amount')
                 plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(),
                 s= 100*plot_df['amount'], c='amount', cmap='inferno')

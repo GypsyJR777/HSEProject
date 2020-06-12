@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 import pandas as pd
 from bd import Table
 import app as m
+from tkinter import messagebox as mb
 
 
 class Child_add(tk.Toplevel):
@@ -38,12 +39,14 @@ class Child_add(tk.Toplevel):
                     entry_diagonal.get().isdigit() == False and
                     entry_amount.get().isdigit() == False):
                     mb.showerror("Ошибка", """Должны быть введены числа в полях
-                    'Память', 'Оперативная память' и 'Количество'""")
+                                 'Память', 'Оперативная память' и 
+                                 'Количество'""")
                 else:
                     Table_add(entry_firm.get(), entry_country.get(),
-                    entry_model.get(), entry_storage.get(),
-                    entry_diagonal.get(), entry_cpu.get(), entry_ram.get(),
-                    entry_amount.get(), combobox.get())
+                              entry_model.get(), entry_storage.get(),
+                              entry_diagonal.get(), entry_cpu.get(), 
+                              entry_ram.get(), entry_amount.get(), 
+                              combobox.get())
                     self.destroy()
             else:
                 mb.showerror("Ошибка", "Введите данные во все поля")

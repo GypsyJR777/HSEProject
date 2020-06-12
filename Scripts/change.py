@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 import numpy as np
 from bd import Table
 import app as m
+from tkinter import messagebox as mb
 
 class Change(tk.Toplevel):
     def __init__(self, parent_):
@@ -12,9 +13,8 @@ class Change(tk.Toplevel):
         Возвращает: -
         Автор: Демидов И.Д
         '''
-        super().__init__(parent_)
+        super().__init__()
         global df, parent
-        df = m.mdf
         parent = parent_
         self.title('Изменение данных о смартфоне')
         self.geometry('300x100+400+300')
@@ -71,9 +71,8 @@ class Change(tk.Toplevel):
                 change_entry_amount.grid(row=9, column=1)
                 change_btn_cancel.grid(row=14, column=0, columnspan=2)
                 change_btn.grid(row=13, column=0, columnspan=2)
-            # else:
-            #     mb.showerror("Ошибка", """Должны быть введены числа в полях
-            #     'Память', 'Оперативная память' и 'Количество'""")
+            else:
+                mb.showerror("Ошибка", "Нет такого смартфона")
 
 
         def change_df():
@@ -84,15 +83,20 @@ class Change(tk.Toplevel):
             Автор: Демидов И.Д
             '''
             global parent
-            m.mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
-                    change_entry_firm.get(),
-                   change_entry_country.get(), change_entry_model.get(),
-                   change_combobox.get(), int(change_entry_storage.get()),
-                   float(change_entry_diagonal.get()), change_entry_cpu.get(),
-                   int(change_entry_ram.get()), int(change_entry_amount.get())]
-            for widget in parent.winfo_children():
-                widget.destroy()
-            Table(parent, m.mdf)
+            try:
+                m.mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
+                          change_entry_firm.get(),
+                          change_entry_country.get(), change_entry_model.get(),
+                          change_combobox.get(), int(change_entry_storage.get()),
+                          float(change_entry_diagonal.get()), change_entry_cpu.get(),
+                          int(change_entry_ram.get()), int(change_entry_amount.get())]
+                for widget in parent.winfo_children():
+                    widget.destroy()
+                Table(parent, m.mdf)
+            except(ValueError):
+                mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
+
+            
 
 
         label_description = ttk.Label(self, text='Код товара для изменения')

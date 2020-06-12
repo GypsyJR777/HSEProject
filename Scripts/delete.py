@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from bd import Table
 import app as m
+from tkinter import messagebox as mb
 
 
 class Delete(tk.Toplevel):
