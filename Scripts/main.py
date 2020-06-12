@@ -5,6 +5,7 @@ import numpy as np
 from tkinter import messagebox as mb
 import matplotlib as plt
 import matplotlib.pyplot as plt
+from tkinter import filedialog
 
 
 def Table(parent=None, xls=None):
@@ -18,24 +19,24 @@ def Table(parent=None, xls=None):
 
         df = pd.DataFrame(xls)
         count = len(df)
-        headings = ["Product Code", "Manufacturer", "Country", "Model", "OS", 
+        headings = ["Product Code", "Manufacturer", "Country", "Model", "OS",
                     "Storage", "Diagonal", "CPU", "RAM", "Amount"]
         tree = ttk.Treeview(root, show="headings", selectmode="browse")
         tree["columns"]=headings
         tree["displaycolumns"]=headings
-  
+
         for head in headings:
             tree.heading(head, text=head, anchor=tk.CENTER)
             tree.column(head, anchor=tk.CENTER, width=50)
-  
+
         for i in range(count):
             tree.insert('', i, values=df.iloc[i,:].tolist())
-  
+
         scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
         tree.configure(yscrollcommand=scrollbar.set)
 
         scrollbar.pack(side="right", fill="y")
-        
+
         scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
         tree.configure(xscrollcommand=scrollbarx.set)
 
@@ -60,7 +61,7 @@ def Table_add(firm, country, model, storage, diagonal, cpu, ram, amount, os):
         counter = mdf.loc[len(mdf)-1]["Product Code"]
     except(KeyError):
         counter=0
-    mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage), 
+    mdf.loc[len(mdf)] = [counter+1, firm, country, str(model), os, int(storage),
             float(diagonal), cpu, int(ram), int(amount)]
     tree.destroy()
     Table(root, mdf)
@@ -110,25 +111,25 @@ class Main(tk.Frame):
         photo = photo.subsample(25, 25)
 
         # elemests of toolbox
-        button1_box1=tk.Button(frame_box2, text=u'Добавить', 
-                               command=self.open_dialog, bg="#5E46E0", 
+        button1_box1=tk.Button(frame_box2, text=u'Добавить',
+                               command=self.open_dialog, bg="#5E46E0",
                                fg="white", font="TimesNewRoman 16")
-        button2_box1=tk.Button(frame_box2, text=u'Правка', 
-                               command=self.change, bg="#5E46E0", fg="white", 
+        button2_box1=tk.Button(frame_box2, text=u'Правка',
+                               command=self.change, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
         button3_box1=tk.Button(frame_box2, text=u'Удалить',
-                               command=self.delete, bg="#5E46E0", fg="white", 
+                               command=self.delete, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
-        button4_box1=tk.Button(frame_box2, text=u'Экспорт', 
-                               command=self.saved, bg="#5E46E0", fg="white", 
+        button4_box1=tk.Button(frame_box2, text=u'Экспорт',
+                               command=self.saved, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
-        button1_box2=tk.Button(frame_box2, text=u'Анализ', 
-                               command=self.analysis, bg="#5E46E0", fg="white", 
+        button1_box2=tk.Button(frame_box2, text=u'Анализ',
+                               command=self.analysis, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
-        button1_box3=tk.Button(frame_box2, text=u'Фильтр', 
-                               command=self.sort, bg="#5E46E0", fg="white", 
+        button1_box3=tk.Button(frame_box2, text=u'Фильтр',
+                               command=self.sort, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
-#        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", 
+#        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4",
 #                               image=photo, compound=tk.LEFT, relief="flat")
 
         # pack elemests of toolbox
@@ -146,7 +147,7 @@ class Main(tk.Frame):
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         Table(root, mdf)
-        
+
         root.mainloop()
 
 
@@ -232,8 +233,8 @@ class Change(tk.Toplevel):
         self.title('Изменение данных о смартфоне')
         self.geometry('300x100+400+300')
         self.resizable(False, False)
-        
-        
+
+
         def ok():
             '''
             Функция обновляет окно и заполняет данными поля ввода
@@ -250,28 +251,28 @@ class Change(tk.Toplevel):
 
                 label_description = ttk.Label(self, text='Производитель')
                 label_description.grid(row=2, column =0)
-                
+
                 label_description = ttk.Label(self, text='Страна')
                 label_description.grid(row=3, column =0)
-            
+
                 label_description = ttk.Label(self, text='Модель')
                 label_description.grid(row=4, column =0)
 
                 label_description = ttk.Label(self, text='Память')
                 label_description.grid(row=5, column =0)
-            
+
                 label_description = ttk.Label(self, text='Диагональ')
                 label_description.grid(row=6, column =0)
 
                 label_description = ttk.Label(self, text='Процессор')
                 label_description.grid(row=7, column =0)
-                
+
                 label_description = ttk.Label(self, text='Оперативная память')
                 label_description.grid(row=8, column =0)
-                
+
                 label_description = ttk.Label(self, text='Количество')
                 label_description.grid(row=9, column =0)
-            
+
                 string = np.array(mdf[mdf['Product Code'] == int(entry_code.get())])
                 change_entry_firm.insert(0, string[0][1])
                 change_entry_firm.grid(row=2, column=1, columnspan=2)
@@ -296,7 +297,7 @@ class Change(tk.Toplevel):
 #            else:
 #                mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
 
-        
+
         def change_df():
             '''
             Функция изменяет данные выбранного кортежа
@@ -305,23 +306,23 @@ class Change(tk.Toplevel):
             Автор: Демидов И.Д
             '''
             global mdf
-            mdf.loc[int(entry_code.get())-1] = [entry_code.get(), 
-                    change_entry_firm.get(), 
-                   change_entry_country.get(), change_entry_model.get(), 
-                   change_combobox.get(), change_entry_storage.get(), 
+            mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
+                    change_entry_firm.get(),
+                   change_entry_country.get(), change_entry_model.get(),
+                   change_combobox.get(), change_entry_storage.get(),
                    change_entry_diagonal.get(), change_entry_cpu.get(),
                    change_entry_ram.get(), change_entry_amount.get()]
             tree.destroy()
             Table(root, mdf)
-        
-        
+
+
         label_description = ttk.Label(self, text='Код товара для изменения')
         label_description.grid(row=0, column = 0)
         entry_code = ttk.Entry(self)
         entry_code.grid(row=0, column=1, columnspan=2)
         ok_btn = ttk.Button(self, text='OK', command=ok)
         ok_btn.grid(row=15, column=0, columnspan=3)
-        
+
         change_entry_firm = ttk.Entry(self)
         change_entry_country = ttk.Entry(self)
         change_entry_model = ttk.Entry(self)
@@ -428,6 +429,7 @@ class Kowalski_analis(tk.Toplevel):
 
         #Тут можно добавить еще один индекс в квадратные скобки, поля entry оставил на всякий, эта херня считает среднее значение
         #Пробовал вывести в прогу, ошибка, хотя имеет типа DataFrame. Только в консоль работает
+
         def analis_svod():
             '''
             Функция создает сводчатую таблицу
@@ -435,13 +437,11 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get() )
+            data_pt = pd.pivot_table(mdf,index=[stolb_1.get(), stolb_2.get()], values=stolb_3.get())
+            data_pt.columns = [t[0] if t[0] else t[1] for t in data_pt.columns]
             print(data_pt)
-            writer_svod = pd.ExcelWriter('C:/Result_svod_table.xlsx')
-            data_pt.to_excel(writer_svod, 'smartphones1')
-            writer_svod.save()
-            print('DataFrame is written successfully to Excel Sheet.')
-            data_pt.show()
+            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+            data_pt.to_excel(export_file)
 
 
 
@@ -463,7 +463,6 @@ class Kowalski_analis(tk.Toplevel):
             add_n_obs(df,group_col='OS',y='Storage')
             plt.show()
 
-
         def analis_baz():
             '''
             Функция создает базовый анализ
@@ -473,7 +472,8 @@ class Kowalski_analis(tk.Toplevel):
             '''
             bazstat = mdf.describe()
             print(bazstat)
-            bazstat.show()
+            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+            bazstat.to_excel(export_file, index = True, header=True)
 
 
         def analis_wix():
@@ -483,11 +483,21 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            n = pd.unique(df[stolb_1_wix.get()]).tolist()
+            n = pd.unique(mdf[stolb_1_wix.get()]).tolist()
             b=[]
             for item in n:
-                b.append(df[stolb_2_wix.get][df[stolb_1_wix.get()] == item])
+                b.append(mdf[stolb_2_wix.get()][mdf[stolb_1_wix.get()] == item])
             plt.boxplot(b)
+            plt.show()
+
+        def analis_gis():
+            gis = mdf.groupby(stolb_1_gis.get()).size().reset_index(name=stolb_2_gis.get())
+            plt.figure(figsize=(16,10), dpi= 80)
+            plt.bar(gis[stolb_1_gis.get()], gis[stolb_2_gis.get()], width=.5)
+            for i, val in enumerate(gis[stolb_2_gis.get()].values):
+                plt.text(i, val, float(val), horizontalalignment='center', verticalalignment='bottom', fontdict={'fontweight':500, 'size':12})
+            plt.gca().set_xticklabels(gis[stolb_1_gis.get()], rotation=60, horizontalalignment= 'right')
+            plt.ylim(0, 45)
             plt.show()
 
 
@@ -542,6 +552,14 @@ class Kowalski_analis(tk.Toplevel):
         stolb_2_wix = ttk.Entry(self)
         stolb_2_wix.grid(row=5, column=2)
 
+#Поля гистограммы
+        gis_stat = ttk.Button(self, text='Гистограмма', command=analis_gis)
+        gis_stat.grid(row=6, column=0)
+        stolb_1_gis = ttk.Entry(self)
+        stolb_1_gis.grid(row=6, column=1)
+        stolb_2_gis = ttk.Entry(self)
+        stolb_2_gis.grid(row=6, column=2)
+
 
 
 
@@ -584,7 +602,7 @@ class Child_add(tk.Toplevel):
                     entry_amount.get().isdigit() == False):
                     mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
                 else:
-                    Table_add(entry_firm.get(), entry_country.get(), 
+                    Table_add(entry_firm.get(), entry_country.get(),
                               entry_model.get(), entry_storage.get(), entry_diagonal.get(), entry_cpu.get(), entry_ram.get(), entry_amount.get(), combobox.get())
                     self.destroy()
             else:
@@ -694,15 +712,15 @@ class Child_filter(tk.Toplevel):
             global df
             df = mdf
             if(filtr_entry_ram.get() !='' and filtr_entry_ram_2.get() !=''):
-                Sorttest_int('RAM', int(filtr_entry_ram.get()), 
+                Sorttest_int('RAM', int(filtr_entry_ram.get()),
                              int(filtr_entry_ram_2.get()))
-            if(filtr_entry_storage.get() !='' and 
+            if(filtr_entry_storage.get() !='' and
                filtr_entry_storage_2.get() !=''):
-                Sorttest_int('Storage', int(filtr_entry_storage.get()), 
+                Sorttest_int('Storage', int(filtr_entry_storage.get()),
                              int(filtr_entry_storage_2.get()))
-            if(filtr_entry_diagonal.get() !='' and 
+            if(filtr_entry_diagonal.get() !='' and
                filtr_entry_diagonal_2.get() !=''):
-                Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()), 
+                Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()),
                              float(filtr_entry_diagonal_2.get()))
             if(filtr_entry_country.get() !=''):
                 df = df[df['Country'] == filtr_entry_country.get()]
@@ -715,7 +733,7 @@ class Child_filter(tk.Toplevel):
             if(filtr_entry_cpu.get() !=''):
                 df = df[df['CPU'] == filtr_entry_cpu.get()]
             if(filtr_entry_amount.get() !='' and filtr_entry_amount_2.get() !=''):
-                Sorttest_int('Amount', int(filtr_entry_amount.get()), 
+                Sorttest_int('Amount', int(filtr_entry_amount.get()),
                              int(filtr_entry_amount_2.get()))
             print(df)
             tree.destroy()
@@ -834,7 +852,7 @@ class Child_filter(tk.Toplevel):
         filtr_btn_filtr.grid(row=13, column=0, columnspan=3)
         filtr_btn_filtr.bind('<Button-1>')
 
-        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения', 
+        filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения',
                                           command=filtr_save)
         filtr_btn_filtr_save.grid(row=14, column=0,  columnspan=3)
         filtr_btn_filtr_save.bind('<Button-1>')
