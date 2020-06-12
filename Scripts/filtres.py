@@ -16,7 +16,7 @@ class Child_filter(tk.Toplevel):
         global df, parent
         df = m.mdf
         parent = parent_
-        self.title('Добавление')
+        self.title('Фильтр')
         self.geometry('400x400+400+300')
         self.resizable(False, False)
         
