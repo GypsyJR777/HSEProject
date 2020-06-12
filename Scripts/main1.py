@@ -1,3 +1,10 @@
+"""
+Функция создает главное окно программы, задает размер, цвет фона
+Получает: -
+Возвращает: -
+Автор: Демидов И.Д., Матвеев В.Е., Будин А.М.
+"""
+
 import tkinter as tk
 from app import Main
 
@@ -11,4 +18,3 @@ if __name__ == "__main__":
     root.resizable(False, False)
     Main(root)
     root.mainloop()
-    
