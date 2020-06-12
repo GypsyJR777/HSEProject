@@ -12,7 +12,7 @@ class Child_add(tk.Toplevel):
         Функция вызывает окно добавления нового кортежа в таблицу
         Получает: -
         Возвращает: -
-        Автор: Будин А.М.
+        Автор: Будин А.М., Матвеев В.Е.
         '''
         super().__init__(parent_)
         global df, parent
@@ -61,7 +61,7 @@ class Child_add(tk.Toplevel):
                 ram - объём оперативной памяти, amount - количество (штук),
                 os - операционная система
             Возвращает: -
-            Автор: -
+            Автор: Матвеев В.Е.
             '''
             global count, parent
             try:
@@ -69,8 +69,8 @@ class Child_add(tk.Toplevel):
             except(KeyError):
                 counter = 0
             m.mdf.loc[len(m.mdf)] = [int(counter) + 1, firm, country,
-            str(model), os, int(storage), float(diagonal),
-            cpu, int(ram), int(amount)]
+                      str(model), os, int(storage), float(diagonal),
+                      cpu, int(ram), int(amount)]
             for widget in parent.winfo_children():
                 widget.destroy()
             Table(parent, m.mdf)

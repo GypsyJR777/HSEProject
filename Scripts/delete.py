@@ -32,6 +32,8 @@ class Delete(tk.Toplevel):
             global parent
             if(choice.get() == ''):
                 mb.showerror("Ошибка", "Введите код продукта")
+            elif (m.mdf.loc[len(m.mdf)-1]["Product Code"] < int(choice.get())):
+                mb.showerror("Ошибка", "Нет такого продукта")
             else:
                 m.mdf = m.mdf.drop(np.where(m.mdf['Product Code'] == int(choice.get()))[0])
                 for widget in parent.winfo_children():
