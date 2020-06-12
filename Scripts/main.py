@@ -209,9 +209,11 @@ class Main(tk.Frame):
         '''
         global mdf
         mdf.to_pickle("../Data/smartphones.pkl")
-        writer = pd.ExcelWriter('../Output/Result.xlsx')
-        mdf.to_excel(writer, 'smartphones')
-        writer.save()
+        #writer = pd.ExcelWriter('../Output/Result.xlsx')
+        export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+        mdf.to_excel(export_file, index = True, header=True)
+        #mdf.to_excel(writer, 'smartphones')
+        #writer.save()
         print('DataFrame is written successfully to Excel Sheet.')
 
 
