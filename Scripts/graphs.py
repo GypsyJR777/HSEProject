@@ -80,8 +80,7 @@ class Kowalski_analis(tk.Toplevel):
         def analis_baz():
             '''
             Функция создает базовый анализ
-            Получает: -
-            Возвращает: -
+            Получает: -            Возвращает: -
             Автор: Матвеев В.Е.
             '''
             bazstat = m.mdf.describe()

@@ -19,7 +19,7 @@ class Delete(tk.Toplevel):
         global parent
         parent = parent_
         self.title('Удаление смартфона')
-        self.geometry('400x400+400+300')
+        self.geometry('250x100+400+300')
         self.resizable(False, False)
 
         def delete_code():
@@ -40,8 +40,7 @@ class Delete(tk.Toplevel):
                 self.destroy()
 
 
-        label_choice = ttk.Label(self, text='''Введите код товара,
-        который хотите удалить''')
+        label_choice = ttk.Label(self, text='''Введите код товара, который хотите удалить''')
         label_choice.grid(row=0, column=0, columnspan=2)
         choice = ttk.Entry(self)
         choice.grid(row=1, column=0, columnspan=2)
