@@ -1,3 +1,9 @@
+"""
+Функция вызывает окно изменения выбранного кортежа
+Получает: -
+Возвращает: -
+Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+"""
 import tkinter as tk
 import tkinter.ttk as ttk
 import numpy as np
@@ -96,7 +102,7 @@ class Change(tk.Toplevel):
             except(ValueError):
                 mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
 
-            
+
 
 
         label_description = ttk.Label(self, text='Код товара для изменения')

@@ -1,3 +1,9 @@
+"""
+Функция вызывает окно добавления нового кортежа в таблицу
+Получает: -
+Возвращает: -
+Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+"""
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
@@ -42,8 +48,8 @@ class Child_add(tk.Toplevel):
                 else:
                     Table_add(entry_firm.get(), entry_country.get(),
                               entry_model.get(), entry_storage.get(),
-                              entry_diagonal.get(), entry_cpu.get(), 
-                              entry_ram.get(), entry_amount.get(), 
+                              entry_diagonal.get(), entry_cpu.get(),
+                              entry_ram.get(), entry_amount.get(),
                               combobox.get())
                     self.destroy()
             else:

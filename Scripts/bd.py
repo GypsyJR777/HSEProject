@@ -1,3 +1,10 @@
+"""
+Функция создает базу данных
+Получает: -
+Возвращает: -
+Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+"""
+
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd

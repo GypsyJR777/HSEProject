@@ -1,3 +1,10 @@
+"""
+Функция вызывает окно фильтрации
+Получает: -
+Возвращает: -
+Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+"""
+
 import tkinter as tk
 import tkinter.ttk as ttk
 import bd
@@ -19,7 +26,7 @@ class Child_filter(tk.Toplevel):
         self.title('Фильтры')
         self.geometry('400x300+400+300')
         self.resizable(False, False)
-        
+
         def Sorttest_int(sort_parametr, sort_min, sort_max):
             '''
             Функция производит отбор по заданным числовым аргументам
@@ -62,7 +69,7 @@ class Child_filter(tk.Toplevel):
             if (filtr_entry_ram.get() != '' and filtr_entry_ram_2.get() != ''):
                 Sorttest_int('RAM', int(filtr_entry_ram.get()),
                              int(filtr_entry_ram_2.get()))
-            if (filtr_entry_storage.get() != '' 
+            if (filtr_entry_storage.get() != ''
                 and filtr_entry_storage_2.get() != ''):
                 Sorttest_int('Storage', int(filtr_entry_storage.get()),
                              int(filtr_entry_storage_2.get()))

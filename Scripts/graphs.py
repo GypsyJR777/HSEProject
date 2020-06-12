@@ -1,3 +1,9 @@
+"""
+Функция вызывает окно выбора диаграммы
+Получает: -
+Возвращает: -
+Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+"""
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
@@ -71,7 +77,7 @@ class Kowalski_analis(tk.Toplevel):
             else:
                 plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
                 plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(),
-                                     s=100*plot_df['amount'], c='amount', 
+                                     s=100*plot_df['amount'], c='amount',
                                      cmap='inferno')
             print(plot_df)
             plt.show()
