@@ -6,6 +6,7 @@ from tkinter import messagebox as mb
 import matplotlib as plt
 import matplotlib.pyplot as plt
 from tkinter import filedialog
+import os
 
 
 def Table(parent=None, xls=None):
@@ -81,6 +82,9 @@ def Sorttest_int(sort_parametr, sort_min, sort_max):
     df = dtemp[dtemp[sort_parametr] <= sort_max]
 
 
+
+
+
 class Main(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
@@ -129,8 +133,9 @@ class Main(tk.Frame):
         button1_box3=tk.Button(frame_box2, text=u'Фильтр',
                                command=self.sort, bg="#5E46E0", fg="white",
                                font="TimesNewRoman 16")
-#        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4",
-#                               image=photo, compound=tk.LEFT, relief="flat")
+        button2_box3=tk.Button(frame_toolbox, bg="#B0C7E4", image=photo,
+                               compound=tk.LEFT, relief="flat",
+                               command=self.info)
 
         # pack elemests of toolbox
         button1_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
@@ -139,7 +144,7 @@ class Main(tk.Frame):
         button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
-#        button2_box3.pack(side='right')
+        button2_box3.pack(side='right')
 
         try:
             xls = pd.read_pickle("../Data/smartphones.pkl")
@@ -150,6 +155,9 @@ class Main(tk.Frame):
 
         root.mainloop()
 
+    def info(self):
+        osCommandString = "notepad.exe ../Data/info.txt"
+        os.system(osCommandString)
 
     def open_dialog(self):
         '''
@@ -454,15 +462,9 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            plt.figure(figsize=(13,10))
-            sns.boxplot(x='OS', y='Storage', data=df, notch=False)
-            def add_n_obs(df,group_col,y):
-                medians_dict = {grp[0]:grp[1][y].median() for grp in df.groupby(group_col)}
-                xticklabels = [x.get_text() for x in plt.gca().get_xticklabels()]
-                n_obs = df.groupby(group_col)[y].size().values
-                for (x, xticklabel), n_ob in zip(enumerate(xticklabels), n_obs):
-                    plt.text(x, medians_dict[xticklabel]*1.01, "#obs : "+str(n_ob), horizontalalignment='center', fontdict={'size':14}, color='white')
-            add_n_obs(df,group_col='OS',y='Storage')
+            plot_df = mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get()]).size().reset_index(name='amount')
+            print(plot_df)
+            plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(), s= 100*plot_df['amount'], c='amount', cmap='inferno')
             plt.show()
 
         def analis_baz():
