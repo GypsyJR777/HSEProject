@@ -38,9 +38,7 @@ class Child_add(tk.Toplevel):
                     entry_storage.get().isdigit() == False and
                     entry_diagonal.get().isdigit() == False and
                     entry_amount.get().isdigit() == False):
-                    mb.showerror("Ошибка", """Должны быть введены числа в полях
-                                 'Память', 'Оперативная память' и 
-                                 'Количество'""")
+                    mb.showerror("Ошибка", """Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'""")
                 else:
                     Table_add(entry_firm.get(), entry_country.get(),
                               entry_model.get(), entry_storage.get(),
