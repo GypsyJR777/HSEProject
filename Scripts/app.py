@@ -147,4 +147,3 @@ class Main(tk.Frame):
         mdf.to_excel(export_file, index = True, header=True)
         #mdf.to_excel(writer, 'smartphones')
         #writer.save()
-        print('DataFrame is written successfully to Excel Sheet.')

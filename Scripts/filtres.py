@@ -55,7 +55,6 @@ class Child_filter(tk.Toplevel):
                 widget.destroy()
             bd.Table(parent, df)
             self.destroy()
-            print(m.mdf)
 
 
         def filtr():
@@ -91,7 +90,6 @@ class Child_filter(tk.Toplevel):
                 and filtr_entry_amount_2.get() != ''):
                 Sorttest_int('Amount', int(filtr_entry_amount.get()),
                              int(filtr_entry_amount_2.get()))
-            print(df)
             for widget in parent.winfo_children():
                 widget.destroy()
             bd.Table(parent, df)
@@ -111,7 +109,6 @@ class Child_filter(tk.Toplevel):
             for widget in parent.winfo_children():
                 widget.destroy()
             bd.Table(parent, m.mdf)
-            print(m.mdf)
             self.destroy()
 
 
