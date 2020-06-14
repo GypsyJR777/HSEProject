@@ -25,7 +25,7 @@ class Child_add(tk.Toplevel):
         df = m.mdf
         parent = parent_
         self.title('Добавление')
-        self.geometry('260x260+400+300')
+        self.geometry('350x260+400+300')
         self.resizable(False, False)
         def add():
             '''
@@ -82,6 +82,50 @@ class Child_add(tk.Toplevel):
             Table(parent, m.mdf)
 
 
+        def new_list_country():
+            '''
+            Функция создает список полей выбора в комбобоксе Country, исходя из выбора
+                производителя
+            Получает: -
+            Возвращает: new_list - новый список полей
+            Автор: Будин А.М.
+            '''
+            global df
+            df = m.mdf
+            if (entry_firm.get() == ''):
+                new_list = pd.unique(df['Country']).tolist()
+                return new_list
+            else:
+                df = df[df['Manufacturer'] == entry_firm.get()]
+                new_list = pd.unique(df["Country"]).tolist()
+                return new_list
+
+
+        def country():
+            '''
+            Функция обновляет данные в комбобоксе Coutry и выводит первое
+                значение в списке в поле
+            Получает: -
+            Возвращает: -
+            Автор: Будин А.М.
+            '''
+            entry_country["values"] = new_list_country()
+            entry_country.current(0)
+
+
+        def new_list_values(stolb_name):
+            '''
+            функция создает новые список уникальных значений после применения
+            фильтра
+            Получает: stolb_name - название столбца
+            Возвращает: new_list - обновленный список уникальных значений
+            Автор: Будин А.М., Матвеев В.Е.
+            '''
+            global df
+            new_list = pd.unique(df[stolb_name]).tolist()
+            return new_list
+
+
         label_description = ttk.Label(self, text='Операционная система')
         label_description.grid(row=10, column = 0)
         label_description = ttk.Label(self, text='Производитель')
@@ -100,29 +144,34 @@ class Child_add(tk.Toplevel):
         label_description.grid(row=8, column =0)
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column =0)
-        entry_firm = ttk.Entry(self)
-        entry_firm.grid(row=2, column=1)
-        entry_country = ttk.Entry(self)
-        entry_country.grid(row=3, column=1)
-        entry_model = ttk.Entry(self)
-        entry_model.grid(row=4, column=1)
-        entry_storage = ttk.Entry(self)
-        entry_storage.grid(row=5, column=1)
-        entry_diagonal = ttk.Entry(self)
-        entry_diagonal.grid(row=6, column=1)
-        entry_cpu = ttk.Entry(self)
-        entry_cpu.grid(row=7, column=1)
-        entry_ram = ttk.Entry(self)
-        entry_ram.grid(row=8, column=1)
-        entry_amount = ttk.Entry(self)
-        entry_amount.grid(row=9, column=1)
-        combobox = ttk.Combobox(self, values=[u'Android',u'IOS', u'BlackBerry'],
-        width=17)
-        combobox.grid(row=10, column=1)
+        list_firm = new_list_values('Manufacturer')
+        entry_firm = ttk.Combobox(self, values=list_firm, width=30)
+        entry_firm.grid(row=2, column=1, columnspan=2)
+        list_country = new_list_values('Country')
+        entry_country = ttk.Combobox(self, values=list_country, width=30, postcommand=country)
+        entry_country.grid(row=3, column=1, columnspan=2)
+        entry_model = ttk.Entry(self, width=33)
+        entry_model.grid(row=4, column=1, columnspan=2)
+        list_storage = new_list_values('Storage')
+        entry_storage = ttk.Combobox(self, values=list_storage, width=30)
+        entry_storage.grid(row=5, column=1, columnspan=2)
+        entry_diagonal = ttk.Entry(self, width=33)
+        entry_diagonal.grid(row=6, column=1, columnspan=2)
+        list_cpu = new_list_values('CPU')
+        entry_cpu = ttk.Combobox(self, values=list_cpu, width=30)
+        entry_cpu.grid(row=7, column=1, columnspan=2)
+        list_ram = new_list_values('RAM')
+        entry_ram = ttk.Combobox(self, values=list_ram, width=30)
+        entry_ram.grid(row=8, column=1, columnspan=2)
+        entry_amount = tk.Spinbox(self, from_=0, to=1000000,  width=32)
+        entry_amount.grid(row=9, column=1, columnspan=2)
+        list_os = new_list_values('OS')
+        combobox = ttk.Combobox(self, values=list_os, width=30)
+        combobox.grid(row=10, column=1, columnspan=2)
         btn_cancel = ttk.Button(self, text='Отмена', command=self.destroy)
-        btn_cancel.grid(row=13, column=0, columnspan=2)
+        btn_cancel.grid(row=13, column=0, columnspan=3)
         btn_add = ttk.Button(self, text='Добавить', command=add)
-        btn_add.grid(row=12, column=0, columnspan=2)
+        btn_add.grid(row=12, column=0, columnspan=3)
         btn_add.bind('<Button-1>')
         self.grab_set()
         self.focus_set()
