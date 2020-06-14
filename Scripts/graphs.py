@@ -48,7 +48,7 @@ class Kowalski_analis(tk.Toplevel):
 
         def analis_svod():
             '''
-            Функция создает сводчатую таблицу
+            Функция создает сводную таблицу
             Получает: -
             Возвращает: -
             Автор: Матвеев В.Е.
@@ -68,7 +68,7 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            if stolb_3_rass.get():
+            if stolb_3_rass.get()!='':
                 plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get(),
                 stolb_3_rass.get()]).size().reset_index(name='amount')
                 plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(),
@@ -137,27 +137,24 @@ class Kowalski_analis(tk.Toplevel):
         second_stolb = ttk.Entry(self)
         second_stolb.grid(row=1, column=2)
 #Поля сводной таблицы
-        stolb_1 = ttk.Entry(self)
+        stolb_1 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         stolb_1.grid(row=3, column=1)
-        stolb_2 = ttk.Entry(self)
+        stolb_2 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         stolb_2.grid(row=3, column=2)
-        stolb_3 = ttk.Entry(self)
+        stolb_3 = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_3.grid(row=3, column=3)
 #Поля диаграммы рассеивания
-        stolb_1_rass = ttk.Entry(self)
+        stolb_1_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_1_rass.grid(row=2, column=1)
-        stolb_2_rass = ttk.Entry(self)
+        stolb_2_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_rass.grid(row=2, column=2)
-        stolb_3_rass = ttk.Entry(self)
+        stolb_3_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_3_rass.grid(row=2, column=3)
-        base_stolb = ttk.Button(self, text='Столбчатая Диаграмма',
-        command=analis_stolb)
+        base_stolb = ttk.Button(self, text='Столбчатая Диаграмма', command=analis_stolb)
         base_stolb.grid(row=1, column=0)
-        base_svod = ttk.Button(self, text='Сводная таблица',
-        command=analis_svod)
+        base_svod = ttk.Button(self, text='Сводная таблица', command=analis_svod)
         base_svod.grid(row=3, column=0)
-        base_svod = ttk.Button(self, text='Диаграмма рассеивания',
-        command=analis_rasseivanie)
+        base_svod = ttk.Button(self, text='Диаграмма рассеивания', command=analis_rasseivanie)
         base_svod.grid(row=2, column=0)
 #Поля базовой статистики
         baz_stat = ttk.Button(self, text='Базовая статистка',
