@@ -38,8 +38,7 @@ def Table(parent=None, xls=None):
     '''
     df = pd.DataFrame(xls)
     count = len(df)
-    headings = ["Product Code", "Manufacturer", "Country", "Model", "OS",
-                "Storage", "Diagonal", "CPU", "RAM", "Amount"]
+    headings = xls.columns.tolist()
     tree = ttk.Treeview(parent, show="headings", selectmode="browse")
     tree["columns"] = headings
     tree["displaycolumns"] = headings
