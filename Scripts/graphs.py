@@ -37,8 +37,8 @@ class Kowalski_analis(tk.Toplevel):
             Автор: Демидов И.Д.
             '''
             fig, ax = plt.subplots()
-            ax.bar(list(m.mdf[first_stolb.get()]),
-            list(m.mdf[second_stolb.get()]))
+            lststolb = [str(item) for item in list(m.mdf[first_stolb.get()])]
+            ax.bar(lststolb, list(m.mdf[second_stolb.get()]))
             ax.set_facecolor('seashell')
             fig.set_facecolor('floralwhite')
             fig.set_figwidth(12)    #  ширина Figure
@@ -68,7 +68,7 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            if stolb_3_rass.get()!='':
+            if stolb_3_rass.get()!='Кол-во повторений':
                 plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get(),
                 stolb_3_rass.get()]).size().reset_index(name='amount')
                 plot_df.plot.scatter(x=stolb_1_rass.get(), y=stolb_2_rass.get(),
@@ -104,9 +104,13 @@ class Kowalski_analis(tk.Toplevel):
             '''
             n = pd.unique(m.mdf[stolb_1_wix.get()]).tolist()
             b=[]
+            a=[]
+            for i in range(len(n)):
+                a.append(i+1)
             for item in n:
                 b.append(m.mdf[stolb_2_wix.get()][m.mdf[stolb_1_wix.get()] == item])
             plt.boxplot(b)
+            plt.xticks(a, n, rotation=75)
             plt.show()
 
 
@@ -119,7 +123,8 @@ class Kowalski_analis(tk.Toplevel):
             '''
             gis = m.mdf.groupby(stolb_1_gis.get()).size().reset_index(name=stolb_2_gis.get())
             plt.figure(figsize=(16,10), dpi= 80)
-            plt.bar(gis[stolb_1_gis.get()], gis[stolb_2_gis.get()], width=.5)
+            lstgis = [str(item) for item in list(gis[stolb_1_gis.get()])]
+            plt.bar(lstgis, gis[stolb_2_gis.get()], width=.5)
             for i, val in enumerate(gis[stolb_2_gis.get()].values):
                 plt.text(i, val, float(val), horizontalalignment='center',
                 verticalalignment='bottom',
@@ -132,9 +137,9 @@ class Kowalski_analis(tk.Toplevel):
 
         label_analis = ttk.Label(self, text='Выберете анализ: ')
         label_analis.grid(row=0, column=0)
-        first_stolb = ttk.Entry(self)
+        first_stolb = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         first_stolb.grid(row=1, column=1)
-        second_stolb = ttk.Entry(self)
+        second_stolb = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         second_stolb.grid(row=1, column=2)
 #Поля сводной таблицы
         stolb_1 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
@@ -144,6 +149,7 @@ class Kowalski_analis(tk.Toplevel):
         stolb_3 = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_3.grid(row=3, column=3)
 #Поля диаграммы рассеивания
+
         stolb_1_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_1_rass.grid(row=2, column=1)
         stolb_2_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
@@ -163,14 +169,14 @@ class Kowalski_analis(tk.Toplevel):
 #Поля диаграммы Бокса-Вискера
         wix_stat = ttk.Button(self, text='Бокса-Вискера', command=analis_wix)
         wix_stat.grid(row=5, column=0)
-        stolb_1_wix = ttk.Entry(self)
+        stolb_1_wix = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         stolb_1_wix.grid(row=5, column=1)
-        stolb_2_wix = ttk.Entry(self)
+        stolb_2_wix = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_wix.grid(row=5, column=2)
 #Поля гистограммы
         gis_stat = ttk.Button(self, text='Гистограмма', command=analis_gis)
         gis_stat.grid(row=6, column=0)
-        stolb_1_gis = ttk.Entry(self)
+        stolb_1_gis = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         stolb_1_gis.grid(row=6, column=1)
-        stolb_2_gis = ttk.Entry(self)
+        stolb_2_gis = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_gis.grid(row=6, column=2)
