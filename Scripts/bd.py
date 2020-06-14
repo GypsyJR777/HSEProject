@@ -10,6 +10,13 @@ import pandas as pd
 import app as m
 
 def treeview_sort_column(tv, col, reverse):
+    '''
+    Функция производит сортировку по столбцам (по возрастанию и по убыванию)
+    Получает: tv - объект сортировки, col - название столбца,
+        reverse - определяет направление сортировки
+    Возращает: -
+    Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
+    '''
     l = [(tv.set(k, col), k) for k in tv.get_children()]
     if (col == 'RAM' or col == 'Product Code' or col == 'Amount' or col == 'Storage'):
         l.sort(key=lambda t: int(t[0]), reverse=reverse)
@@ -42,9 +49,6 @@ def Table(parent=None, xls=None):
         tree.heading(head,text=head,command=lambda head_=head: treeview_sort_column(tree, head_, False))
     for i in range(count):
         tree.insert('', i, values=df.iloc[i, :].tolist())
-
-    # lststolb = [int(item) for item in list(m.mdf[first_stolb.get()])]
-
     scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scrollbar.set)
     scrollbar.pack(side="right", fill="y")

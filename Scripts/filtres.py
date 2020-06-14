@@ -30,6 +30,12 @@ class Child_filter(tk.Toplevel):
 
 
         def new_list_models():
+            '''
+            Функция создает список полей выбора в комбобоксе Models
+            Получает: -
+            Возвращает: new_list - новый список полей
+            Автор: Демидов И.Д.
+            '''
             global df
             df = m.mdf
             if (filtr_combo_firm.get() == ''):
@@ -39,9 +45,15 @@ class Child_filter(tk.Toplevel):
                 df = df[df['Manufacturer'] == filtr_combo_firm.get()]
                 new_list = pd.unique(df["Model"]).tolist()
                 return new_list
-            
-        
+
+
         def new_list_manufacturer():
+            '''
+            Функция создает список полей выбора в комбобоксе Manufacturer
+            Получает: -
+            Возвращает: new_list - новый список полей
+            Автор: Демидов И.Д.
+            '''
             global df
             df = m.mdf
             if (filtr_combo_country.get() == ''):
@@ -51,9 +63,15 @@ class Child_filter(tk.Toplevel):
                 df = df[df['Country'] == filtr_combo_country.get()]
                 new_list = pd.unique(df["Manufacturer"]).tolist()
                 return new_list
-            
-        
+
+
         def new_list_os():
+            '''
+            Функция создает список полей выбора в комбобоксе OS
+            Получает: -
+            Возвращает: new_list - новый список полей
+            Автор: Демидов И.Д.
+            '''
             global df
             df = m.mdf
             if (filtr_combo_firm.get() == ''):
@@ -66,17 +84,35 @@ class Child_filter(tk.Toplevel):
 
 
         def models():
+            '''
+            Функция обновляет данные в комбобоксе Models
+            Получает: -
+            Возвращает: -
+            Автор:Демидов И.Д.
+            '''
             filtr_combo_model["values"] = new_list_models()
-        
-        
+
+
         def manufacturer():
+            '''
+            Функция обновляет данные в комбобоксе Manufacturer
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
+            '''
             filtr_combo_firm["values"] = new_list_manufacturer()
-            
-        
+
+
         def os():
+            '''
+            Функция обновляет данные в комбобоксе OS
+            Получает: -
+            Возвращает: -
+            Автор: Демидов И.Д.
+            '''
             filtr_combo_os["values"] = new_list_os()
-            
-        
+
+
         def new_list_values(stolb_name):
             '''
             функция создает новые список уникальных значений после применения
@@ -236,7 +272,7 @@ class Child_filter(tk.Toplevel):
         filtr_entry_ram_2.grid(row=9, column=2)
         filtr_entry_amount_2 = ttk.Entry(self, width=20)
         filtr_entry_amount_2.insert(0, 1000000)
-        filtr_entry_amount_2.grid(row=10, column=2)        
+        filtr_entry_amount_2.grid(row=10, column=2)
         filtr_btn_cancel = ttk.Button(self, text='Отмена', command=filtr_cancel)
         filtr_btn_cancel.grid(row=15, column=1, columnspan=3)
         filtr_btn_filtr = ttk.Button(self, text='Применить', command=filtr)
