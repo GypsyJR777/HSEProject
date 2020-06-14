@@ -9,6 +9,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import bd
 import app as m
+import pandas as pd
 
 
 class Child_filter(tk.Toplevel):
@@ -20,12 +21,26 @@ class Child_filter(tk.Toplevel):
         Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
         '''
         super().__init__()
-        global df, parent
+        global df, parent, list_firm
         df = m.mdf
         parent = parent_
         self.title('Фильтры')
         self.geometry('400x300+400+300')
         self.resizable(False, False)
+
+
+        def new_list_values(stolb_name):
+            '''
+            функция создает новые список уникальных значений после применения
+            фильтра
+            Получает: stolb_name - название столбца
+            Возвращает: new_list - обновленный список уникальных значений
+            Автор: Будин А.М., Матвеев В.Е.
+            '''
+            global df
+            new_list = pd.unique(df[stolb_name]).tolist()
+            return new_list
+
 
         def Sorttest_int(sort_parametr, sort_min, sort_max):
             '''
@@ -64,7 +79,7 @@ class Child_filter(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е, Будин А.М.
             '''
-            global df, parent
+            global df, parent, list_firm
             if (filtr_entry_ram.get() != '' and filtr_entry_ram_2.get() != ''):
                 Sorttest_int('RAM', int(filtr_entry_ram.get()),
                              int(filtr_entry_ram_2.get()))
@@ -78,8 +93,8 @@ class Child_filter(tk.Toplevel):
                              float(filtr_entry_diagonal_2.get()))
             if (filtr_entry_country.get() !=''):
                 df = df[df['Country'] == filtr_entry_country.get()]
-            if (filtr_entry_firm.get() != ''):
-                df = df[df['Manufacturer'] == filtr_entry_firm.get()]
+            if (filtr_combo_firm.get() != ''):
+                df = df[df['Manufacturer'] == filtr_combo_firm.get()]
             if (filtr_entry_model.get() != ''):
                 df = df[df['Model'] == filtr_entry_model.get()]
             if (filtr_combobox.get() != ''):
@@ -93,6 +108,7 @@ class Child_filter(tk.Toplevel):
             for widget in parent.winfo_children():
                 widget.destroy()
             bd.Table(parent, df)
+
 
 
         def filtr_save():
@@ -130,8 +146,11 @@ class Child_filter(tk.Toplevel):
         label_description.grid(row=8, column=0)
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column=0)
-        filtr_entry_firm = ttk.Entry(self)
-        filtr_entry_firm.grid(row=2, column=1, columnspan=2)
+
+        list_firm = new_list_values('Manufacturer')
+        filtr_combo_firm = ttk.Combobox(self, values=list_firm, width=17)
+        filtr_combo_firm.grid(row=2, column=1, columnspan=2)
+
         filtr_entry_country = ttk.Entry(self)
         filtr_entry_country.grid(row=3, column=1, columnspan=2)
         filtr_entry_model = ttk.Entry(self)
@@ -162,8 +181,8 @@ class Child_filter(tk.Toplevel):
         filtr_entry_amount_2 = ttk.Entry(self, textvariable=1000000)
         filtr_entry_amount_2.insert(0, 1000000)
         filtr_entry_amount_2.grid(row=9, column=2)
-        filtr_combobox = ttk.Combobox(self, values=[u'Android',u'IOS',
-                                                    u'BlackBerry'], width=17)
+        filtr_combobox = ttk.Combobox(self, values=['Android','IOS',
+                                                    'BlackBerry'], width=17)
         filtr_combobox.grid(row=10, column=1, columnspan=2)
         filtr_btn_cancel = ttk.Button(self, text='Отмена', command=filtr_cancel)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
