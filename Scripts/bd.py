@@ -4,7 +4,6 @@
 Возвращает: -
 Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
 """
-
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
@@ -12,12 +11,13 @@ import app as m
 
 def treeview_sort_column(tv, col, reverse):
     l = [(tv.set(k, col), k) for k in tv.get_children()]
-    l.sort(reverse=reverse)
-
+    if (col == 'RAM' or col == 'Product Code' or col == 'Amount' or col == 'Storage'):
+        l.sort(key=lambda t: int(t[0]), reverse=reverse)
+    else:
+        l.sort(reverse=reverse)
     # rearrange items in sorted positions
     for index, (val, k) in enumerate(l):
         tv.move(k, '', index)
-
     # reverse sort next time
     tv.heading(col, command=lambda: treeview_sort_column(tv, col, not reverse))
 
@@ -39,7 +39,7 @@ def Table(parent=None, xls=None):
     for head in headings:
         tree.heading(head, text=head, anchor=tk.CENTER)
         tree.column(head, anchor=tk.CENTER, width=50)
-        tree.heading(head,text=head.capitalize(),command=lambda head_=head: treeview_sort_column(tree, head_, False))
+        tree.heading(head,text=head,command=lambda head_=head: treeview_sort_column(tree, head_, False))
     for i in range(count):
         tree.insert('', i, values=df.iloc[i, :].tolist())
 
