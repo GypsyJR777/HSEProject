@@ -98,6 +98,7 @@ class Child_add(tk.Toplevel):
             else:
                 df = df[df['Manufacturer'] == entry_firm.get()]
                 new_list = pd.unique(df["Country"]).tolist()
+                new_list.sort()
                 return new_list
 
 
@@ -153,14 +154,17 @@ class Child_add(tk.Toplevel):
         entry_model = ttk.Entry(self, width=33)
         entry_model.grid(row=4, column=1, columnspan=2)
         list_storage = new_list_values('Storage')
+        list_storage.sort()
         entry_storage = ttk.Combobox(self, values=list_storage, width=30)
         entry_storage.grid(row=5, column=1, columnspan=2)
         entry_diagonal = ttk.Entry(self, width=33)
         entry_diagonal.grid(row=6, column=1, columnspan=2)
         list_cpu = new_list_values('CPU')
+        list_cpu.sort()
         entry_cpu = ttk.Combobox(self, values=list_cpu, width=30)
         entry_cpu.grid(row=7, column=1, columnspan=2)
         list_ram = new_list_values('RAM')
+        list_ram.sort()
         entry_ram = ttk.Combobox(self, values=list_ram, width=30)
         entry_ram.grid(row=8, column=1, columnspan=2)
         entry_amount = tk.Spinbox(self, from_=0, to=1000000,  width=32)
