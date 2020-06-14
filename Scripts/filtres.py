@@ -79,7 +79,8 @@ class Child_filter(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е, Будин А.М.
             '''
-            global df, parent, list_firm
+            global df, parent
+            df = m.mdf
             if (filtr_entry_ram.get() != '' and filtr_entry_ram_2.get() != ''):
                 Sorttest_int('RAM', int(filtr_entry_ram.get()),
                              int(filtr_entry_ram_2.get()))
@@ -91,16 +92,16 @@ class Child_filter(tk.Toplevel):
                 and filtr_entry_diagonal_2.get() != ''):
                 Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()),
                              float(filtr_entry_diagonal_2.get()))
-            if (filtr_entry_country.get() !=''):
-                df = df[df['Country'] == filtr_entry_country.get()]
+            if (filtr_combo_country.get() !=''):
+                df = df[df['Country'] == filtr_combo_country.get()]
             if (filtr_combo_firm.get() != ''):
                 df = df[df['Manufacturer'] == filtr_combo_firm.get()]
-            if (filtr_entry_model.get() != ''):
-                df = df[df['Model'] == filtr_entry_model.get()]
+            if (filtr_combo_model.get() != ''):
+                df = df[df['Model'] == filtr_combo_model.get()]
             if (filtr_combobox.get() != ''):
                 df = df[df['OS'] == filtr_combobox.get()]
-            if (filtr_entry_cpu.get() != ''):
-                df = df[df['CPU'] == filtr_entry_cpu.get()]
+            if (filtr_combo_cpu.get() != ''):
+                df = df[df['CPU'] == filtr_combo_cpu.get()]
             if (filtr_entry_amount.get() != ''
                 and filtr_entry_amount_2.get() != ''):
                 Sorttest_int('Amount', int(filtr_entry_amount.get()),
@@ -146,23 +147,24 @@ class Child_filter(tk.Toplevel):
         label_description.grid(row=8, column=0)
         label_description = ttk.Label(self, text='Количество')
         label_description.grid(row=9, column=0)
-
         list_firm = new_list_values('Manufacturer')
         filtr_combo_firm = ttk.Combobox(self, values=list_firm, width=17)
         filtr_combo_firm.grid(row=2, column=1, columnspan=2)
-
-        filtr_entry_country = ttk.Entry(self)
-        filtr_entry_country.grid(row=3, column=1, columnspan=2)
-        filtr_entry_model = ttk.Entry(self)
-        filtr_entry_model.grid(row=4, column=1, columnspan=2)
+        list_country = new_list_values('Country')
+        filtr_combo_country = ttk.Combobox(self, values=list_country, width=17)
+        filtr_combo_country.grid(row=3, column=1, columnspan=2)
+        list_model = new_list_values('Model')
+        filtr_combo_model = ttk.Combobox(self, values=list_model, width=17)
+        filtr_combo_model.grid(row=4, column=1, columnspan=2)
         filtr_entry_storage = ttk.Entry(self)
         filtr_entry_storage.insert(0, 0)
         filtr_entry_storage.grid(row=5, column=1)
         filtr_entry_diagonal = ttk.Entry(self)
         filtr_entry_diagonal.insert(0, 0)
         filtr_entry_diagonal.grid(row=6, column=1)
-        filtr_entry_cpu = ttk.Entry(self)
-        filtr_entry_cpu.grid(row=7, column=1, columnspan=2)
+        list_cpu = new_list_values('Model')
+        filtr_combo_cpu = ttk.Combobox(self, values=list_cpu, width=17)
+        filtr_combo_cpu.grid(row=7, column=1, columnspan=2)
         filtr_entry_ram = ttk.Entry(self)
         filtr_entry_ram.insert(0, 0)
         filtr_entry_ram.grid(row=8, column=1)
@@ -181,8 +183,8 @@ class Child_filter(tk.Toplevel):
         filtr_entry_amount_2 = ttk.Entry(self, textvariable=1000000)
         filtr_entry_amount_2.insert(0, 1000000)
         filtr_entry_amount_2.grid(row=9, column=2)
-        filtr_combobox = ttk.Combobox(self, values=['Android','IOS',
-                                                    'BlackBerry'], width=17)
+        list_os = new_list_values('OS')
+        filtr_combobox = ttk.Combobox(self, values=list_os, width=17)
         filtr_combobox.grid(row=10, column=1, columnspan=2)
         filtr_btn_cancel = ttk.Button(self, text='Отмена', command=filtr_cancel)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=3)
