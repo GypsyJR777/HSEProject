@@ -9,27 +9,43 @@ import tkinter.ttk as ttk
 import numpy as np
 from Library import bd
 import app as m
+import pandas as pd
 from tkinter import messagebox as mb
 
 class Change(tk.Toplevel):
     def __init__(self, parent_):
         '''
         Функция вызывает окно изменения выбранного кортежа
-        Получает: -
+        Получает: parent_ - окно родителя
         Возвращает: -
         Автор: Демидов И.Д
         '''
         super().__init__()
         global df, parent
+        df = m.mdf
         parent = parent_
         self.title('Изменение данных о смартфоне')
         self.geometry('300x100+400+300')
         self.resizable(False, False)
 
+
+        def new_list_values(stolb_name):
+            '''
+            функция создает новые список уникальных значений после применения
+            фильтра
+            Получает: stolb_name - название столбца
+            Возвращает: new_list - обновленный список уникальных значений
+            Автор: Будин А.М., Матвеев В.Е.
+            '''
+            global df
+            new_list = pd.unique(df[stolb_name]).tolist()
+            return new_list
+
+
         def ok():
             '''
             Функция обновляет окно и заполняет данными поля ввода
-            Получает: mdf-структура DataFrame
+            Получает: -
             Возвращает: -
             Автор: Демидов И.Д
             '''
@@ -85,7 +101,7 @@ class Change(tk.Toplevel):
             '''
             Функция изменяет данные выбранного кортежа
             Получает: -
-            Возвращает: mdf-структура DataFrame
+            Возвращает: -
             Автор: Демидов И.Д
             '''
             global parent
@@ -108,7 +124,8 @@ class Change(tk.Toplevel):
 
         label_description = ttk.Label(self, text='Код товара для изменения')
         label_description.grid(row=0, column = 0)
-        entry_code = ttk.Entry(self)
+        list_code = new_list_values("Product Code")
+        entry_code = ttk.Combobox(self, values=list_code)
         entry_code.grid(row=0, column=1, columnspan=2)
         ok_btn = ttk.Button(self, text='OK', command=ok)
         ok_btn.grid(row=15, column=0, columnspan=3)
