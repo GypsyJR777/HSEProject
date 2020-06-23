@@ -15,11 +15,15 @@ import numpy as np
 from tkinter import messagebox as mb
 
 class CreateToolTip(object):
-    """
-    create a tooltip for a given widget
-    """
     def __init__(self, widget, text='widget info'):
-        self.waittime = 500     #miliseconds
+        '''
+        Функция вызывает всплывающее окно с информацией о функции,
+        которую выполняет кнопка
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
+        self.waittime = 100     #miliseconds
         self.wraplength = 300   #pixels
         self.widget = widget
         self.text = text
@@ -30,23 +34,53 @@ class CreateToolTip(object):
         self.tw = None
 
     def enter(self, event=None):
+        '''
+        Функция обрабатывает событие, когда мышка наводится на кнопку
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         self.schedule()
 
     def leave(self, event=None):
+        '''
+        Функция обрабатывает событие, когда мышка покидает кнопку
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         self.unschedule()
         self.hidetip()
 
     def schedule(self):
+        '''
+        Функция создает привязку к объекту
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         self.unschedule()
         self.id = self.widget.after(self.waittime, self.showtip)
 
     def unschedule(self):
+        '''
+        Функция отменяет привязку к объекту
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         id = self.id
         self.id = None
         if id:
             self.widget.after_cancel(id)
 
     def showtip(self, event=None):
+        '''
+        Функция создает всплывающее окно с информацией
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
         x += self.widget.winfo_rootx() + 25
@@ -62,6 +96,12 @@ class CreateToolTip(object):
         label.grid(column=2,row=1)
 
     def hidetip(self):
+        '''
+        Функция скрывает всплывающее окно
+        Получает: -
+        Возвращает: -
+        Автор: Демидов И.Д., Матвеев В.Е.
+        '''
         tw = self.tw
         self.tw= None
         if tw:
