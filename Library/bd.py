@@ -45,7 +45,7 @@ def Table(parent=None, xls=None):
     for head in headings:
         tree.heading(head, text=head, anchor=tk.CENTER)
         tree.column(head, anchor=tk.CENTER, width=50)
-        tree.heading(head,text=head,command=lambda head_=head: treeview_sort_column(tree, head_, False))
+        tree.heading(head, text=head, command=lambda head_=head: treeview_sort_column(tree, head_, False))
     for i in range(count):
         tree.insert('', i, values=df.iloc[i, :].tolist())
     scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)

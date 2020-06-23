@@ -7,7 +7,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import numpy as np
-from bd import Table
+from Library import bd
 import app as m
 from tkinter import messagebox as mb
 
@@ -39,23 +39,23 @@ class Change(tk.Toplevel):
                 self.geometry('300x300+400+300')
                 ok_btn.grid_remove()
                 label_description = ttk.Label(self, text='Операционная система')
-                label_description.grid(row=10, column = 0)
+                label_description.grid(row=10, column=0)
                 label_description = ttk.Label(self, text='Производитель')
-                label_description.grid(row=2, column =0)
+                label_description.grid(row=2, column=0)
                 label_description = ttk.Label(self, text='Страна')
-                label_description.grid(row=3, column =0)
+                label_description.grid(row=3, column=0)
                 label_description = ttk.Label(self, text='Модель')
-                label_description.grid(row=4, column =0)
+                label_description.grid(row=4, column=0)
                 label_description = ttk.Label(self, text='Память')
-                label_description.grid(row=5, column =0)
+                label_description.grid(row=5, column=0)
                 label_description = ttk.Label(self, text='Диагональ')
-                label_description.grid(row=6, column =0)
+                label_description.grid(row=6, column=0)
                 label_description = ttk.Label(self, text='Процессор')
-                label_description.grid(row=7, column =0)
+                label_description.grid(row=7, column=0)
                 label_description = ttk.Label(self, text='Оперативная память')
-                label_description.grid(row=8, column =0)
+                label_description.grid(row=8, column=0)
                 label_description = ttk.Label(self, text='Количество')
-                label_description.grid(row=9, column =0)
+                label_description.grid(row=9, column=0)
                 string = np.array(m.mdf[m.mdf['Product Code'] == int(entry_code.get())])
                 change_entry_firm.insert(0, string[0][1])
                 change_entry_firm.grid(row=2, column=1, columnspan=2)
@@ -91,14 +91,15 @@ class Change(tk.Toplevel):
             global parent
             try:
                 m.mdf.loc[int(entry_code.get())-1] = [entry_code.get(),
-                          change_entry_firm.get(),
-                          change_entry_country.get(), change_entry_model.get(),
-                          change_combobox.get(), int(change_entry_storage.get()),
-                          float(change_entry_diagonal.get()), change_entry_cpu.get(),
-                          int(change_entry_ram.get()), int(change_entry_amount.get())]
+                          change_entry_firm.get(), change_entry_country.get(),
+                          change_entry_model.get(), change_combobox.get(),
+                          int(change_entry_storage.get()),
+                          float(change_entry_diagonal.get()),
+                          change_entry_cpu.get(), int(change_entry_ram.get()),
+                          int(change_entry_amount.get())]
                 for widget in parent.winfo_children():
                     widget.destroy()
-                Table(parent, m.mdf)
+                bd.Table(parent, m.mdf)
             except(ValueError):
                 mb.showerror("Ошибка", "Должны быть введены числа в полях 'Память', 'Оперативная память' и 'Количество'")
 

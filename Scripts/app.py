@@ -6,7 +6,7 @@
 """
 import tkinter as tk
 import pandas as pd
-import bd
+from Library import bd
 from tkinter import messagebox as mb
 from filtres import Child_filter
 from add import Child_add
@@ -39,25 +39,29 @@ class Main(tk.Frame):
         frame_box2 = tk.Frame(frame_toolbox, bd=5, bg="#B0C7E4")
         frame_box2.pack(side='left', fill=tk.Y, expand=1)
         # photo for button
-        photo = tk.PhotoImage(file = r"../img.png")
-        photo = photo.subsample(25, 25)
+        #photo = tk.PhotoImage(file = r"../img.png")
+        #photo = photo.subsample(25, 25)
         # elemests of toolbox
         button1_box1 = tk.Button(frame_box2, text=u'Добавить',
-        command=self.open_dialog, bg="#5E46E0", fg="white",
-        font="TimesNewRoman 16")
+                                 command=self.open_dialog, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         button2_box1 = tk.Button(frame_box2, text=u'Правка',
-        command=self.change, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+                                 command=self.change, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         button3_box1 = tk.Button(frame_box2, text=u'Удалить',
-        command=self.delete, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+                                 command=self.delete, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         button4_box1 = tk.Button(frame_box2, text=u'Экспорт',
-        command=self.saved, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
+                                 command=self.saved, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         button1_box2 = tk.Button(frame_box2, text=u'Анализ',
-        command=self.analysis, bg="#5E46E0", fg="white",
-        font="TimesNewRoman 16")
+                                 command=self.analysis, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         button1_box3 = tk.Button(frame_box2, text=u'Фильтр',
-        command=self.sort, bg="#5E46E0", fg="white", font="TimesNewRoman 16")
-        button2_box3 = tk.Button(frame_toolbox, bg="#B0C7E4",
-        image=photo, compound=tk.LEFT, relief="flat")
+                                 command=self.sort, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
+        #button2_box3 = tk.Button(frame_toolbox, bg="#B0C7E4",
+        #image=photo, compound=tk.LEFT, relief="flat")
         # pack elemests of toolbox
         button1_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button2_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
@@ -65,14 +69,14 @@ class Main(tk.Frame):
         button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
-        button2_box3.pack(side='right')
+        #button2_box3.pack(side='right')
         try:
             xls = pd.read_pickle("../Data/smartphones.pkl")
         except (FileNotFoundError, EOFError):
             mb.showerror("Ошибка", "Файл smartphones.pkl не удалось открыть")
             xls = pd.DataFrame(columns=["Product Code", "Manufacturer",
-            "Country", "Model", "OS", "Storage", "Diagonal",
-            "CPU", "RAM", "Amount"])
+                                        "Country", "Model", "OS", "Storage",
+                                        "Diagonal", "CPU", "RAM", "Amount"])
         mdf = pd.DataFrame(xls)
         bd.Table(frame_table, mdf)
 

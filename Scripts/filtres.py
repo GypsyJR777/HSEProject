@@ -7,7 +7,7 @@
 
 import tkinter as tk
 import tkinter.ttk as ttk
-import bd
+from Library import bd
 import app as m
 import pandas as pd
 
@@ -182,8 +182,8 @@ class Child_filter(tk.Toplevel):
                 df = df[df['Manufacturer'] == filtr_combo_firm.get()]
             if (filtr_combo_model.get() != ''):
                 df = df[df['Model'] == filtr_combo_model.get()]
-            if (filtr_combo_cpu.get() != ''):
-                df = df[df['OS'] == filtr_combo_cpu.get()]
+            if (filtr_combo_os.get() != ''):
+                df = df[df['OS'] == filtr_combo_os.get()]
             if (filtr_combo_cpu.get() != ''):
                 df = df[df['CPU'] == filtr_combo_cpu.get()]
             if (filtr_entry_amount.get() != ''
@@ -283,7 +283,7 @@ class Child_filter(tk.Toplevel):
         filtr_btn_filtr.bind('<Button-1>')
         filtr_btn_filtr_save = ttk.Button(self, text='Сохранить измененения',
                                           command=filtr_save)
-        filtr_btn_filtr_save.grid(row=14, column=1,  columnspan=3)
+        filtr_btn_filtr_save.grid(row=14, column=1, columnspan=3)
         filtr_btn_filtr_save.bind('<Button-1>')
         self.grab_set()
         self.focus_set()

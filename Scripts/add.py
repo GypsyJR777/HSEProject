@@ -7,7 +7,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
-from bd import Table
+from Library import bd
 import app as m
 from tkinter import messagebox as mb
 
@@ -74,12 +74,10 @@ class Child_add(tk.Toplevel):
                 counter = m.mdf.loc[len(m.mdf)-1]["Product Code"]
             except(KeyError):
                 counter = 0
-            m.mdf.loc[len(m.mdf)] = [int(counter) + 1, firm, country,
-                      str(model), os, int(storage), float(diagonal),
-                      cpu, int(ram), int(amount)]
+            m.mdf.loc[len(m.mdf)] = [int(counter) + 1, firm, country, str(model), os, int(storage), float(diagonal), cpu, int(ram), int(amount)]
             for widget in parent.winfo_children():
                 widget.destroy()
-            Table(parent, m.mdf)
+            bd.Table(parent, m.mdf)
 
 
         def new_list_country():
@@ -128,23 +126,23 @@ class Child_add(tk.Toplevel):
 
 
         label_description = ttk.Label(self, text='Операционная система')
-        label_description.grid(row=10, column = 0)
+        label_description.grid(row=10, column=0)
         label_description = ttk.Label(self, text='Производитель')
-        label_description.grid(row=2, column =0)
+        label_description.grid(row=2, column=0)
         label_description = ttk.Label(self, text='Страна')
-        label_description.grid(row=3, column =0)
+        label_description.grid(row=3, column=0)
         label_description = ttk.Label(self, text='Модель')
-        label_description.grid(row=4, column =0)
+        label_description.grid(row=4, column=0)
         label_description = ttk.Label(self, text='Память')
-        label_description.grid(row=5, column =0)
+        label_description.grid(row=5, column=0)
         label_description = ttk.Label(self, text='Диагональ')
-        label_description.grid(row=6, column =0)
+        label_description.grid(row=6, column=0)
         label_description = ttk.Label(self, text='Процессор')
-        label_description.grid(row=7, column =0)
+        label_description.grid(row=7, column=0)
         label_description = ttk.Label(self, text='Оперативная память')
-        label_description.grid(row=8, column =0)
+        label_description.grid(row=8, column=0)
         label_description = ttk.Label(self, text='Количество')
-        label_description.grid(row=9, column =0)
+        label_description.grid(row=9, column=0)
         list_firm = new_list_values('Manufacturer')
         entry_firm = ttk.Combobox(self, values=list_firm, width=30)
         entry_firm.grid(row=2, column=1, columnspan=2)

@@ -8,7 +8,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 import numpy as np
-from bd import Table
+from Library import bd
 import app as m
 from tkinter import messagebox as mb
 
@@ -44,7 +44,7 @@ class Delete(tk.Toplevel):
                 m.mdf = m.mdf.drop(np.where(m.mdf['Product Code'] == int(choice.get()))[0])
                 for widget in parent.winfo_children():
                     widget.destroy()
-                Table(parent, m.mdf)
+                bd.Table(parent, m.mdf)
                 self.destroy()
 
 
