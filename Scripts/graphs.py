@@ -11,6 +11,8 @@ import matplotlib as plt
 import matplotlib.pyplot as plt
 from tkinter import filedialog
 import app as m
+import numpy as np
+from tkinter import messagebox as mb
 
 class Kowalski_analis(tk.Toplevel):
     def __init__(self, parent_):
@@ -29,7 +31,7 @@ class Kowalski_analis(tk.Toplevel):
         self.focus_force()
 
 
-        def analis_stolb():
+        def analis_stolb(event):
             '''
             Функция создает столбчатую диаграмму
             Получает: -
@@ -39,16 +41,20 @@ class Kowalski_analis(tk.Toplevel):
             fig, ax = plt.subplots()
             lststolb = [str(item) for item in list(m.mdf[first_stolb.get()])]
             ax.bar(lststolb, list(m.mdf[second_stolb.get()]))
-            ax.set_facecolor('seashell')
-            fig.set_facecolor('floralwhite')
             fig.set_figwidth(12)    #  ширина Figure
             fig.set_figheight(6)
+            ax.tick_params(labelrotation = 60)
             plt.show()
 
 
-        def analis_svod():
+        def stolb_info(event):
+            mb.showinfo("Описание","Показывает график, представленный прямоугольными зонами, высоты которых пропорциональны величинам, которые они отображают.")
+
+
+
+        def analis_svod(event):
             '''
-            Функция создает сводную таблицу
+            Функция создает сводчатую таблицу
             Получает: -
             Возвращает: -
             Автор: Матвеев В.Е.
@@ -61,9 +67,14 @@ class Kowalski_analis(tk.Toplevel):
             data_pt.to_excel(export_file)
 
 
-        def analis_rasseivanie():
+        def svod_info(event):
+            mb.showinfo("Описание","Резюмирует данные, представленные в исходной таблице, показывает среднее значение по конечному столбцу.")
+
+
+
+        def analis_rasseivanie(event):
             '''
-            Функция создает диаграмму рассеивания
+            Функция создает диаграмму рассеяния
             Получает: -
             Возвращает: -
             Автор: Матвеев В.Е.
@@ -83,7 +94,11 @@ class Kowalski_analis(tk.Toplevel):
             plt.show()
 
 
-        def analis_baz():
+        def rasseivanie_info(event):
+            mb.showinfo("Описание","Показывает взаимосвязь между двумя или тремя переменными, цвет и размер точек отображают значение третьей переменную. Если введены 2 параметра, вместо третьего используется количество повторений.")
+
+
+        def analis_baz(event):
             '''
             Функция создает базовый анализ
             Получает: -            Возвращает: -
@@ -95,7 +110,11 @@ class Kowalski_analis(tk.Toplevel):
             bazstat.to_excel(export_file, index = True, header=True)
 
 
-        def analis_wix():
+        def baz_info(event):
+            mb.showinfo("Описание","Сохраняет таблицу с описательной статистикой(среднее, стандартное отклонение, количество наблюдений, минимальное, максимальное и квартили) числовых столбцов.")
+
+
+        def analis_wix(event):
             '''
             Функция создает диаграмму Бокса-Вискера
             Получает: -
@@ -113,30 +132,42 @@ class Kowalski_analis(tk.Toplevel):
             plt.xticks(a, n, rotation=75)
             plt.show()
 
+        def wix_info(event):
+            mb.showinfo("Описание","Используются в описательной статистике и позволяют быстро исследовать несколько наборов данных в графическом виде. Показывает верхние и нижние границы, квартили и медиану.")
 
-        def analis_gis():
+
+        def analis_gis(event):
             '''
             Функция создает гистодиаграмму
             Получает: -
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            gis = m.mdf.groupby(stolb_1_gis.get()).size().reset_index(name=stolb_2_gis.get())
-            plt.figure(figsize=(16,10), dpi= 80)
-            lstgis = [str(item) for item in list(gis[stolb_1_gis.get()])]
-            plt.bar(lstgis, gis[stolb_2_gis.get()], width=.5)
-            for i, val in enumerate(gis[stolb_2_gis.get()].values):
-                plt.text(i, val, float(val), horizontalalignment='center',
-                verticalalignment='bottom',
-                fontdict={'fontweight':500, 'size':12})
-            plt.gca().set_xticklabels(gis[stolb_1_gis.get()], rotation=60,
-            horizontalalignment= 'right')
-            plt.ylim(0, 45)
+            dfg = m.mdf[[stolb_2_gis.get(), stolb_1_gis.get()]].groupby(stolb_1_gis.get()).apply(lambda x: x.mean())
+            dfg.sort_values(stolb_2_gis.get(), inplace=True)
+            dfg.reset_index(inplace=True)
+            import matplotlib.patches as patches
+            fig, ax = plt.subplots(figsize=(16,10), facecolor='white', dpi= 80)
+            ax.vlines(x=dfg.index, ymin=0, ymax=dfg[stolb_2_gis.get()], color='firebrick', alpha=0.7, linewidth=20)
+            for i, cty in enumerate(dfg[stolb_2_gis.get()]):
+                ax.text(i, cty+0.5, round(cty, 1), horizontalalignment='center')
+
+            plt.xticks(dfg.index, dfg[stolb_1_gis.get()].str.upper(), rotation=60, horizontalalignment='right', fontsize=12)
+
+            p1 = patches.Rectangle((.57, -0.005), width=.33, height=.13, alpha=.1, facecolor='green', transform=fig.transFigure)
+            p2 = patches.Rectangle((.124, -0.005), width=.446, height=.13, alpha=.1, facecolor='red', transform=fig.transFigure)
+            fig.add_artist(p1)
+            fig.add_artist(p2)
             plt.show()
 
 
-        label_analis = ttk.Label(self, text='Выберете анализ: ')
+        def gis_info(event):
+            mb.showinfo("Описание","Упорядоченная гистограмма эффективно передает порядок ранжирования элементов. Выводит столбцы по возрастанию.")
+
+        label_analis = ttk.Label(self, text='Выберите анализ: ')
         label_analis.grid(row=0, column=0)
+        label_info = ttk.Label(self, text='Чтобы посмотреть описание, нажмите на кнопку правой кнопкой мыши')
+        label_info.grid(row=7, column=0, rowspan=3, columnspan=3)
         first_stolb = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         first_stolb.grid(row=1, column=1)
         second_stolb = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
@@ -156,27 +187,39 @@ class Kowalski_analis(tk.Toplevel):
         stolb_2_rass.grid(row=2, column=2)
         stolb_3_rass = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_3_rass.grid(row=2, column=3)
-        base_stolb = ttk.Button(self, text='Столбчатая Диаграмма', command=analis_stolb)
+        base_stolb = ttk.Button(self, text='Столбчатая Диаграмма')
         base_stolb.grid(row=1, column=0)
-        base_svod = ttk.Button(self, text='Сводная таблица', command=analis_svod)
+        base_stolb.bind('<Button-1>', analis_stolb)
+        base_stolb.bind('<Button-3>', stolb_info)
+        base_svod = ttk.Button(self, text='Сводная таблица')
         base_svod.grid(row=3, column=0)
-        base_svod = ttk.Button(self, text='Диаграмма рассеивания', command=analis_rasseivanie)
-        base_svod.grid(row=2, column=0)
+        base_svod.bind('<Button-1>', analis_svod)
+        base_svod.bind('<Button-3>', svod_info)
+        base_ras = ttk.Button(self, text='Диаграмма рассеяния')
+        base_ras.grid(row=2, column=0)
+        base_ras.bind('<Button-1>', analis_rasseivanie)
+        base_ras.bind('<Button-3>', rasseivanie_info)
+
 #Поля базовой статистики
-        baz_stat = ttk.Button(self, text='Базовая статистка',
-        command=analis_baz, width = 90)
+        baz_stat = ttk.Button(self, text='Базовая статистка', width = 90)
+        baz_stat.bind('<Button-1>', analis_baz)
+        baz_stat.bind('<Button-3>', baz_info)
         baz_stat.grid(row=4, column=0, columnspan=4)
 #Поля диаграммы Бокса-Вискера
-        wix_stat = ttk.Button(self, text='Бокса-Вискера', command=analis_wix)
+        wix_stat = ttk.Button(self, text='Бокса-Вискера')
         wix_stat.grid(row=5, column=0)
+        wix_stat.bind('<Button-1>', analis_wix)
+        wix_stat.bind('<Button-3>', wix_info)
         stolb_1_wix = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
         stolb_1_wix.grid(row=5, column=1)
         stolb_2_wix = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_wix.grid(row=5, column=2)
 #Поля гистограммы
-        gis_stat = ttk.Button(self, text='Гистограмма', command=analis_gis)
+        gis_stat = ttk.Button(self, text='Гистограмма')
         gis_stat.grid(row=6, column=0)
-        stolb_1_gis = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
+        gis_stat.bind('<Button-1>', analis_gis)
+        gis_stat.bind('<Button-3>', gis_info)
+        stolb_1_gis = ttk.Combobox(self, values=['Manufacturer', 'Country', 'Model', 'OS', 'CPU'], width=17)
         stolb_1_gis.grid(row=6, column=1)
         stolb_2_gis = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_gis.grid(row=6, column=2)
