@@ -6,7 +6,9 @@
 """
 import tkinter as tk
 import pandas as pd
-from Library import bd
+import os, sys
+sys.path.insert(0, os.path.abspath("../Library"))
+import bd
 from tkinter import messagebox as mb
 from filtres import Child_filter
 from add import Child_add

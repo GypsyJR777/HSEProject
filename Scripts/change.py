@@ -7,7 +7,10 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import numpy as np
-from Library import bd
+import os, sys
+sys.path.insert(0, os.path.abspath("../Library"))
+import bd
+sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 import pandas as pd
 from tkinter import messagebox as mb

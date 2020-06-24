@@ -7,6 +7,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
+import os, sys
+sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 
 def treeview_sort_column(tv, col, reverse):

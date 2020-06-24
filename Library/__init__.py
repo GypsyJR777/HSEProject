@@ -4,4 +4,4 @@
 bd - формирование базы данных
 """
 from Library import bd
-__all__ = ["bd"]
+__all__ = ['bd']
