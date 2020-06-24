@@ -28,7 +28,7 @@ class Change(tk.Toplevel):
         df = m.mdf
         parent = parent_
         self.title('Изменение данных о смартфоне')
-        self.geometry('300x100+400+300')
+        self.geometry('300x70+400+300')
         self.resizable(False, False)
 
 
