@@ -108,6 +108,10 @@ class Main(tk.Frame):
         global tree
         Child_add(tree)
 
+    def report(self):
+        global tree
+        Child_report(tree)
+
 
     def sort(self):
         '''
