@@ -13,6 +13,7 @@ import bd
 sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 import pandas as pd
+import app as a
 
 
 class Child_report(tk.Toplevel):
@@ -203,8 +204,9 @@ class Child_report(tk.Toplevel):
             m.mdf = df
             window = tk.Toplevel()
             window.geometry('700x400+400+300')
-            text_report = tk.Label(window, text=m.mdf)
-            text_report.pack(fill=tk.BOTH, expand=1)
+            frame_report = tk.Frame(window)
+            frame_report.pack(fill=tk.BOTH, expand=1)
+            bd.Table(frame_report, a.mxls1, a.mxls2, a.mxls3)
             window.grab_set()
             window.focus_set()
             self.destroy()
