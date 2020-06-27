@@ -16,6 +16,7 @@ from change import Change
 from delete import Delete
 from graphs import Kowalski_analis
 from tkinter import filedialog
+from report import Child_report
 
 
 class Main(tk.Frame):
@@ -62,6 +63,9 @@ class Main(tk.Frame):
         button1_box3 = tk.Button(frame_box2, text=u'Фильтр',
                                  command=self.sort, bg="#5E46E0",
                                  fg="white", font="TimesNewRoman 16")
+        button2_box3 = tk.Button(frame_box2, text=u'Отчет',
+                                 command=self.report, bg="#5E46E0",
+                                 fg="white", font="TimesNewRoman 16")
         #button2_box3 = tk.Button(frame_toolbox, bg="#B0C7E4",
         #image=photo, compound=tk.LEFT, relief="flat")
         # pack elemests of toolbox
@@ -71,6 +75,7 @@ class Main(tk.Frame):
         button4_box1.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box2.pack(side='left', padx=5, ipadx=8, ipady=8)
         button1_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
+        button2_box3.pack(side='left', padx=5, ipadx=8, ipady=8)
         #button2_box3.pack(side='right')
         try:
             xls2 = pd.read_pickle('../Data/Pickle2.pkl')
