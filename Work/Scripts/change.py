@@ -191,7 +191,7 @@ class Change(tk.Toplevel):
                     entry_code['value'] = ''
                     entry_code['state'] = 'readonly'
                     change_entry_model.insert(0, string[0][5])
-
+                    change_entry_model['state'] = 'readonly'
                     change_entry_model.grid(row=1, column=1, columnspan=2)
                     change_entry_storage.insert(0, string[0][1])
                     change_entry_storage.grid(row=2, column=1, columnspan=2)
@@ -311,7 +311,7 @@ class Change(tk.Toplevel):
                     change_entry_diagonal.grid(row=3, column=1, columnspan=2)
                     change_combobox.insert(0, string[0][2])
                     change_combobox.grid(row=2, column=1, columnspan=2)
-                    change_entry_firm['value'] = string[0][3]
+                    change_entry_firm.insert(0, string[0][3])
                     change_entry_firm['state'] = 'readonly'
                     change_entry_firm.grid(row=1, column=1, columnspan=2)
                     change_btn2 = ttk.Button(self, text='Применить', command=change_of_model)
@@ -395,7 +395,7 @@ class Change(tk.Toplevel):
         # ok_btn = ttk.Button(self, text='ОК', command=ok)
         # ok_btn.grid(row=15, column=0, columnspan=3)
         list_firm = new_list_values('Manufacturer')
-        change_entry_firm = ttk.Combobox(self, values=list_firm, state="readonly")
+        change_entry_firm = ttk.Combobox(self, values=list_firm)
         change_entry_country = ttk.Entry(self)
 #        list_model = new_list_values('Model')
         
