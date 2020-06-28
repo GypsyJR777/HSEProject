@@ -139,22 +139,6 @@ class Change(tk.Toplevel):
             frame_tree.grid(row=1, column=0, columnspan=2)
 
 
-        def change_of_model():
-            global parent
-            try:
-                m.mxls3['Diagonal'][m.mxls3["Model"] == change_entry_model.get()] = float(change_entry_diagonal.get())
-                m.mxls3['OS'][m.mxls3["Model"] == change_entry_model.get()] = change_combobox.get()
-                m.mxls3['Manufacturer'][m.mxls3["Model"] == change_entry_model.get()] = change_entry_firm.get()
-                for widget in parent.winfo_children():
-                    widget.destroy()
-                bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
-                self.destroy()
-            except(ValueError):
-                mb.showerror("Ошибка", "Должны быть введены данные во все поля")
-
-
-
-
         def ok1():
             '''
             Функция обновляет окно, отображает в окне инструменты редактирования
@@ -408,4 +392,4 @@ class Change(tk.Toplevel):
         change_entry_cpu = ttk.Entry(self)
         change_entry_ram = ttk.Entry(self)
         change_entry_amount = ttk.Entry(self)
-#        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry'])
+#        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry']) print
