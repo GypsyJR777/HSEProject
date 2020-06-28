@@ -168,8 +168,11 @@ class Kowalski_analis(tk.Toplevel):
             data_pt.columns = [t[0] if t[0] else t[1] for t in data_pt.columns]
             print(data_pt)
             data_pt.plot()
-            plt.title("Графическая интерпретация сводной таблицы")
-            plt.show()
+            window = tk.Toplevel()
+            frame_tree = tk.Label(window, text=data_pt)
+            frame_tree.pack()
+#            plt.title("Графическая интерпретация сводной таблицы")
+#            plt.show()
 
             mb.showinfo("Внимание","Отдельно возможно сохранение в xlsx файл")
 
@@ -244,12 +247,37 @@ class Kowalski_analis(tk.Toplevel):
             global df
             bazstat = df.describe()
             print(bazstat)
-            bazstat.plot()
-            plt.title("Графическая интерпретация таблицы базового анализа")
-            plt.show()
-            mb.showinfo("Внимание","Отдельно возможно сохранение таблицы в xlsx файл")
-            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
-            bazstat.to_excel(export_file, index = True, header=True)
+#            bazstat.plot()
+            window = tk.Toplevel()
+            window.geometry('700x300+400+300')
+            frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
+            indexes = bazstat.index.tolist()
+            df = bazstat
+            df.insert(0, ' ', indexes)
+            headings = df.columns.tolist()
+            tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
+            tree["columns"] = headings
+            tree["displaycolumns"] = headings
+            for head in headings:
+                tree.heading(head, text=head, anchor=tk.CENTER)
+                tree.column(head, anchor=tk.CENTER, width=50)
+            for i in range(len(df)):
+                tree.insert('', i, values=df.iloc[i, :].tolist())
+            scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
+            tree.configure(yscrollcommand=scrollbar.set)
+            scrollbar.pack(side="right", fill="y")
+            scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
+            tree.configure(xscrollcommand=scrollbarx.set)
+            scrollbarx.pack(side="bottom", fill="x")
+            tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+            frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+
+
+#            plt.title("Графическая интерпретация таблицы базового анализа")
+#            plt.show()
+#            mb.showinfo("Внимание","Отдельно возможно сохранение таблицы в xlsx файл")
+#            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+#            bazstat.to_excel(export_file, index = True, header=True)
 
 
         # def baz_info(event):
