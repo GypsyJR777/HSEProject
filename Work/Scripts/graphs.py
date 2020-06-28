@@ -301,7 +301,6 @@ class Kowalski_analis(tk.Toplevel):
             
             global df
             bazstat = df.describe()
-            print(bazstat)
 #            bazstat.plot()
             window = tk.Toplevel()
             window.geometry('700x300+400+300')

@@ -174,12 +174,9 @@ class Main(tk.Frame):
         mxls1.to_pickle("../Data/Pickle1.pkl")
         mxls2.to_pickle("../Data/Pickle2.pkl")
         mxls3.to_pickle("../Data/Pickle3.pkl")
-        
-        print(mxls1)
-        print(mxls2)
-        print(mxls3)
         #writer = pd.ExcelWriter('../Output/smartphones2.xlsx')
         export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
         mdf.to_excel(export_file, index = True, header=True)
         #mdf.to_excel(writer, 'smartphones')
         #writer.save()
+        

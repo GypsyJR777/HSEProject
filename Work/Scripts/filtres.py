@@ -243,7 +243,6 @@ class Child_filter(tk.Toplevel):
             Автор: Демидов И.Д.
             '''
             global df, parent, xls1, xls2, xls3
-            print(df)
             m.mdf = df
             m.mxls2 = xls2
             m.mxls1 = xls1

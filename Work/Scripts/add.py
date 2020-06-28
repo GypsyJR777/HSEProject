@@ -55,7 +55,6 @@ class Child_add(tk.Toplevel):
                 # elif ((np.array(m.mxls3[m.mxls3['Model'] == entry_model.get()])[0][1] != entry_diagonal.get()) and (np.array(m.mxls3[m.mxls3['Model'] == entry_model.get()])[0][2] != combobox.get()) and (np.array(m.mxls3[m.mxls3['Model'] == entry_model.get()])[0][3] != entry_firm.get())):
                 #     mb.showerror("Ошибка", "Введенный данные(диагональ, OS или производитель) не соответствует введенной модели")
                 else:
-                    print("yeah1")
                     try:
                         if (entry_country.get() != np.array(m.mxls1[m.mxls1['Manufacturer'] == entry_firm.get()])[0][1]):
                             mb.showerror("Ошибка", "Введенная страна не соответствует введенному производителю")
@@ -102,7 +101,6 @@ class Child_add(tk.Toplevel):
             m.mxls2 = m.mxls2.drop_duplicates(subset='Product Code')
             m.mxls3 = m.mdf[["Model", "Diagonal", "OS", "Manufacturer"]]
             m.mxls3 = m.mxls3.drop_duplicates(subset='Model')
-            print (m.mdf)
             bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
 
 

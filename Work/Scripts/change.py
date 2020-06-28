@@ -183,7 +183,6 @@ class Change(tk.Toplevel):
                     change_btn_ok.grid_remove()
                     change_btn_cancel.grid_remove()
                     frame_tree.grid_remove()
-                    print(string[0][5])
                     label_description_1.grid(row=1, column=0)
                     label_description_2.grid(row=2, column=0)
                     label_description_3.grid(row=3, column=0)
@@ -392,4 +391,4 @@ class Change(tk.Toplevel):
         change_entry_cpu = ttk.Entry(self)
         change_entry_ram = ttk.Entry(self)
         change_entry_amount = ttk.Entry(self)
-#        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry']) print
+#        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry'])
