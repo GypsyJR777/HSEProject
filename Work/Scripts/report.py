@@ -1,5 +1,5 @@
 """
-Функция вызывает окно отчёта
+Функция вызывает окно фильтрации
 Получает: -
 Возвращает: -
 Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
@@ -7,8 +7,13 @@
 
 import tkinter as tk
 import tkinter.ttk as ttk
+import os, sys
+sys.path.insert(0, os.path.abspath("../Library"))
+import bd
+sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 import pandas as pd
+import app as a
 from tkinter import filedialog
 
 
@@ -21,7 +26,7 @@ class Child_report(tk.Toplevel):
         Автор: Матвеев В.Е., Демидов И.Д., Будин А.М.
         '''
         super().__init__()
-        global df, parent, list_firm, col_code, col_manufacturer, col_country, col_model, col_os, col_storage, col_diagolal, col_cpu, col_ram, col_amount
+        global df, parent, list_firm
         df = m.mdf
         parent = parent_
         self.title('Фильтры')
@@ -158,11 +163,8 @@ class Child_report(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е, Будин А.М.
             '''
-            global df, parent, xls1, xls2, xls3, list_col, col_code, col_manufacturer, col_country, col_model, col_os, col_storage, col_diagolal, col_cpu, col_ram, col_amount
+            global df, parent
             df = m.mdf
-            xls1=m.mxls1
-            xls2=m.mxls2
-            xls3=m.mxls3
             if (filtr_entry_ram.get() != '' and filtr_entry_ram_2.get() != ''):
                 Sorttest_int('RAM', int(filtr_entry_ram.get()),
                              int(filtr_entry_ram_2.get()))
@@ -172,149 +174,68 @@ class Child_report(tk.Toplevel):
                              int(filtr_entry_storage_2.get()))
             if (filtr_entry_diagonal.get() != ''
                 and filtr_entry_diagonal_2.get() != ''):
-                b=[]
-                c=[]
-                diagseries = xls3[xls3['Diagonal'] <= float(filtr_entry_diagonal_2.get())]
-                diagseries = diagseries[diagseries['Diagonal'] >= float(filtr_entry_diagonal.get())]
-                b.append(diagseries['Model'])
-                for item in b:
-                    for items in item:
-                        c.append(items)
-                xls2=xls2[xls2['Model'].isin(c)]
-
+                Sorttest_int('Diagonal', float(filtr_entry_diagonal.get()),
+                             float(filtr_entry_diagonal_2.get()))
             if (filtr_combo_country.get() !=''):
-                xls1 = xls1.loc[xls1['Country'] == filtr_combo_country.get()]
-                xls3 = xls3[xls3['Manufacturer'].isin(xls1['Manufacturer'].tolist())]
-                xls2 = xls2[xls2['Model'].isin(xls3['Model'].tolist())]
-
+                df = df[df['Country'] == filtr_combo_country.get()]
             if (filtr_combo_firm.get() != ''):
-                xls3 = xls3.loc[xls3['Manufacturer'] == filtr_combo_firm.get()]
-                xls2 = xls2[xls2['Model'].isin(xls3['Model'].tolist())]
-
-
+                df = df[df['Manufacturer'] == filtr_combo_firm.get()]
             if (filtr_combo_model.get() != ''):
-                xls2 = xls2[xls2['Model'] == filtr_combo_model.get()]
-
+                df = df[df['Model'] == filtr_combo_model.get()]
             if (filtr_combo_os.get() != ''):
-                xls3 = xls3.loc[xls3['OS'] == filtr_combo_os.get()]
-                xls2 = xls2[xls2['Model'].isin(xls3['Model'].tolist())]
-
+                df = df[df['OS'] == filtr_combo_os.get()]
             if (filtr_combo_cpu.get() != ''):
-                xls2 = xls2[xls2['CPU'] == filtr_combo_cpu.get()]
-            if (filtr_entry_amount.get() != '' and filtr_entry_amount_2.get() != ''):
+                df = df[df['CPU'] == filtr_combo_cpu.get()]
+            if (filtr_entry_amount.get() != ''
+                and filtr_entry_amount_2.get() != ''):
                 Sorttest_int('Amount', int(filtr_entry_amount.get()),
                              int(filtr_entry_amount_2.get()))
+            m.mdf = df
 
-            list_col = []
-            if col_code.get() == 1:
-                list_col.append("Product Code")
-            if col_manufacturer.get() == 1:
-                list_col.append("Manufacturer")
-            if col_country.get() == 1:
-                list_col.append("Country")
-            if col_model.get() == 1:
-                list_col.append("Model")
-            if col_os.get() == 1:
-                list_col.append("OS")
-            if col_storage.get() == 1:
-                list_col.append("Storage")
-            if col_diagolal.get() == 1:
-                list_col.append("Diagonal")
-            if col_cpu.get() == 1:
-                list_col.append("CPU")
-            if col_ram.get() == 1:
-                list_col.append("RAM")
-            if col_amount.get() == 1:
-                list_col.append("Amount")
 
-        def Table_report(parent=None, xls1=None, xls2=None, xls3=None, list_of_columns=None):
-            '''
-            Функция создает таблицу и добавляет к ней сколлбары
-            Получает: parent-название окна, xls-структура DataFrame,
-            list_of_columns-список колонок для вывода
-            Возращает: -
-            Автор: Демидов И.Д, Матвеев В.Е.
-            '''
-            df = pd.merge(pd.merge(xls2, xls3, on=('Model')).drop_duplicates(subset=['Product Code']), xls1, on=('Manufacturer'))
-            df = df[list_of_columns]
-            count = len(df)
-            #df = df[["Product Code", "Manufacturer", "Country", "Model", "OS", "Storage", "Diagonal", "CPU", "RAM", "Amount"]]
-            headings = df.columns.tolist()
-            tree = ttk.Treeview(parent, show="headings", selectmode="browse")
-            tree["columns"] = headings
-            tree["displaycolumns"] = headings
-            for head in headings:
-                tree.heading(head, text=head, anchor=tk.CENTER)
-                tree.column(head, anchor=tk.CENTER, width=50)
-            for i in range(count):
-                tree.insert('', i, values=df.iloc[i, :].tolist())
-            scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
-            tree.configure(yscrollcommand=scrollbar.set)
-            scrollbar.pack(side="right", fill="y")
-            scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
-            tree.configure(xscrollcommand=scrollbarx.set)
-            scrollbarx.pack(side="bottom", fill="x")
-            tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
-            m.mdf = m.mdf.reset_index(drop=True)
-            parent.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
 
         def create():
             '''
-            Функция создает отчет и выводит его на экран
+            Функция
             Получает: -
             Возвращает: -
-            Автор: Будин А.М
+            Автор: Демидов И.Д.
             '''
-            global df, parent, window, xls1, xls2, xls3, list_col
+            global df, parent, window
             m.mdf = df
             window = tk.Toplevel()
-            window.geometry('710x410+400+300')
+            window.geometry('700x400+400+300')
             frame_report = tk.Frame(window)
-            frame_report.pack(side='top', fill=tk.BOTH)
-            Table_report(frame_report, xls1, xls2, xls3, list_col)
+            frame_report.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+            bd.Table(frame_report, a.mxls1, a.mxls2, a.mxls3)
             frame_btns = tk.Frame(window)
-            frame_btns.pack(side='top', fill=tk.X, ipadx=8, ipady=15)
-            frame_btns_in= tk.Frame(frame_btns)
-            frame_btns.pack(side='left', fill=tk.Y, expand=1)
-            btn_cancel = ttk.Button(frame_btns, text='Отмена', command=cancel_report)
-            btn_cancel.pack(side=tk.LEFT, padx=5, ipadx=8, ipady=8)
+            frame_btns.pack(fill=tk.X, side=tk.TOP)
+            btn_save_csv = ttk.Button(frame_btns, text='Сохранить CSV', command=save_csv)
+            btn_save_csv.pack(side=tk.LEFT)
             btn_save_txt = ttk.Button(frame_btns, text='Сохранить TXT', command=save_txt)
-            btn_save_txt.pack(side=tk.LEFT, padx=5, ipadx=8, ipady=8)
+            btn_save_txt.pack(side=tk.LEFT)
             window.grab_set()
             window.focus_set()
+            self.destroy()
 
         def create_report():
-            '''
-            Функция обратывает нажатие на кнопку создания
-            Получает: -
-            Возвращает: -
-            Автор: Будин А.М.
-            '''
             filtr()
             create()
 
-        def cancel_report():
-            '''
-            Функция обрабатывает нажатие на кнопку отмены
-            Получает: -
-            Возвращает: -
-            Автор: Будин А.М.
-            '''
+
+        def save_csv():
+            global df, parent, window
+            m.mdf = df
+            export_file_path = filedialog.asksaveasfilename(defaultextension='.csv')
+            m.mdf.to_csv (export_file_path, index = False, header=True, sep=' ')
             window.destroy()
 
         def save_txt():
-            '''
-            Функция сохраняет текстовый отчет
-            Получает: -
-            Возвращает: -
-            Автор: Матвеев В.Е
-            '''
-            global window, xls1, xls2, xls3, list_col
-            sdf = pd.merge(pd.merge(xls2, xls3, on=('Model')).drop_duplicates(subset=['Product Code']), xls1, on=('Manufacturer'))
-            sdf = sdf[list_col]
+            global df, parent, window
+            m.mdf = df
             export_file_path = filedialog.asksaveasfilename(defaultextension='.txt')
-            tfile = open(export_file_path, 'w')
-            tfile.write(sdf.to_string(index=False))
+            tfile = open(export_file_path, 'a')
+            tfile.write(m.mdf.to_string())
             tfile.close()
             window.destroy()
 
@@ -382,45 +303,25 @@ class Child_report(tk.Toplevel):
         filtr_entry_amount_2 = ttk.Entry(self, width=20)
         filtr_entry_amount_2.insert(0, 1000000)
         filtr_entry_amount_2.grid(row=10, column=2)
-        col_code = tk.IntVar()
-        col_code.set(1)
-        col_manufacturer = tk.IntVar()
-        col_manufacturer.set(1)
-        col_country = tk.IntVar()
-        col_country.set(1)
-        col_model = tk.IntVar()
-        col_model.set(1)
-        col_os = tk.IntVar()
-        col_os.set(1)
-        col_storage = tk.IntVar()
-        col_storage.set(1)
-        col_diagolal = tk.IntVar()
-        col_diagolal.set(1)
-        col_cpu = tk.IntVar()
-        col_cpu.set(1)
-        col_ram = tk.IntVar()
-        col_ram.set(1)
-        col_amount = tk.IntVar()
-        col_amount.set(1)
-        code_check = tk.Checkbutton(self, text='Product Code', variable=col_code, onvalue=1, offvalue=0)
+        code_check = tk.Checkbutton(self, text='Product Code')
         code_check.grid(row=11, column=0, sticky='w', ipadx=20)
-        manufacturer_check = tk.Checkbutton(self, text='Manufacturer', variable=col_manufacturer, onvalue=1, offvalue=0)
+        manufacturer_check = tk.Checkbutton(self, text='Manufacturer')
         manufacturer_check.grid(row=11, column=1, sticky='w', ipadx=20)
-        country_check = tk.Checkbutton(self, text='Country', variable=col_country, onvalue=1, offvalue=0)
+        country_check = tk.Checkbutton(self, text='Country')
         country_check.grid(row=11, column=2, sticky='w', ipadx=20)
-        model_check = tk.Checkbutton(self, text='Model', variable=col_model, onvalue=1, offvalue=0)
+        model_check = tk.Checkbutton(self, text='Model')
         model_check.grid(row=12, column=0, sticky='w', ipadx=20)
-        os_check = tk.Checkbutton(self, text='OS', variable=col_os, onvalue=1, offvalue=0)
+        os_check = tk.Checkbutton(self, text='OS')
         os_check.grid(row=12, column=1, sticky='w', ipadx=20)
-        storage_check = tk.Checkbutton(self, text='Storage', variable=col_storage, onvalue=1, offvalue=0)
+        storage_check = tk.Checkbutton(self, text='Storage')
         storage_check.grid(row=12, column=2, sticky='w', ipadx=20)
-        diagonal_check = tk.Checkbutton(self, text='Diagonal', variable=col_diagolal, onvalue=1, offvalue=0)
+        diagonal_check = tk.Checkbutton(self, text='Diagonal')
         diagonal_check.grid(row=13, column=0, sticky='w', ipadx=20)
-        cpu_check = tk.Checkbutton(self, text='CPU', variable=col_cpu, onvalue=1, offvalue=0)
+        cpu_check = tk.Checkbutton(self, text='CPU')
         cpu_check.grid(row=13, column=1, sticky='w', ipadx=20)
-        ram_check = tk.Checkbutton(self, text='RAM', variable=col_ram, onvalue=1, offvalue=0)
+        ram_check = tk.Checkbutton(self, text='RAM')
         ram_check.grid(row=13, column=2, sticky='w', ipadx=20)
-        amount_check = tk.Checkbutton(self, text='Amount', variable=col_amount, onvalue=1, offvalue=0)
+        amount_check = tk.Checkbutton(self, text='Amount')
         amount_check.grid(row=14, column=0, sticky='w', ipadx=20)
         filtr_btn_cancel = ttk.Button(self, text='Отмена', command=cancel)
         filtr_btn_cancel.grid(row=15, column=0, columnspan=2)

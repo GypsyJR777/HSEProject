@@ -84,8 +84,8 @@ class Change(tk.Toplevel):
                     change_btn_cancel.grid(row=7, column=0, columnspan=2)
                 else:
                     mb.showerror("Ошибка", "Введите производителя для изменений")
-            
-            
+
+
             def change_country():
                 '''
                 Функция изменяет страну производителя
@@ -102,8 +102,8 @@ class Change(tk.Toplevel):
                     self.destroy()
                 except(ValueError):
                     mb.showerror("Ошибка", "Должны быть введены данные во все поля")
-            
-            
+
+
             global parent
             self.geometry('250x350+400+300')
             table1_btn.grid_remove()
@@ -167,8 +167,8 @@ class Change(tk.Toplevel):
                     self.destroy()
                 except(ValueError):
                     mb.showerror("Ошибка", "Должны быть введены данные во все поля")
-                
-            
+
+
             def code():
                 '''
                 Функция обновляет окно, отображает в окне инструменты редактирования
@@ -206,8 +206,8 @@ class Change(tk.Toplevel):
                     change_btn_cancel.grid(row=7, column=0, columnspan=2)
                 else:
                     mb.showerror("Ошибка", "Введите код продукта для изменений")
-                        
-                        
+
+
             global parent
             # if(len(string)>0):
             self.geometry('600x400+400+300')
@@ -258,7 +258,7 @@ class Change(tk.Toplevel):
             change_btn_ok = ttk.Button(self, text='OK', command=code)
             change_btn_cancel.grid(row=3, column=0, columnspan=2)
             change_btn_ok.grid(row=2, column=0, columnspan=2)
-            
+
 
         def ok2():
             '''
@@ -268,7 +268,7 @@ class Change(tk.Toplevel):
             Возвращает: -
             Автор: Будин А.М.
             '''
-            
+
             def change_of_model():
                 '''
                 Функция изменяет диагональ и ОС
@@ -287,7 +287,7 @@ class Change(tk.Toplevel):
                     self.destroy()
                 except(ValueError):
                     mb.showerror("Ошибка", "Должны быть введены данные во все поля")
-                    
+
             def model():
                 '''
                 Функция обновляет окно, отображает в окне инструменты редактирования
@@ -319,9 +319,9 @@ class Change(tk.Toplevel):
                     change_btn_cancel.grid(row=7, column=0, columnspan=2)
                 else:
                     mb.showerror("Ошибка", "Введите код продукта для исправления")
-                
-                
-                
+
+
+
             global parent
             #string = np.array(m.mdf[m.mdf['Product Code'] == 1])
             # if(len(string)>0):
@@ -340,11 +340,11 @@ class Change(tk.Toplevel):
             label_description_2 = ttk.Label(self, text='Операционная система')
             label_description_3 = ttk.Label(self, text='Диагональ')
             #label_description.grid(row=1, column=0)
-            
+
             #label_description.grid(row=2, column=0)
-            
+
             #label_description.grid(row=3, column=0)
-            
+
             #label_description.grid(row=5, column=0)
             #change_entry_model.grid(row=1, column=1, columnspan=2)
             #change_entry_storage.grid(row=2, column=1, columnspan=2)
@@ -376,6 +376,12 @@ class Change(tk.Toplevel):
 
 
         def cancel():
+            '''
+            Функция закрывает окно и отменяет изменения
+            Получает: -
+            Возвращает: -
+            Автор: -
+            '''
             self.destroy()
             Change(parent)
 
@@ -398,7 +404,7 @@ class Change(tk.Toplevel):
         change_entry_firm = ttk.Combobox(self, values=list_firm)
         change_entry_country = ttk.Entry(self)
 #        list_model = new_list_values('Model')
-        
+
         change_entry_storage = ttk.Entry(self)
         change_entry_diagonal = ttk.Entry(self)
         change_entry_cpu = ttk.Entry(self)
