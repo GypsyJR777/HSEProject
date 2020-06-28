@@ -316,7 +316,7 @@ class Child_report(tk.Toplevel):
             '''
             global window, xls1, xls2, xls3, list_col
             sdf = pd.merge(pd.merge(xls2, xls3, on=('Model')).drop_duplicates(subset=['Product Code']), xls1, on=('Manufacturer'))
-            sdf = sdf[list_of_columns]
+            sdf = sdf[list_col]
             export_file_path = filedialog.asksaveasfilename(defaultextension='.txt')
             tfile = open(export_file_path, 'w')
             tfile.write(sdf.to_string(index=False))
