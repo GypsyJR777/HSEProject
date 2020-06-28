@@ -251,6 +251,8 @@ class Change(tk.Toplevel):
             #change_entry_storage.grid(row=2, column=1, columnspan=2)
             #change_entry_cpu.grid(row=3, column=1, columnspan=2)
             #change_entry_ram.grid(row=4, column=1)
+            
+            change_entry_model = ttk.Combobox(self)
             code_list = new_list_values('Product Code')
             entry_code = ttk.Combobox(self, values=code_list)
             entry_code.grid(row=0, column=1, columnspan=2)
