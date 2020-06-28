@@ -244,25 +244,39 @@ class Kowalski_analis(tk.Toplevel):
             Получает: -            Возвращает: -
             Автор: Матвеев В.Е.
             '''
+            def save_bd():
+                global df
+                bazstat = df.describe()
+                export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
+                bazstat.to_excel(export_file, index = True, header=True)
+                
+            
             global df
             bazstat = df.describe()
             print(bazstat)
 #            bazstat.plot()
             window = tk.Toplevel()
             window.geometry('700x300+400+300')
+#            for i in range(len(bazstat)):
+#                for j in range(len(bazstat.columns)):
+#                    value = bazstat.iloc[i, j]
+#                    value = float('{:.3f}'.format(value))
             frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
             indexes = bazstat.index.tolist()
-            df = bazstat
-            df.insert(0, ' ', indexes)
-            headings = df.columns.tolist()
+            sdf = bazstat
+            sdf.insert(0, ' ', indexes)
+            headings = sdf.columns.tolist()
             tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
             tree["columns"] = headings
             tree["displaycolumns"] = headings
             for head in headings:
                 tree.heading(head, text=head, anchor=tk.CENTER)
                 tree.column(head, anchor=tk.CENTER, width=50)
-            for i in range(len(df)):
-                tree.insert('', i, values=df.iloc[i, :].tolist())
+            for i in range(len(sdf)):
+                value=sdf.iloc[i, :].tolist()
+                for j in range(1, len(value)):
+                    value[j] = float('{:.3f}'.format(value[j]))
+                tree.insert('', i, values=value)
             scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
             tree.configure(yscrollcommand=scrollbar.set)
             scrollbar.pack(side="right", fill="y")
@@ -270,7 +284,12 @@ class Kowalski_analis(tk.Toplevel):
             tree.configure(xscrollcommand=scrollbarx.set)
             scrollbarx.pack(side="bottom", fill="x")
             tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+            save = tk.Button(frame_tree, text="Сохранить", command=save_bd)
+            save.pack(side='left', padx=10, ipady=8)
+            cancel = tk.Button(frame_tree, text="Отмена", command=window.destroy)
+            cancel.pack(side='right', padx=10, ipady=8, ipadx=10)
             frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+            
 
 
 #            plt.title("Графическая интерпретация таблицы базового анализа")
