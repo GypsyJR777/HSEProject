@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 import pandas as pd
 import app as a
+from tkinter import filedialog
 
 
 class Child_report(tk.Toplevel):
@@ -200,13 +201,19 @@ class Child_report(tk.Toplevel):
             Возвращает: -
             Автор: Демидов И.Д.
             '''
-            global df, parent
+            global df, parent, window
             m.mdf = df
             window = tk.Toplevel()
             window.geometry('700x400+400+300')
             frame_report = tk.Frame(window)
-            frame_report.pack(fill=tk.BOTH, expand=1)
+            frame_report.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
             bd.Table(frame_report, a.mxls1, a.mxls2, a.mxls3)
+            frame_btns = tk.Frame(window)
+            frame_btns.pack(fill=tk.X, side=tk.TOP)
+            btn_save_csv = ttk.Button(frame_btns, text='Сохранить CSV', command=save_csv)
+            btn_save_csv.pack(side=tk.LEFT)
+            btn_save_txt = ttk.Button(frame_btns, text='Сохранить TXT', command=save_txt)
+            btn_save_txt.pack(side=tk.LEFT)
             window.grab_set()
             window.focus_set()
             self.destroy()
@@ -214,6 +221,22 @@ class Child_report(tk.Toplevel):
         def create_report():
             filtr()
             create()
+
+        def save_csv():
+            global df, parent, window
+            m.mdf = df
+            export_file_path = filedialog.asksaveasfilename(defaultextension='.csv')
+            m.mdf.to_csv (export_file_path, index = False, header=True, sep=' ')
+            window.destroy()
+
+        def save_txt():
+            global df, parent, window
+            m.mdf = df
+            export_file_path = filedialog.asksaveasfilename(defaultextension='.txt')
+            tfile = open(export_file_path, 'a')
+            tfile.write(m.mdf.to_string())
+            tfile.close()
+            window.destroy()
 
 
         label_description = ttk.Label(self, text='Операционная система')
