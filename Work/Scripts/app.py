@@ -165,7 +165,10 @@ class Main(tk.Frame):
         '''
         global mdf, mxls1, mxls2, mxls3
         mdf.to_pickle("../Data/smartphones.pkl")
-        mxls2.to_excel("../Data/smartphones2.xlsx")
+        mxls1.to_pickle("../Data/Pickle1.pkl")
+        mxls2.to_pickle("../Data/Pickle2.pkl")
+        mxls3.to_pickle("../Data/Pickle3.pkl")
+        
         print(mxls1)
         print(mxls2)
         print(mxls3)
