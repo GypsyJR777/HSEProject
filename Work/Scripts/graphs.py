@@ -162,18 +162,23 @@ class Kowalski_analis(tk.Toplevel):
             Возвращает: -
             Автор: Матвеев В.Е.
             '''
-            global df
+            global df, stolb1, stolb2, stolb3
             
-            def save_bd2(stolb1sv, stolb2sv, stolb3sv):
-                global df
-                data_pt = pd.pivot_table(df,index=[stolb1sv, stolb2sv], values=stolb3sv)
+            def save_bd2():
+                global df, stolb1, stolb2, stolb3
+                data_pt = pd.pivot_table(df,index=[stolb1, stolb2], values=stolb3)
+                data_pt.columns = [t[0] if t[0] else t[1] for t in data_pt.columns]
                 export_fil = filedialog.asksaveasfilename(defaultextension='.xlsx')
                 data_pt.to_excel(export_fil, index = True, header=True)
+                
                 
             if stolb_1.get() and stolb_2.get() and stolb_3.get():
                 if stolb_1.get()==stolb_2.get():
                     mb.showerror("Ошибка", "Названия столбцов повторяются.")
                 else:
+                    stolb1 = stolb_1.get()
+                    stolb2 = stolb_2.get()
+                    stolb3 = stolb_3.get()
                     data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],values=stolb_3.get())
                     a=[]
                     b=[]
@@ -215,7 +220,7 @@ class Kowalski_analis(tk.Toplevel):
                     tree.configure(xscrollcommand=scrollbarx.set)
                     scrollbarx.pack(side="bottom", fill="x")
                     tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
-                    save = tk.Button(frame_tree, text="Сохранить", command=save_bd2(stolb_1.get(),stolb_2.get(),stolb_3.get()))
+                    save = tk.Button(frame_tree, text="Сохранить", command=save_bd2)
                     save.pack(side='left', padx=10, ipady=8)
                     cancel = tk.Button(frame_tree, text="Отмена", command=window.destroy)
                     cancel.pack(side='right', padx=10, ipady=8, ipadx=10)
