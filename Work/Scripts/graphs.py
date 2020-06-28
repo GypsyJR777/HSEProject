@@ -430,7 +430,7 @@ class Kowalski_analis(tk.Toplevel):
         wix_stat_ttp = CreateToolTip(wix_stat, 'Используются в описательной статистике и позволяют быстро исследовать несколько наборов данных в графическом виде. Показывает верхние и нижние границы, квартили и медиану.')
         wix_stat.bind('<Button-1>', analis_wix)
         # wix_stat.bind('<Button-3>', wix_info)
-        stolb_1_wix = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
+        stolb_1_wix = ttk.Combobox(self, values=['Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM'], width=17)
         stolb_1_wix.grid(row=5, column=1)
         stolb_2_wix = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_2_wix.grid(row=5, column=2)
