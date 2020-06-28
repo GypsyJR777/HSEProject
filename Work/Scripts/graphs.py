@@ -163,50 +163,52 @@ class Kowalski_analis(tk.Toplevel):
             Автор: Матвеев В.Е.
             '''
             global df
-            if stolb_1.get()==stolb_2.get():
-                mb.showerror("Ошибка", "Названия столбцов повторяются.")
+            if stolb_1.get() and stolb_2.get() and stolb_3.get():
+                if stolb_1.get()==stolb_2.get():
+                    mb.showerror("Ошибка", "Названия столбцов повторяются.")
+                else:
+                    data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],
+                    values=stolb_3.get())
+                    a=[]
+                    b=[]
+                    c=[]
+                    indexes = pd.DataFrame(data_pt.index)
+                    for item in indexes[0]:
+                        for i in range(1,len(item)):
+                            a.append(item[i])
+                    indexes = pd.DataFrame(data_pt.index)
+                    for item in indexes[0]:
+                        b.append(item[0])
+                    for item in data_pt[stolb_3.get()]:
+                        c.append(item)
+                    result = pd.DataFrame([b, a, c]).T
+                    result[0] = result[0].drop_duplicates()
+                    result[1] = result[1].drop_duplicates()
+                    result = result.fillna(' ')
+                    window = tk.Toplevel()
+                    window.geometry('700x300+400+300')
+                    frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
+                    result = result.rename(columns={0: stolb_1.get(), 1: stolb_2.get(), 2: stolb_3.get()})
+                    df = result
+                    headings = df.columns.tolist()
+                    tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
+                    tree["columns"] = headings
+                    tree["displaycolumns"] = headings
+                    for head in headings:
+                        tree.heading(head, text=head, anchor=tk.CENTER)
+                        tree.column(head, anchor=tk.CENTER, width=50)
+                    for i in range(len(df)):
+                        tree.insert('', i, values=df.iloc[i, :].tolist())
+                    scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
+                    tree.configure(yscrollcommand=scrollbar.set)
+                    scrollbar.pack(side="right", fill="y")
+                    scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
+                    tree.configure(xscrollcommand=scrollbarx.set)
+                    scrollbarx.pack(side="bottom", fill="x")
+                    tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+                    frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
             else:
-                data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],
-                values=stolb_3.get())
-                a=[]
-                b=[]
-                c=[]
-                indexes = pd.DataFrame(data_pt.index)
-                for item in indexes[0]:
-                    for i in range(1,len(item)):
-                        a.append(item[i])
-                indexes = pd.DataFrame(data_pt.index)
-                for item in indexes[0]:
-                    b.append(item[0])
-                for item in data_pt[stolb_3.get()]:
-                    c.append(item)
-                result = pd.DataFrame([b, a, c]).T
-                result[0] = result[0].drop_duplicates()
-                result[1] = result[1].drop_duplicates()
-                result = result.fillna(' ')
-                window = tk.Toplevel()
-                window.geometry('700x300+400+300')
-                frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
-                result = result.rename(columns={0: stolb_1.get(), 1: stolb_2.get(), 2: stolb_3.get()})
-                df = result
-                headings = df.columns.tolist()
-                tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
-                tree["columns"] = headings
-                tree["displaycolumns"] = headings
-                for head in headings:
-                    tree.heading(head, text=head, anchor=tk.CENTER)
-                    tree.column(head, anchor=tk.CENTER, width=50)
-                for i in range(len(df)):
-                    tree.insert('', i, values=df.iloc[i, :].tolist())
-                scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
-                tree.configure(yscrollcommand=scrollbar.set)
-                scrollbar.pack(side="right", fill="y")
-                scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
-                tree.configure(xscrollcommand=scrollbarx.set)
-                scrollbarx.pack(side="bottom", fill="x")
-                tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
-                frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
-
+                mb.showerror("Ошибка", "Нужно заполнить все 3 поля")
 
 
         def analis_rasseivanie(event):
