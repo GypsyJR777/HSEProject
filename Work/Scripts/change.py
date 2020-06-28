@@ -142,14 +142,14 @@ class Change(tk.Toplevel):
         def ok1():
             '''
             Функция обновляет окно, отображает в окне инструменты редактирования
-            справочника и заполняет данными поля ввода
+            справочника и показывает вабранный справочник
             Получает: -
             Возвращает: -
             Автор: Будин А.М.
             '''
             def change_of_code():
                 '''
-                Функция изменяет 
+                Функция изменяет память, CPU, RAM и количество
                 Получает: -
                 Возвращает: -
                 Автор: Демидов И.Д
@@ -191,7 +191,7 @@ class Change(tk.Toplevel):
                     entry_code['value'] = ''
                     entry_code['state'] = 'readonly'
                     change_entry_model.insert(0, string[0][5])
-                    change_entry_model['state'] = 'readonly'
+
                     change_entry_model.grid(row=1, column=1, columnspan=2)
                     change_entry_storage.insert(0, string[0][1])
                     change_entry_storage.grid(row=2, column=1, columnspan=2)
@@ -234,8 +234,8 @@ class Change(tk.Toplevel):
             #change_entry_storage.grid(row=2, column=1, columnspan=2)
             #change_entry_cpu.grid(row=3, column=1, columnspan=2)
             #change_entry_ram.grid(row=4, column=1)
-            
-            change_entry_model = ttk.Combobox(self)
+            model_list = new_list_values('Model')
+            change_entry_model = ttk.Combobox(self, values=model_list)
             code_list = new_list_values('Product Code')
             entry_code = ttk.Combobox(self, values=code_list)
             entry_code.grid(row=0, column=1, columnspan=2)
@@ -263,13 +263,19 @@ class Change(tk.Toplevel):
         def ok2():
             '''
             Функция обновляет окно, отображает в окне инструменты редактирования
-            справочника и заполняет данными поля ввода
+            справочника и показывает вабранный справочник
             Получает: -
             Возвращает: -
             Автор: Будин А.М.
             '''
             
             def change_of_model():
+                '''
+                Функция изменяет диагональ и ОС
+                Получает: -
+                Возвращает: -
+                Автор: Демидов И.Д
+                '''
                 global parent
                 try:
                     m.mxls3['Diagonal'][m.mxls3["Model"] == change_entry_model.get()] = float(change_entry_diagonal.get())
@@ -283,6 +289,13 @@ class Change(tk.Toplevel):
                     mb.showerror("Ошибка", "Должны быть введены данные во все поля")
                     
             def model():
+                '''
+                Функция обновляет окно, отображает в окне инструменты редактирования
+                справочника и заполняет данными поля ввода
+                Получает: -
+                Возвращает: -
+                Автор: Будин А.М.
+                '''
                 if (change_entry_model != ''):
                     self.geometry('300x200+400+300')
                     string = np.array(m.mxls3[m.mxls3['Model'] == (change_entry_model.get())])

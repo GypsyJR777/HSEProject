@@ -7,10 +7,6 @@
 
 import tkinter as tk
 import tkinter.ttk as ttk
-import os, sys
-sys.path.insert(0, os.path.abspath("../Library"))
-import bd
-sys.path.insert(0, os.path.abspath("../Scripts"))
 import app as m
 import pandas as pd
 from tkinter import filedialog
@@ -250,7 +246,6 @@ class Child_report(tk.Toplevel):
             for head in headings:
                 tree.heading(head, text=head, anchor=tk.CENTER)
                 tree.column(head, anchor=tk.CENTER, width=50)
-                tree.heading(head, text=head, command=lambda head_=head: treeview_sort_column(tree, head_, False))
             for i in range(count):
                 tree.insert('', i, values=df.iloc[i, :].tolist())
             scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
