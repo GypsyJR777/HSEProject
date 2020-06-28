@@ -103,7 +103,6 @@ class Child_add(tk.Toplevel):
             m.mxls3 = m.mdf[["Model", "Diagonal", "OS", "Manufacturer"]]
             m.mxls3 = m.mxls3.drop_duplicates(subset='Model')
             print (m.mdf)
-            print("yeah")
             bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
 
 

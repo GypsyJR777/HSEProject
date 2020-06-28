@@ -109,6 +109,12 @@ class Main(tk.Frame):
         Child_add(tree)
 
     def report(self):
+        '''
+        Функция вызывает класс Child_report для создания отчета
+        Получает: -
+        Возвращает: -
+        Автор: -
+        '''
         global tree
         Child_report(tree)
 

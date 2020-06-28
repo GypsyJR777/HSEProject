@@ -52,51 +52,91 @@ class Change(tk.Toplevel):
             return new_list
 
 
-        def change_country():
-            '''
-            Функция изменяет страну производителя
-            Получает: -
-            Возвращает: -
-            Автор: Демидов И.Д
-            '''
-            global parent
-            try:
-                m.mxls1['Country'][m.mxls1["Manufacturer"] == change_entry_firm.get()] = change_entry_country.get()
-                for widget in parent.winfo_children():
-                    widget.destroy()
-                bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
-                self.destroy()
-            except(ValueError):
-                mb.showerror("Ошибка", "Должны быть введены данные во все поля")
-
-
         def ok3():
             '''
             Функция обновляет окно, отображает в окне инструменты редактирования
-            справочника и заполняет данными поля ввода
+            справочника и показывает вабранный справочник
             Получает: -
             Возвращает: -
             Автор: Будин А.М.
             '''
+            def ok_country():
+                '''
+                Функция обновляет окно, отображает в окне инструменты редактирования
+                справочника и заполняет данными поля ввода
+                Получает: -
+                Возвращает: -
+                Автор: Демидов И.Д.
+                '''
+                if (change_entry_firm.get() != ''):
+                    self.geometry('300x150+400+300')
+                    string = np.array(m.mxls1[m.mxls1['Manufacturer'] == change_entry_firm.get()])
+                    btn_ok.grid_remove()
+                    change_btn_cancel.grid_remove()
+                    frame_tree.grid_remove()
+                    change_entry_firm['value'] = ''
+                    change_entry_firm['state'] = 'readonly'
+                    label_description_co.grid(row=2, column=0)
+                    change_entry_country.insert(0, string[0][1])
+                    change_entry_country.grid(row=2, column=1, columnspan=1)
+                    change_btn = ttk.Button(self, text='Применить', command=change_country)
+                    change_btn.grid(row=6, column=0, columnspan=2)
+                    change_btn_cancel.grid(row=7, column=0, columnspan=2)
+                else:
+                    mb.showerror("Ошибка", "Введите производителя для изменений")
+            
+            
+            def change_country():
+                '''
+                Функция изменяет страну производителя
+                Получает: -
+                Возвращает: -
+                Автор: Демидов И.Д
+                '''
+                global parent
+                try:
+                    m.mxls1['Country'][m.mxls1["Manufacturer"] == change_entry_firm.get()] = change_entry_country.get()
+                    for widget in parent.winfo_children():
+                        widget.destroy()
+                    bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
+                    self.destroy()
+                except(ValueError):
+                    mb.showerror("Ошибка", "Должны быть введены данные во все поля")
+            
+            
             global parent
-            self.geometry('250x120+400+300')
+            self.geometry('250x350+400+300')
             table1_btn.grid_remove()
             table2_btn.grid_remove()
             table3_btn.grid_remove()
             label_description1.grid_remove()
             label_description2.grid_remove()
             label_description3.grid_remove()
-            label_description = ttk.Label(self, text='Производитель')
-            label_description.grid(row=1, column=0)
-
-            label_description = ttk.Label(self, text='Страна')
-            label_description.grid(row=2, column=0)
-            change_entry_firm.grid(row=1, column=1, columnspan=1)
-            change_entry_country.grid(row=2, column=1, columnspan=1)
+            label_description_pr = ttk.Label(self, text='Производитель')
+            label_description_pr.grid(row=0, column=0)
+            label_description_co = ttk.Label(self, text='Страна')
+            #label_description_co.grid(row=2, column=0)
+            change_entry_firm.grid(row=0, column=1, columnspan=1)
+            #change_entry_country.grid(row=2, column=1, columnspan=1)
             change_btn_cancel = ttk.Button(self, text='Отмена', command=cancel)
-            change_btn = ttk.Button(self, text='Применить', command=change_country)
+            btn_ok = ttk.Button(self, text='OK', command=ok_country)
+            btn_ok.grid(row=3, column=0, columnspan=2)
+            #change_btn = ttk.Button(self, text='Применить', command=change_country)
             change_btn_cancel.grid(row=4, column=0, columnspan=2)
-            change_btn.grid(row=3, column=0, columnspan=2)
+            #change_btn.grid(row=3, column=0, columnspan=2)
+            frame_tree = tk.Frame(self, bd=5, bg="#B0C7E4", width=300)
+            headings = m.mxls1.columns.tolist()
+            tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
+            tree["columns"] = headings
+            tree["displaycolumns"] = headings
+            for head in headings:
+                tree.heading(head, text=head, anchor=tk.CENTER)
+                tree.column(head, anchor=tk.CENTER, width=50)
+            for i in range(len(m.mxls1)):
+                value=m.mxls1.iloc[i, :].tolist()
+                tree.insert('', i, values=value)
+            tree.grid(row=0, column=0, columnspan=2)
+            frame_tree.grid(row=1, column=0, columnspan=2)
 
 
         def change_of_model():
@@ -124,6 +164,12 @@ class Change(tk.Toplevel):
             Автор: Будин А.М.
             '''
             def change_of_code():
+                '''
+                Функция изменяет 
+                Получает: -
+                Возвращает: -
+                Автор: Демидов И.Д
+                '''
                 global parent
                 try:
                     m.mxls2['Storage'][m.mxls2["Product Code"] == int(entry_code.get())] = int(change_entry_storage.get())
@@ -140,6 +186,13 @@ class Change(tk.Toplevel):
                 
             
             def code():
+                '''
+                Функция обновляет окно, отображает в окне инструменты редактирования
+                справочника и заполняет данными поля ввода
+                Получает: -
+                Возвращает: -
+                Автор: Будин А.М.
+                '''
                 if (entry_code.get() != ''):
                     self.geometry('300x200+400+300')
                     string = np.array(m.mxls2[m.mxls2['Product Code'] == int(entry_code.get())])
@@ -169,7 +222,7 @@ class Change(tk.Toplevel):
                     change_btn.grid(row=6, column=0, columnspan=2)
                     change_btn_cancel.grid(row=7, column=0, columnspan=2)
                 else:
-                    mb.showerror("Ошибка", "Введите код продукта для исправления")
+                    mb.showerror("Ошибка", "Введите код продукта для изменений")
                         
                         
             global parent
@@ -230,7 +283,44 @@ class Change(tk.Toplevel):
             Возвращает: -
             Автор: Будин А.М.
             '''
+            
+            def change_of_model():
+                global parent
+                try:
+                    m.mxls3['Diagonal'][m.mxls3["Model"] == change_entry_model.get()] = float(change_entry_diagonal.get())
+                    m.mxls3['OS'][m.mxls3["Model"] == change_entry_model.get()] = change_combobox.get()
+                    m.mxls3['Manufacturer'][m.mxls3["Model"] == change_entry_model.get()] = change_entry_firm.get()
+                    for widget in parent.winfo_children():
+                        widget.destroy()
+                    bd.Table(parent, m.mxls1, m.mxls2, m.mxls3)
+                    self.destroy()
+                except(ValueError):
+                    mb.showerror("Ошибка", "Должны быть введены данные во все поля")
+                    
             def model():
+                if (change_entry_model != ''):
+                    self.geometry('300x200+400+300')
+                    string = np.array(m.mxls3[m.mxls3['Model'] == (change_entry_model.get())])
+                    change_btn_ok.grid_remove()
+                    change_btn_cancel.grid_remove()
+                    frame_tree.grid_remove()
+                    label_description_1.grid(row=1, column=0)
+                    label_description_2.grid(row=2, column=0)
+                    label_description_3.grid(row=3, column=0)
+                    change_entry_model['value'] = ''
+                    change_entry_model['state'] = 'readonly'
+                    change_entry_diagonal.insert(0, string[0][1])
+                    change_entry_diagonal.grid(row=3, column=1, columnspan=2)
+                    change_combobox.insert(0, string[0][2])
+                    change_combobox.grid(row=2, column=1, columnspan=2)
+                    change_entry_firm['value'] = string[0][3]
+                    change_entry_firm['state'] = 'readonly'
+                    change_entry_firm.grid(row=1, column=1, columnspan=2)
+                    change_btn2 = ttk.Button(self, text='Применить', command=change_of_model)
+                    change_btn2.grid(row=6, column=0, columnspan=2)
+                    change_btn_cancel.grid(row=7, column=0, columnspan=2)
+                else:
+                    mb.showerror("Ошибка", "Введите код продукта для исправления")
                 
                 
                 
@@ -238,33 +328,53 @@ class Change(tk.Toplevel):
             #string = np.array(m.mdf[m.mdf['Product Code'] == 1])
             # if(len(string)>0):
 
-            self.geometry('280x160+400+300')
+            self.geometry('300x400+400+300')
+            label_description = ttk.Label(self, text='Модель для изменения')
+            label_description.grid(row=0, column = 0, columnspan=1)
             table1_btn.grid_remove()
             table2_btn.grid_remove()
             table3_btn.grid_remove()
             label_description1.grid_remove()
             label_description2.grid_remove()
             label_description3.grid_remove()
+            #нужно условие
+            label_description_1 = ttk.Label(self, text='Производитель')
+            label_description_2 = ttk.Label(self, text='Операционная система')
+            label_description_3 = ttk.Label(self, text='Диагональ')
+            #label_description.grid(row=1, column=0)
             
-            label_description_1 = ttk.Label(self, text='Операционная система')
-            #label_description_1.grid(row=3, column=0)
-            label_description_2 = ttk.Label(self, text='Производитель')
-            label_description_2.grid(row=2, column=0)
-            label_description_3 = ttk.Label(self, text='Модель')
-            label_description_3.grid(row=1, column=0)
-            label_description_4 = ttk.Label(self, text='Диагональ')
-            label_description_4.grid(row=4, column=0)
-            #string = np.array(m.mdf[m.mdf['Product Code'] == 1])
-            change_entry_firm.grid(row=2, column=1, columnspan=2)
-            change_entry_model = ttk.Entry(self)
-            change_entry_model.grid(row=1, column=1, columnspan=2)
-            change_combobox.grid(row=3, column=1, columnspan=2)
-            change_entry_diagonal.grid(row=4, column=1)
+            #label_description.grid(row=2, column=0)
+            
+            #label_description.grid(row=3, column=0)
+            
+            #label_description.grid(row=5, column=0)
+            #change_entry_model.grid(row=1, column=1, columnspan=2)
+            #change_entry_storage.grid(row=2, column=1, columnspan=2)
+            #change_entry_cpu.grid(row=3, column=1, columnspan=2)
+            #change_entry_ram.grid(row=4, column=1)
+            change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry'])
+            code_list = new_list_values('Model')
+            change_entry_model = ttk.Combobox(self, values=code_list)
+            change_entry_model.grid(row=0, column=1, columnspan=2)
+            #change_entry_amount.grid(row=5, column=1)
+            frame_tree = tk.Frame(self, bd=5, bg="#B0C7E4", width=300)
+            headings = m.mxls3.columns.tolist()
+            tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
+            tree["columns"] = headings
+            tree["displaycolumns"] = headings
+            for head in headings:
+                tree.heading(head, text=head, anchor=tk.CENTER)
+                tree.column(head, anchor=tk.CENTER, width=50)
+            for i in range(len(m.mxls3)):
+                value=m.mxls3.iloc[i, :].tolist()
+                tree.insert('', i, values=value)
+            tree.grid(row=0, column=0, columnspan=2)
+            frame_tree.grid(row=1, column=0, columnspan=2)
             change_btn_cancel = ttk.Button(self, text='Отмена', command=cancel)
-            change_ok = ttk.Button(self, text='OK', command=model)
-            #change_btn = ttk.Button(self, text='OK', command=change_of_model)
-            change_btn_cancel.grid(row=6, column=0, columnspan=2)
-            #change_btn.grid(row=5, column=0, columnspan=2)
+            #change_btn = ttk.Button(self, text='Применить', command=change_of_code)
+            change_btn_ok = ttk.Button(self, text='OK', command=model)
+            change_btn_cancel.grid(row=3, column=0, columnspan=2)
+            change_btn_ok.grid(row=2, column=0, columnspan=2)
 
 
         def cancel():
@@ -289,11 +399,11 @@ class Change(tk.Toplevel):
         list_firm = new_list_values('Manufacturer')
         change_entry_firm = ttk.Combobox(self, values=list_firm, state="readonly")
         change_entry_country = ttk.Entry(self)
-        list_model = new_list_values('Model')
-        change_entry_model = ttk.Entry(self)
+#        list_model = new_list_values('Model')
+        
         change_entry_storage = ttk.Entry(self)
         change_entry_diagonal = ttk.Entry(self)
         change_entry_cpu = ttk.Entry(self)
         change_entry_ram = ttk.Entry(self)
         change_entry_amount = ttk.Entry(self)
-        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry'])
+#        change_combobox = ttk.Combobox(self, values=['Android', 'IOS','Blackberry'])
