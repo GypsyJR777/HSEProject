@@ -163,25 +163,49 @@ class Kowalski_analis(tk.Toplevel):
             Автор: Матвеев В.Е.
             '''
             global df
-            data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],
-            values=stolb_3.get())
-            data_pt.columns = [t[0] if t[0] else t[1] for t in data_pt.columns]
-            print(data_pt)
-            data_pt.plot()
-            window = tk.Toplevel()
-            frame_tree = tk.Label(window, text=data_pt)
-            frame_tree.pack()
-#            plt.title("Графическая интерпретация сводной таблицы")
-#            plt.show()
-
-            mb.showinfo("Внимание","Отдельно возможно сохранение в xlsx файл")
-
-            export_file = filedialog.asksaveasfilename(defaultextension='.xlsx')
-            data_pt.to_excel(export_file)
-
-
-        # def svod_info(event):
-        #     mb.showinfo("Описание","Резюмирует данные, представленные в исходной таблице, показывает среднее значение по конечному столбцу.")
+            if stolb_1.get()==stolb_2.get():
+                mb.showerror("Ошибка", "Названия столбцов повторяются.")
+            else:
+                data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],
+                values=stolb_3.get())
+                a=[]
+                b=[]
+                c=[]
+                indexes = pd.DataFrame(data_pt.index)
+                for item in indexes[0]:
+                    for i in range(1,len(item)):
+                        a.append(item[i])
+                indexes = pd.DataFrame(data_pt.index)
+                for item in indexes[0]:
+                    b.append(item[0])
+                for item in data_pt[stolb_3.get()]:
+                    c.append(item)
+                result = pd.DataFrame([b, a, c]).T
+                result[0] = result[0].drop_duplicates()
+                result[1] = result[1].drop_duplicates()
+                result = result.fillna(' ')
+                window = tk.Toplevel()
+                window.geometry('700x300+400+300')
+                frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
+                result = result.rename(columns={0: stolb_1.get(), 1: stolb_2.get(), 2: stolb_3.get()})
+                df = result
+                headings = df.columns.tolist()
+                tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
+                tree["columns"] = headings
+                tree["displaycolumns"] = headings
+                for head in headings:
+                    tree.heading(head, text=head, anchor=tk.CENTER)
+                    tree.column(head, anchor=tk.CENTER, width=50)
+                for i in range(len(df)):
+                    tree.insert('', i, values=df.iloc[i, :].tolist())
+                scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
+                tree.configure(yscrollcommand=scrollbar.set)
+                scrollbar.pack(side="right", fill="y")
+                scrollbarx = tk.Scrollbar(tree, orient="horizontal", command=tree.xview)
+                tree.configure(xscrollcommand=scrollbarx.set)
+                scrollbarx.pack(side="bottom", fill="x")
+                tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+                frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
 
 
 
@@ -345,9 +369,9 @@ class Kowalski_analis(tk.Toplevel):
         second_stolb = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         second_stolb.grid(row=1, column=2)
 #Поля сводной таблицы
-        stolb_1 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
+        stolb_1 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'CPU'], width=17)
         stolb_1.grid(row=3, column=1)
-        stolb_2 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'Storage', 'Diagonal', 'CPU', 'RAM', 'Amount'], width=17)
+        stolb_2 = ttk.Combobox(self, values=['Product Code','Manufacturer','Country','Model','OS', 'CPU'], width=17)
         stolb_2.grid(row=3, column=2)
         stolb_3 = ttk.Combobox(self, values=['Storage', 'Diagonal', 'RAM', 'Amount'], width=17)
         stolb_3.grid(row=3, column=3)
