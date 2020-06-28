@@ -163,12 +163,18 @@ class Kowalski_analis(tk.Toplevel):
             Автор: Матвеев В.Е.
             '''
             global df
+            
+            def save_bd2(stolb1sv, stolb2sv, stolb3sv):
+                global df
+                data_pt = pd.pivot_table(df,index=[stolb1sv, stolb2sv], values=stolb3sv)
+                export_fil = filedialog.asksaveasfilename(defaultextension='.xlsx')
+                data_pt.to_excel(export_fil, index = True, header=True)
+                
             if stolb_1.get() and stolb_2.get() and stolb_3.get():
                 if stolb_1.get()==stolb_2.get():
                     mb.showerror("Ошибка", "Названия столбцов повторяются.")
                 else:
-                    data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],
-                    values=stolb_3.get())
+                    data_pt = pd.pivot_table(df,index=[stolb_1.get(), stolb_2.get()],values=stolb_3.get())
                     a=[]
                     b=[]
                     c=[]
@@ -185,20 +191,23 @@ class Kowalski_analis(tk.Toplevel):
                     result[0] = result[0].drop_duplicates()
                     result[1] = result[1].drop_duplicates()
                     result = result.fillna(' ')
+                    
+                    
+                    
                     window = tk.Toplevel()
                     window.geometry('700x300+400+300')
                     frame_tree = tk.Frame(window, bd=5, bg="#B0C7E4")
                     result = result.rename(columns={0: stolb_1.get(), 1: stolb_2.get(), 2: stolb_3.get()})
-                    df = result
-                    headings = df.columns.tolist()
+                    sdf = result
+                    headings = sdf.columns.tolist()
                     tree = ttk.Treeview(frame_tree, show="headings", selectmode="browse")
                     tree["columns"] = headings
                     tree["displaycolumns"] = headings
                     for head in headings:
                         tree.heading(head, text=head, anchor=tk.CENTER)
                         tree.column(head, anchor=tk.CENTER, width=50)
-                    for i in range(len(df)):
-                        tree.insert('', i, values=df.iloc[i, :].tolist())
+                    for i in range(len(sdf)):
+                        tree.insert('', i, values=sdf.iloc[i, :].tolist())
                     scrollbar = tk.Scrollbar(tree, orient="vertical", command=tree.yview)
                     tree.configure(yscrollcommand=scrollbar.set)
                     scrollbar.pack(side="right", fill="y")
@@ -206,10 +215,17 @@ class Kowalski_analis(tk.Toplevel):
                     tree.configure(xscrollcommand=scrollbarx.set)
                     scrollbarx.pack(side="bottom", fill="x")
                     tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+                    save = tk.Button(frame_tree, text="Сохранить", command=save_bd2(stolb_1.get(),stolb_2.get(),stolb_3.get()))
+                    save.pack(side='left', padx=10, ipady=8)
+                    cancel = tk.Button(frame_tree, text="Отмена", command=window.destroy)
+                    cancel.pack(side='right', padx=10, ipady=8, ipadx=10)
                     frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
+                    
+                    
             else:
                 mb.showerror("Ошибка", "Нужно заполнить все 3 поля")
-
+            self.destroy()
+            
 
         def analis_rasseivanie(event):
             '''
@@ -244,6 +260,7 @@ class Kowalski_analis(tk.Toplevel):
             ax.set_ylabel(stolb_2_rass.get())
 # Show the plot
             plt.show()
+            self.destroy()
 #
 #            if stolb_3_rass.get()!='Кол-во повторений':
 #                plot_df = m.mdf.groupby([stolb_1_rass.get(), stolb_2_rass.get(),
@@ -315,7 +332,7 @@ class Kowalski_analis(tk.Toplevel):
             cancel = tk.Button(frame_tree, text="Отмена", command=window.destroy)
             cancel.pack(side='right', padx=10, ipady=8, ipadx=10)
             frame_tree.pack(expand=tk.YES, fill=tk.BOTH, padx=10, pady=10)
-            
+            self.destroy()
 
 
 #            plt.title("Графическая интерпретация таблицы базового анализа")
@@ -347,6 +364,7 @@ class Kowalski_analis(tk.Toplevel):
             plt.boxplot(b)
             plt.xticks(a, n, rotation=75)
             plt.show()
+            self.destroy()
 
         # def wix_info(event):
         #     mb.showinfo("Описание","Используются в описательной статистике и позволяют быстро исследовать несколько наборов данных в графическом виде. Показывает верхние и нижние границы, квартили и медиану.")
@@ -376,6 +394,7 @@ class Kowalski_analis(tk.Toplevel):
             fig.add_artist(p1)
             fig.add_artist(p2)
             plt.show()
+            self.destroy()
 
 
         # def gis_info(event):
